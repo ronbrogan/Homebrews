@@ -14,6 +14,7 @@
         <EntityTypeShape EntityType="brewappModel.EquipmentProfile" Width="1.5" PointX="5.75" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="brewappModel.MashEntry" Width="1.5" PointX="2.5" PointY="0.625" />
         <EntityTypeShape EntityType="brewappModel.FermentationProfile" Width="1.5" PointX="4.125" PointY="3.125" />
+        <EntityTypeShape EntityType="brewappModel.RecipeFermentable" Width="1.5" PointX="9" PointY="4.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

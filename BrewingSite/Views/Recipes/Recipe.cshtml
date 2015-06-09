@@ -230,6 +230,15 @@
         $('#clearHopButton').hide();
     }
 
+    function ShowError(errorText)
+    {
+        if(errorText != 'Success')
+        {
+            $('.error').text(errorText);
+            $('.error').slideDown(500).delay(3000).slideUp(500);
+        }
+    }
+
     $(document).ready(function() {
 
         $('#mashSpargeMethod').on("change", function () {
@@ -246,6 +255,15 @@
             if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
                 this.value = this.value.replace(/[^0-9\.]/g, '');
             }
+        });
+
+        $('#fermentables').on('click', '.removeFermentable', function () {
+            $.ajax({type: "POST", url: "/Recipes/DeleteFermentable/" + $(this).attr('data-fermentableId')}).done(function(data) {
+                ShowError(data);
+                $("#fermentables").load('@Url.Action("FermentablePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {
+                    calculateReadouts();
+                });
+            });
         });
 
 

@@ -41,5 +41,6 @@ namespace BrewingSite.Models
         public string otherUse { get; set; }
         public string mashSpargeType { get; set; }
         public Nullable<int> fermentationProfileId { get; set; }
+        public Nullable<bool> isPublicRead { get; set; }
     }
 }

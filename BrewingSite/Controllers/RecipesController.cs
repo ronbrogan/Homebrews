@@ -22,8 +22,10 @@ namespace BrewingSite.Controllers
         }
 
         //GET: Recipes/recipe/#
+        [Authorize]
         public ActionResult Recipe(string id = "")
         {
+            
             if (id == "")
             {
                 string query = "select top 50 * from recipes where isRecipe=1";
@@ -39,6 +41,9 @@ namespace BrewingSite.Controllers
 
                 if (requestedRecipe.isRecipe != true)
                     return HttpNotFound("This is not a recipe entry");
+
+                if(User.Identity.Name != requestedRecipe.authorId.TrimEnd(' ') && !(bool)requestedRecipe.isPublicRead)
+                    return HttpNotFound("Invalid user for access to recipe!");
 
                 WholeRecipe wholeShebang = new WholeRecipe(requestedRecipe);
 
@@ -119,6 +124,7 @@ namespace BrewingSite.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public String Delete(string id = "-1")
         {
             if (id != "-1")
@@ -126,6 +132,9 @@ namespace BrewingSite.Controllers
                 try
                 {
                     Recipe toRemove = dbConn.Recipes.Find(Convert.ToInt32(id));
+
+                    if (User.Identity.Name != toRemove.authorId.TrimEnd(' '))
+                        return "Invalid user for access to recipe!";
 
                     dbConn.Recipes.Remove(toRemove);
                     dbConn.SaveChanges();
@@ -141,7 +150,38 @@ namespace BrewingSite.Controllers
                 return "Not valid entry";
             }
 
-            return "Removed entry from database";
+            return "Success";
+        }
+
+        [HttpPost]
+        [Authorize]
+        public String DeleteFermentable(string id = "-1")
+        {
+            
+            if (id != "-1")
+            {
+                try
+                {
+                    RecipeFermentable toRemove = dbConn.RecipeFermentables.Find(Convert.ToInt32(id));
+
+                    if (User.Identity.Name != dbConn.Recipes.Find(toRemove.recipeId).authorId.TrimEnd(' '))
+                        return "Invalid user for access to recipe!";
+
+                    dbConn.RecipeFermentables.Remove(toRemove);
+                    dbConn.SaveChanges();
+                }
+                catch
+                {
+                    return "Error deleting record";
+                }
+
+            }
+            else
+            {
+                return "Not valid entry";
+            }
+
+            return "Success";
         }
 
         [HttpPost]
@@ -153,7 +193,7 @@ namespace BrewingSite.Controllers
                 recipe.isRecipe = true;
                 recipe.isIngredient = false;
                 recipe.isNote = false;
-
+                recipe.isPublicRead = false;
 
 
                 dbConn.Recipes.Add(recipe);
@@ -168,6 +208,7 @@ namespace BrewingSite.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public String DeleteMashEntry(string id = "-1")
         {
             if (id != "-1")
@@ -175,6 +216,9 @@ namespace BrewingSite.Controllers
                 try
                 {
                     MashEntry toRemove = dbConn.MashEntries.Find(Convert.ToInt32(id));
+
+                    if (User.Identity.Name != dbConn.Recipes.Find(toRemove.recipeId).authorId.TrimEnd(' '))
+                        return "Invalid user for access to recipe!";
 
                     dbConn.MashEntries.Remove(toRemove);
                     dbConn.SaveChanges();
@@ -190,7 +234,7 @@ namespace BrewingSite.Controllers
                 return "Not valid entry";
             }
 
-            return "Removed entry from database";
+            return "Success";
         }
 
         public ActionResult FermentablePane(string id = "-1")
@@ -217,35 +261,18 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("FermentablePane")]
-        public String FermentablePanePostOld(string id = "-1")
+        [Authorize]
+        public String FermentablePanePost(RecipeFermentable newFermentable, string id = "-1")
         {
             try
             {
-                string amount = Request["fermentableAmount"].ToString();
-                string fermId = Request["fermentableId"].ToString();
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
 
-                try
-                {
-                    Convert.ToDouble(amount);  //Converting to doubles will throw an error if text was submitted maliciously.
-                    Convert.ToDouble(fermId);
-                }
-                catch
-                {
-                    return "No SQL Injections here...";
-                }
+                newFermentable.recipeId = Convert.ToInt32(id);
+                newFermentable.unit = "lbs";
 
-                Recipe newFermentable = new Recipe();
-
-                newFermentable.amountUnit = "lbs";
-                newFermentable.parentId = Convert.ToInt32(id);
-                newFermentable.isIngredient = true;
-                newFermentable.isNote = false;
-                newFermentable.isRecipe = false;
-                newFermentable.ingredientId = Convert.ToInt32(fermId);
-                newFermentable.ingredientAmount = Convert.ToDouble(amount);
-                newFermentable.ingredientType = "Fermentables";
-
-                dbConn.Recipes.Add(newFermentable);
+                dbConn.RecipeFermentables.Add(newFermentable);
                 dbConn.SaveChanges();
             }
             catch
@@ -278,10 +305,14 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("HopPane")]
+        [Authorize]
         public String HopPanePost(string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
+
                 string amount = Request["hopAmount"].ToString();
                 string hopId = Request["hopId"].ToString(); 
                 string hopTime = Request["hopTime"].ToString();
@@ -349,10 +380,13 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("YeastPane")]
+        [Authorize]
         public String YeastPanePost(string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
 
                 int yeastId;
 
@@ -412,10 +446,14 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("RecipePane")]
+        [Authorize]
         public String RecipePanePost(string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
+
                 int recipeId = Convert.ToInt32(id);
 
                 string styleId = Request["styleId"].ToString();
@@ -476,10 +514,14 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("EquipmentPane")]
+        [Authorize]
         public String EquipmentPanePost(string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
+
                 int recipeId = Convert.ToInt32(id);
 
                 Recipe recipe = dbConn.Recipes.Find(recipeId);
@@ -566,10 +608,14 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("OthersPane")]
+        [Authorize]
         public String OthersPanePost(string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
+
                 int recipeId = Convert.ToInt32(id);
 
                 string otherAmount = Request["otherAmount"];
@@ -622,10 +668,14 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("MashPane")]
+        [Authorize]
         public String MashPanePost(string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
+
                 int recipeId = Convert.ToInt32(id);
 
                 string time = Request["time"];
@@ -650,10 +700,14 @@ namespace BrewingSite.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public String UpdateMashSpargeType(string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
+
                 int recipeId = Convert.ToInt32(id);
 
                 string mashSpargeMethod = Request["mashSpargeMethod"];
@@ -695,10 +749,14 @@ namespace BrewingSite.Controllers
 
         [HttpPost]
         [ActionName("FermentationPane")]
+        [Authorize]
         public String FermentationPanePost(FermentationProfile inputProfile, string id = "-1")
         {
             try
             {
+                if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
+                    return "Invalid user for access to recipe!";
+
                 int recipeId = Convert.ToInt32(id);
 
                 Recipe recipe = dbConn.Recipes.Find(recipeId);

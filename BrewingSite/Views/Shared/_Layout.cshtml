@@ -10,6 +10,7 @@
     <script src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/jquery-ui.js"></script>
+    @RenderSection("scripts", required: false)
 
 </head>
 <body>
@@ -33,6 +34,9 @@
             </div>
         </div>
     </div>
+    <div class="error">
+        Error status
+    </div>
     <div class="container body-content">
         @RenderBody()
         
@@ -44,7 +48,7 @@
         </footer>
     </div>
 
-        @RenderSection("scripts", required: false)
+        
 
 
 </body>

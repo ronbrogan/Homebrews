@@ -217,6 +217,9 @@
     <Compile Include="Models\Recipe.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RecipeFermentable.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SRMtoRGB.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
@@ -337,6 +340,13 @@
     <Content Include="Views\Recipes\_FermentationPane.cshtml" />
     <Content Include="Views\Recipes\_MashPane.cshtml" />
     <Content Include="Views\Recipes\_NewRecipeDialog.cshtml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

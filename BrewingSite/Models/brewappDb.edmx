@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="brewappModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="brewappModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="EquipmentProfile">
           <Key>
             <PropertyRef Name="id" />
@@ -77,6 +77,18 @@
           <Property Name="method" Type="varchar" MaxLength="15" />
           <Property Name="mashSpargeType" Type="varchar" MaxLength="15" />
         </EntityType>
+        <EntityType Name="RecipeFermentable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="recipeId" Type="int" />
+          <Property Name="ingredientId" Type="int" />
+          <Property Name="isMashed" Type="bit" />
+          <Property Name="url" Type="nvarchar(max)" />
+          <Property Name="amount" Type="float" />
+          <Property Name="unit" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Recipes">
           <Key>
             <PropertyRef Name="id" />
@@ -84,7 +96,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="64" />
           <Property Name="authorName" Type="varchar" MaxLength="64" />
-          <Property Name="authorId" Type="nchar" MaxLength="128" />
+          <Property Name="authorId" Type="varchar" MaxLength="128" />
           <Property Name="isRecipe" Type="bit" />
           <Property Name="isNote" Type="bit" />
           <Property Name="isIngredient" Type="bit" />
@@ -108,6 +120,7 @@
           <Property Name="otherUse" Type="varchar" MaxLength="64" />
           <Property Name="mashSpargeType" Type="varchar" MaxLength="10" />
           <Property Name="fermentationProfileId" Type="int" />
+          <Property Name="isPublicRead" Type="bit" />
         </EntityType>
         <EntityType Name="SRMtoRGB">
           <Key>
@@ -151,6 +164,7 @@
           <EntitySet Name="FermentationProfile" EntityType="Self.FermentationProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hops" EntityType="Self.Hops" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MashEntry" EntityType="Self.MashEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecipeFermentable" EntityType="Self.RecipeFermentable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recipes" EntityType="Self.Recipes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SRMtoRGB" EntityType="Self.SRMtoRGB" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Styles" EntityType="Self.Styles" Schema="dbo" store:Type="Tables" />
@@ -216,6 +230,7 @@
           <EntitySet Name="EquipmentProfiles" EntityType="brewappModel.EquipmentProfile" />
           <EntitySet Name="MashEntries" EntityType="brewappModel.MashEntry" />
           <EntitySet Name="FermentationProfiles" EntityType="brewappModel.FermentationProfile" />
+          <EntitySet Name="RecipeFermentables" EntityType="brewappModel.RecipeFermentable" />
           </EntityContainer>
         <EntityType Name="Recipe">
           <Key>
@@ -223,7 +238,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="authorId" Type="String" MaxLength="128" FixedLength="true" Unicode="true" />
+          <Property Name="authorId" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="isRecipe" Type="Boolean" />
           <Property Name="isNote" Type="Boolean" />
           <Property Name="isIngredient" Type="Boolean" />
@@ -248,6 +263,7 @@
           <Property Name="otherUse" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="mashSpargeType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="fermentationProfileId" Type="Int32" />
+          <Property Name="isPublicRead" Type="Boolean" />
         </EntityType>
         <EntityType Name="SRMtoRGB">
           <Key>
@@ -311,6 +327,18 @@
           <Property Name="bottleTemp" Type="Double" />
           <Property Name="bottleNote" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="RecipeFermentable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="recipeId" Type="Int32" />
+          <Property Name="ingredientId" Type="Int32" />
+          <Property Name="isMashed" Type="Boolean" />
+          <Property Name="url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="amount" Type="Double" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -369,6 +397,7 @@
           <EntitySetMapping Name="Recipes">
             <EntityTypeMapping TypeName="brewappModel.Recipe">
               <MappingFragment StoreEntitySet="Recipes">
+                <ScalarProperty Name="isPublicRead" ColumnName="isPublicRead" />
                 <ScalarProperty Name="fermentationProfileId" ColumnName="fermentationProfileId" />
                 <ScalarProperty Name="mashSpargeType" ColumnName="mashSpargeType" />
                 <ScalarProperty Name="otherUse" ColumnName="otherUse" />
@@ -461,6 +490,19 @@
                 <ScalarProperty Name="primaryNote" ColumnName="primaryNote" />
                 <ScalarProperty Name="primaryTemp" ColumnName="primaryTemp" />
                 <ScalarProperty Name="primaryDays" ColumnName="primaryDays" />
+                <ScalarProperty Name="recipeId" ColumnName="recipeId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecipeFermentables">
+            <EntityTypeMapping TypeName="brewappModel.RecipeFermentable">
+              <MappingFragment StoreEntitySet="RecipeFermentable">
+                <ScalarProperty Name="unit" ColumnName="unit" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="isMashed" ColumnName="isMashed" />
+                <ScalarProperty Name="ingredientId" ColumnName="ingredientId" />
                 <ScalarProperty Name="recipeId" ColumnName="recipeId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>

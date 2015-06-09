@@ -15,8 +15,7 @@
             <th>
                 Lovibond
             </th>
-            <th></th>
-            <th></th>
+            <th>Mashed</th>
             <th></th>
         </tr>
 
@@ -24,6 +23,7 @@
         {
             <tr>
                 <td></td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.amount) @Html.DisplayFor(modelItem => item.unit)
                 </td>
@@ -39,7 +39,10 @@
                 <td class="gravityPoints" style="display: none;">@(item.amount * item.ppg)</td>
                 <td class="lovibondPoints" style="display: none;">@(item.amount * item.lovibond)</td>
                 <td>
-                    <a href="#" id="@item.id" onclick="RemoveIngredientAsync(this.id)">Delete</a>
+                    @Html.DisplayFor(modelItem => item.isMashed.Value)
+                </td>
+                <td>
+                    <a href="#" class="removeFermentable" data-fermentableid="@item.id">Delete</a>
                 </td>
             </tr>
         }
@@ -49,18 +52,21 @@
             <!--Add fermentable functionality-->
             <td>
                 <!--Amount box here-->
-                <input id="fermentableAmountBox" type="text" name="fermentableAmount" style="width: 60px;" class="numbersOnly" />
+                <input id="fermentableAmountBox" type="text" name="amount" style="width: 60px;" class="numbersOnly" />
             </td>
             <td>
                 <!--Grain type selector-->
                 <a href="#" id="fermentableNameField">Click to Add Fermentable</a>
-                <input id="fermentableIdBox" type="text" name="fermentableId" hidden="hidden" />
+                <input id="fermentableIdBox" type="text" name="ingredientId" hidden="hidden" />
             </td>
             <td id="fermentablePpgField">
                 <!--Autofill ppg-->
             </td>
             <td id="fermentableLovibondField">
                 <!--Autofill lovibond-->
+            </td>
+            <td>
+                @Html.CheckBox("isMashed")
             </td>
             <td>
                 <!--Link for posting data to the model and then reloading the partial view-->
