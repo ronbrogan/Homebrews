@@ -1,0 +1,30 @@
+﻿@model BrewingSite.Models.EquipmentProfile
+
+<form action="/Recipes/EquipmentPane" method="post">
+    <table class="table">
+        <tr>
+            <td>Kettle Volume</td>
+            <td>@Html.TextBoxFor( m => m.kettleVolume)</td>
+        </tr>
+        <tr>
+            <td>Kettle Loss</td>
+            <td>@Html.TextBoxFor(m => m.kettleVolumeLoss)</td>
+        </tr>
+        <tr>
+            <td>Kettle Boiloff (gallons/hour)</td>
+            <td>@Html.TextBoxFor(m => m.kettleBoiloff)</td>
+        </tr>
+        <tr>
+            <td>Mash Tun Volume</td>
+            <td>@Html.TextBoxFor(m => m.mashtunVolume)</td>
+        </tr>
+        <tr>
+            <td>Mash Tun Loss</td>
+            <td>@Html.TextBoxFor(m => m.mashtunVolumeLoss)</td>
+        </tr>
+        <tr>
+            <td>Mash Extraction Efficiency</td>
+            <td>@Html.TextBoxFor(m => m.mashEfficiency)</td>
+        </tr>
+    </table>
+</form>

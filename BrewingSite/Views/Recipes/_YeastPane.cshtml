@@ -1,0 +1,57 @@
+﻿@model IEnumerable<BrewingSite.Models.Yeast>
+<form action="/Recipes/YeastPane" method="post">
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Attenuation
+            </th>
+            <th>
+                Type
+            </th>
+            <th></th>
+        </tr>
+        @{bool i = false;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="@(i?"yeastItem":"yeastAttenuationItem")">
+                    @Html.DisplayFor(modelItem => item.Attenuation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <a href="#" id="@item.id" onclick="RemoveIngredientAsync(this.id)">Delete</a>
+                </td>
+            </tr>
+            i = true;
+        }
+
+        <tr>
+            <td>
+                <!--Grain type selector-->
+                <a href="#" id="yeastNameField">Click to Add Yeast</a>
+                <input id="yeastIdBox" type="text" name="yeastId" hidden="hidden" />
+            </td>
+            <td id="yeastAttenuationField">
+                <!--Autofill lovibond-->
+            </td>
+            <td id="yeastTypeField">
+                <!--Autofill ppg-->
+            </td>
+            <td>
+                <!--Link for posting data to the model and then reloading the partial view-->
+                <a href="#" onclick="return PostFormAsync(this)">Add</a>
+            </td>
+
+        </tr>
+
+
+    </table>
+</form>

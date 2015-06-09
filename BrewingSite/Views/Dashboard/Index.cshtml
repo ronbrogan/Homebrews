@@ -1,0 +1,89 @@
+﻿@model BrewingSite.Models.UserDashboardCollection
+
+@{
+    ViewBag.Title = "User Dashboard";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#newRecipe').on('click', function (event) {
+            event.preventDefault();
+
+            $("#NewRecipeForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 550,
+                height: 400,
+                resizable: false,
+                title: 'Edit Recipe Details',
+                modal: true,
+                open: function () {
+                    $(this).load('/Recipes/ShowNewRecipeDialog/');
+                }
+            });
+            return false;
+        });
+    });
+
+
+</script>
+
+<div>
+    <h2>Welcome @User.Identity.Name.Substring(0, User.Identity.Name.IndexOf('@'))!</h2>
+    <p></p>
+    <p></p>
+    <hr />
+</div>
+
+<div class="clearfix">
+    <div class="float-left">
+        <span class="h2">My Recipes</span>
+        <p></p>
+        <div id="recipes">
+            <table class="table">
+                <tr>
+                    <th>Recipe</th>
+                    <th>Style</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.recipes)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.styleId</td>
+                        <td><a href="/Recipes/recipe/@item.id">Edit</a> | <a href="#" id="brewButton" data-recipeId="@item.id">Brew</a></td>
+                    </tr>
+                }
+                <tr>
+                    <td><a href="#" id="newRecipe">New Recipe</a></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+
+            </table>
+            
+        </div>
+        <div id="NewRecipeForm"></div>
+
+    </div>
+    
+    <div class="float-right">
+        <span class="h2">My Brewdays</span>
+        <p></p>
+        <div id="brewdays">
+            <span>Coming soon!</span>
+        </div>
+        <div id="AddBrewdayForm"></div>
+
+    </div>
+</div>
+<hr />
+<div class="clearfix">
+    <span class="h2">Ongoing Fermentations</span>
+    <div id="fermentationPipeline">
+        <span>Initiate a Brewday to get data here!</span>
+    </div>
+    <div id="AddFermentationForm"></div>
+</div>

@@ -1,0 +1,29 @@
+﻿@model BrewingSite.Models.FermentationProfile
+
+<span class="h2">Fermentation Profile </span><a href="" id="editFermentation" data-recipeid="@Model.id"> Edit</a>
+<p></p>
+
+
+
+<table class="table">
+    <tr>
+        @if(Model.hasPrimary()){<th>Primary Fermentation - @(Model.primaryTemp)°F</th>}
+        @if(Model.hasSecondary()){<th>Secondary Fermentation - @(Model.secondaryTemp)°F</th>}                                                     
+        @if(Model.hasKeg()){<th>Bulk Aging / Kegging - @(Model.kegTemp)°F</th>}  
+        @if(Model.hasBottle()){<th>Bottle Conditioning - @(Model.bottleTemp)°F</th>}                               
+    </tr>
+    <tr>
+        @if(Model.hasPrimary()){<td><span class="bold">Days:</span> @Model.primaryDays</td>}
+        @if(Model.hasSecondary()){<td><span class="bold">Days:</span> @Model.secondaryDays</td>}                                                     
+        @if(Model.hasKeg()){<td><span class="bold">Days:</span> @Model.kegDays</td>}  
+        @if(Model.hasBottle()){<td><span class="bold">Days:</span> @Model.bottleDays</td>}  
+    </tr>
+    <tr>
+        @if(Model.hasPrimary()){<td><span class="bold">Note:</span> @Model.primaryNote</td>}
+        @if(Model.hasSecondary()){<td><span class="bold">Note:</span> @Model.secondaryNote</td>}                                                     
+        @if(Model.hasKeg()){<td><span class="bold">Note:</span> @Model.kegNote</td>}  
+        @if(Model.hasBottle()){<td><span class="bold">Note:</span> @Model.bottleNote</td>}  
+    </tr>
+
+
+</table>

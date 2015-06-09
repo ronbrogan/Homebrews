@@ -1,0 +1,504 @@
+﻿@model BrewingSite.Models.WholeRecipe
+
+@using BrewingSite.Models;
+
+@{
+    ViewBag.Title = Model.recipeTitle;
+}
+
+
+
+<script type="text/javascript">
+    function PostFormAsync(btnClicked, event) {
+        var $form = $(btnClicked).parents('form');
+
+        $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()}).done(setTimeout(function() {UpdatePanes()}, 350));
+        return false;
+    }
+
+    function PostFormAsyncNonCritical(btnClicked, event) {
+        var $form = $(btnClicked).parents('form');
+
+        $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()}).done(setTimeout(function() {UpdatePanesNonCritical()}, 350));
+        return false;
+    }
+
+    function RemoveIngredientAsync(itemId, event)
+    {
+        $.ajax({type: "POST", url: "/Recipes/Delete/" + itemId}).done(setTimeout(function() {UpdatePanes()}, 250));
+        return false;
+    }
+
+    function RemoveIngredientAsyncNonCritical(itemId, event)
+    {
+        $.ajax({type: "POST", url: "/Recipes/Delete/" + itemId}).done(setTimeout(function() {UpdatePanesNonCritical()}, 250));
+        return false;
+    }
+
+    function RemoveMashEntry(itemId, event)
+    {
+        $.ajax({type: "POST", url: "/Recipes/DeleteMashEntry/" + itemId}).done(setTimeout(function() {$("#mash").load('@Url.Action("MashPane", "Recipes")' + "/" + @Model.sourceRecipe.id);}, 250));
+        event.preventDefault();
+        return false;
+    }
+
+    function UpdatePanesNonCritical(){
+        $("#equipment").load('@Url.Action("EquipmentPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
+        $("#other").load('@Url.Action("OthersPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
+        $("#mash").load('@Url.Action("MashPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
+        $("#fermentation").load('@Url.Action("FermentationPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
+    }
+
+
+    function UpdatePanes(){
+
+        var $fermentablesDone = $.Deferred();
+        var $hopsDone = $.Deferred();
+        var $yeastDone = $.Deferred();
+        var $detailsDone = $.Deferred();
+
+        $("#fermentables").load('@Url.Action("FermentablePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$fermentablesDone.resolve()});
+        $("#hops").load('@Url.Action("HopPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$hopsDone.resolve()});
+        $("#yeast").load('@Url.Action("YeastPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$yeastDone.resolve()});
+        $("#recipeDetails").load('@Url.Action("RecipePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$detailsDone.resolve()});
+
+
+
+        $.when($fermentablesDone, $hopsDone, $yeastDone, $detailsDone).done(function() {calculateReadouts()});
+        return false;
+    }
+
+    function calculateReadouts()
+    {
+        var $attenuationText = $('.yeastAttenuationItem').text();
+
+        if ($attenuationText.length > 0)
+        {
+            $('#attenuationPercentage').text($attenuationText);
+        }
+
+
+
+        var $totalGravityPoints = 0.0;
+        var $extractionEfficiency = parseFloat($('#extractionEfficiency').text());
+        var $batchSizeGallons = parseFloat($('#batchSize').text());
+        var $yeastAttenuation = parseFloat($('#attenuationPercentage').text());
+
+
+        var $fermentablesGravity = $('.gravityPoints');
+        $fermentablesGravity.each(function(){
+            $totalGravityPoints = $totalGravityPoints + parseFloat($(this).text());
+        });
+
+        var $totalExtractedSugarPoints = ($totalGravityPoints / $batchSizeGallons) * ($extractionEfficiency / 100.0);
+
+        $og = 1.000 + ( $totalExtractedSugarPoints / 1000.0);
+
+        $('#ogReadout').text($og.toFixed(3).toString() + ' OG');
+
+        $fg = 1.000 + ($totalExtractedSugarPoints * ((100 - $yeastAttenuation) / 100 )) / 1000;
+
+        $('#fgReadout').text($fg.toFixed(3).toString() + ' FG');
+
+
+        //Classic constant of 131.25 for rough ABV calculation
+        $('#abvReadout').text((($og - $fg) * 131.25).toFixed(1).toString() + '% ABV');
+
+        //Setting broad parameters for IBU estimation (using Tinseth)
+        $boilSize = $batchSizeGallons;
+        $bignessFactor = 1.65 * Math.pow(0.000125, ($og - 1));
+        $totalIbus = 0.0;
+
+        $hops = $('.hopEntry');
+        $hops.each(function(){
+            $cells = $(this).children('td');
+
+            $rawAmountString = $($cells[1]).text().trim();
+
+            $amountString = $rawAmountString.substr(0, $rawAmountString.length - 3);
+            $alphaAcidPercentageString = $($cells[3]).text().trim();
+            $boilTimeString = $($cells[4]).text().trim();
+
+            $boilTime = parseFloat($boilTimeString);
+            $alphaAcidUnits = parseFloat($amountString) * parseFloat($alphaAcidPercentageString);
+
+            $boiltimeFactor = (1 - Math.exp(-0.04 * $boilTime)) / 4.15;
+
+            $utilization = $bignessFactor * $boiltimeFactor;
+
+            $ibus = $alphaAcidUnits * 75 * $utilization / $boilSize;
+
+            $($cells[6]).text($ibus.toFixed(1));
+
+            $totalIbus = $totalIbus + $ibus;
+        });
+
+        $('#ibuReadout').text($totalIbus.toFixed(1).toString() + ' IBU');
+
+        //Morey SRM approximation
+        $finalSrm = 0.0;
+        $maltColorUnits = 0.0;
+        $totalLovibondPoints = 0.0;
+
+        $fermentablesLovibond = $('.lovibondPoints');
+        $fermentablesLovibond.each(function(){
+            $totalLovibondPoints = $totalLovibondPoints + parseFloat($(this).text());
+        });
+
+        $maltColorUnits = $totalLovibondPoints / $batchSizeGallons;
+
+        $finalSrm = 1.4922 * Math.pow($maltColorUnits,  0.6859);
+
+        $('#srmReadout').text($finalSrm.toFixed(1).toString() + ' SRM');
+
+        $.get("/Recipes/srmToRgb?srm=" + $finalSrm.toFixed(1).toString(), function(data) {
+            $('.srm').css("background-color", "rgb(" + data + ")");
+        });
+
+
+        updateMeters();
+    }
+
+    function updateMeters()
+    {
+        var $meters = $('.recipeReadout');
+
+        $meters.each(function(){
+            var $maxValue, $minValue, $currValue, $stepAmount, $stepsFromMax;
+
+            $maxValue = parseFloat($(this).attr('data-max'));
+            $minValue = parseFloat($(this).attr('data-min'));
+            $currValue = parseFloat($(this).eq(0).text());
+
+            $stepAmount = ($maxValue - $minValue) / 7;
+
+            $stepsFromMax = Math.abs($maxValue - $currValue) / $stepAmount;
+
+            $stepsFromMax = Math.round($stepsFromMax);
+
+            if($currValue >= $maxValue)
+            {
+                //Set background to (12 + $stepsFromMax).png
+
+                var $imageNumber = 11 + $stepsFromMax;
+
+                if($imageNumber > 15)
+                {
+                    $imageNumber = 15;
+                }
+
+                $(this).css("background-position", "50% -" + (($imageNumber - 1) * 70).toString() + "px");
+                //alert((($imageNumber - 1) * 70).toString());
+            }
+            else
+            {
+                //Set background to (12 - $stepsFromMax).png
+
+                var $imageNumber = 11 - $stepsFromMax;
+
+                if($imageNumber < 1)
+                {
+                    $imageNumber = 1;
+                }
+
+                $(this).css("background-position", "50% -" + (($imageNumber - 1) * 70).toString() + "px");
+
+                //alert((($imageNumber - 1) * 70).toString());
+            }
+        });
+
+
+    }
+
+
+
+
+    function ClearNewFermentable(){
+        $('#fermentableIdBox').val("");
+        $('#fermentableNameField').text("Click to Add Fermentable");
+        $('#fermentablePpgField').text("");
+        $('#fermentableLovibondField').text("");
+
+        $('#clearFermButton').hide();
+    }
+
+    function ClearNewHop(){
+        $('#hopIdBox').val("");
+        $('#hopNameField').text("Click to Add Hop");
+        $('#hopAaField').text("");
+
+        $('#clearHopButton').hide();
+    }
+
+    $(document).ready(function() {
+
+        $('#mashSpargeMethod').on("change", function () {
+            var $form = $(this).parents('form');
+
+            $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()});
+        });
+
+        $globalRecipeId = @Model.sourceRecipe.id;
+
+        calculateReadouts();
+
+        $('.numbersOnly').keyup(function () {
+            if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            }
+        });
+
+
+
+        $('#fermentables').on('click', '#fermentableNameField', function (event) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            $("#AddFermentableForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 450,
+                height: 350,
+                resizable: false,
+                title: 'Add Fermentable',
+                modal: true,
+                open: function () {
+                    $('#fermentableAmountBox').focus();
+                    $(this).load('/Recipes/ShowFermentableDialog');
+                },
+                close: function () {
+                    $('#fermentableAmountBox').focus();
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+
+        $('#hops').on('click', '#hopNameField', function (event) {
+            event.preventDefault();
+            $("#AddHopForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 400,
+                height: 350,
+                resizable: false,
+                title: 'Add Hop',
+                modal: true,
+                open: function () {
+                    $('#hopAmountBox').focus();
+                    $(this).load('/Recipes/ShowHopDialog');
+                },
+                close: function () {
+                    $('#hopAmountBox').focus();
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+        $('#recipeDetails').on('click', '#editTopLevel', function (event) {
+            event.preventDefault();
+
+            var $recipeId = $(this).attr("data-recipeId");
+
+            $("#EditRecipeForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 550,
+                height: 350,
+                resizable: false,
+                title: 'Edit Recipe Details',
+                modal: true,
+                open: function () {
+                    $(this).load('/Recipes/ShowRecipeDialog/' + $recipeId);
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    },
+                    Save: function() {
+                        PostFormAsync($(this).children('form').children('.table'));
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+        $('#equipment').on('click', '#editEquipment', function (event) {
+            event.preventDefault();
+
+            $("#EditEquipmentForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 550,
+                height: 450,
+                resizable: false,
+                title: 'Edit Equipment',
+                modal: true,
+                open: function () {
+                    $(this).load('/Recipes/ShowEquipmentDialog/' + $globalRecipeId);
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    },
+                    Save: function() {
+                        PostFormAsyncNonCritical($(this).children('form').children('.table'));
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+
+        $('#fermentation').on('click', '#editFermentation', function (event) {
+            event.preventDefault();
+
+            $("#AddFermentationForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 550,
+                height: 450,
+                resizable: false,
+                title: 'Edit Fermentation',
+                modal: true,
+                open: function () {
+                    $(this).load('/Recipes/ShowFermentationDialog/' + $globalRecipeId);
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    },
+                    Save: function() {
+                        PostFormAsyncNonCritical($(this).children('form').children('.table'));
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+
+        $('#yeast').on('click', '#yeastNameField', function (event) {
+            event.preventDefault();
+            $("#AddYeastForm").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 400,
+                height: 350,
+                resizable: false,
+                title: 'Add Yeast',
+                modal: true,
+                open: function () {
+                    $(this).load('/Recipes/ShowYeastDialog');
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+
+
+</script>
+
+
+
+
+
+
+
+ 
+
+
+<div id="recipeDetails">
+    @{Html.RenderPartial("_RecipePane", Model);}
+</div>
+<div id="EditRecipeForm"></div>
+
+<div class="clearfix">
+    <div class="float-left">
+        <span class="h2">Fermentables</span>
+        <p></p>
+        <div id="fermentables">
+            @{Html.RenderPartial("_FermentablePane", Model.fermentables);}
+        </div>
+        <div id="AddFermentableForm"></div>
+
+    </div>
+    <div class="float-right">
+        <span class="h2">Hops</span>
+        <p></p>
+            <div id="hops">
+                @{Html.RenderPartial("_HopPane", Model.hops);}
+            </div>
+            <div id="AddHopForm"></div>
+
+    </div>
+</div>
+<div class="clearfix">
+    <div class="float-left">
+        <span class="h2">Other Additions</span>
+        <p></p>
+            <div id="other">
+                @{Html.RenderPartial("_OthersPane", Model.others);}
+            </div>
+
+    </div>
+    <div class="float-right">
+        <span class="h2">Yeast</span>
+        <p></p>
+        <div id="yeast">
+            @{Html.RenderPartial("_YeastPane", Model.yeasts);}
+        </div>
+        <div id="AddYeastForm"></div>
+        
+
+    </div>
+</div>
+<div class="clearfix">
+    <div class="float-left">
+        <div id="equipment">
+            @{Html.RenderPartial("_EquipmentPane", Model.equipment);}
+        </div>
+        <div id="EditEquipmentForm"></div>
+
+    </div>
+    <div class="float-right">
+        <span class="h2">Mash Profile</span>
+        <p></p>
+        <div id="mash">
+            @{Html.RenderPartial("_MashPane", Model.mashEntries);}
+        </div>
+        <form action="/Recipes/UpdateMashSpargeType" method="post">
+            <span style="font-weight: bold">Sparge Method: <select id="mashSpargeMethod" name="mashSpargeMethod">@if (Model.sourceRecipe.mashSpargeType != null)
+            {<option selected="selected">@Model.sourceRecipe.mashSpargeType</option>}
+            <option>Batch</option>
+            <option>Fly</option>
+            <option>No-sparge</option></select></span>
+        </form>
+        <br />
+    
+
+    </div>
+</div>
+<div class="clearfix">
+        <div id="fermentation">
+            @{Html.RenderPartial("_FermentationPane", Model.fermentation);}
+        </div>
+        <div id="AddFermentationForm"></div>
+</div>

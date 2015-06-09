@@ -1,0 +1,56 @@
+﻿@model BrewingSite.Models.Recipe
+
+<script type="text/javascript">
+    
+
+    $(document).ready(function () {
+
+        $('#recipeStyle').load("/Recipes/StylesDropdown", function () {
+            $('#recipeStyle>option:eq(@(Model.styleId - 1))').prop("selected", true);
+        });
+
+        $('#recipeStyle').on("change", function () {
+            $('#styleId').val($(this)[0].selectedIndex + 1);
+        });
+
+
+
+        
+
+
+        $('.ui-widget-overlay ui-front').on('click', function () {
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $('.ui-widget-overlay ui-front').hide();
+        });
+
+        
+
+    });
+</script>
+
+<form action="/Recipes/RecipePane" method="post">
+    <table class="table">
+        <tr>
+            <td>@Html.Label("Recipe Title")</td>
+            <td>@Html.TextBoxFor(m => m.name)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Author Name")</td>
+            <td>@Html.TextBoxFor(m => m.authorName)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Batch Size (Gallons)")</td>
+            <td>@Html.TextBoxFor(m => m.batchSize)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Boil Time (Minutes)")</td>
+            <td>@Html.TextBoxFor(m => m.boilTime)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Style")</td>
+            <td><select id="recipeStyle"><option data-styleid="-1">Loading styles...</option></select><input id="styleId" type="text" name="styleId" style="display: none;" /></td>
+        </tr>
+    </table>
+
+
+</form>

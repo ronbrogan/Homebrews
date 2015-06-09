@@ -1,0 +1,76 @@
+﻿@model BrewingSite.Models.FermentationProfile
+
+<script type="text/javascript">
+    
+
+    $(document).ready(function () {
+
+
+        
+
+    });
+</script>
+
+<form action="/Recipes/FermentationPane" method="post">
+    <table class="table">
+        <tr>
+            <th colspan="2">Primary Fermentation</th>
+        </tr>
+        <tr>
+            <td>Length in Days</td>
+            <td>@Html.TextBoxFor( m => m.primaryDays)</td>
+        </tr>
+        <tr>
+            <td>Temprature</td>
+            <td>@Html.TextBoxFor(m => m.primaryTemp)</td>
+        </tr>
+        <tr>
+            <td colspan="2"><p>Note</p>@Html.TextAreaFor(m => m.primaryNote)</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">Secondary Fermentation</th>
+        </tr>
+        <tr>
+            <td>Length in Days</td>
+            <td>@Html.TextBoxFor(m => m.secondaryDays)</td>
+        </tr>
+        <tr>
+            <td>Temprature</td>
+            <td>@Html.TextBoxFor(m => m.secondaryTemp)</td>
+        </tr>
+        <tr>
+            <td colspan="2"><p>Note</p>@Html.TextAreaFor(m => m.secondaryNote)</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">Keg / Bulk Aging</th>
+        </tr>
+        <tr>
+            <td>Length in Days</td>
+            <td>@Html.TextBoxFor(m => m.kegDays)</td>
+        </tr>
+        <tr>
+            <td>Temprature</td>
+            <td>@Html.TextBoxFor(m => m.kegTemp)</td>
+        </tr>
+        <tr>
+            <td colspan="2"><p>Note</p>@Html.TextAreaFor(m => m.kegNote)</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">Bottle Conditioning</th>
+        </tr>
+        <tr>
+            <td>Length in Days</td>
+            <td>@Html.TextBoxFor(m => m.bottleDays)</td>
+        </tr>
+        <tr>
+            <td>Temprature</td>
+            <td>@Html.TextBoxFor(m => m.bottleTemp)</td>
+        </tr>
+        <tr>
+            <td colspan="2"><p>Note</p>@Html.TextAreaFor(m => m.bottleNote)</td>
+        </tr>
+    </table>
+</form>

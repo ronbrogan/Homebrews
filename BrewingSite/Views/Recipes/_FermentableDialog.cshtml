@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BrewingSite.Models.Fermentable>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#fermSearch').focus();
+
+        $('.fermAdd').on('click', function () {
+            var $fermName = $(this).parent().parent().children('td').eq(0).text();
+            var $fermPpg = $(this).parent().parent().children('td').eq(1).text();
+            var $fermLovibond = $(this).parent().parent().children('td').eq(2).text();
+            var $fermId = $(this).parent().parent().attr('id');
+
+            $('#fermentableIdBox').val($fermId);
+            $('#fermentableNameField').text($fermName);
+            $('#fermentablePpgField').text($fermPpg);
+            $('#fermentableLovibondField').text($fermLovibond);
+
+            $('#clearFermButton').show();
+
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $('.ui-widget-overlay ui-front').hide();
+        });
+
+        var $rows = $('#fermList tr');
+        $('#fermSearch').keyup(function () {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+            $rows.show().filter(function () {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+
+            $('#fermListHeader').show();
+        });
+
+        $('.ui-widget-overlay ui-front').on('click', function () {
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $('.ui-widget-overlay ui-front').hide();
+        });
+
+        
+
+    });
+</script>
+
+<p><input type="text" placeholder="Search" id="fermSearch" /></p>
+
+<table class="table-striped-wide" id="fermList">
+    <tr id="fermListHeader">
+        <th>Fermentable</th>
+        <th>PPG</th>
+        <th>Lovibond</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.id">
+            <td>@item.name</td>
+            <td>@item.ppg</td>
+            <td>@item.lovibond</td>
+            <td><button value="@item.id" class="fermAdd">Select</button></td>
+        </tr>
+    }
+</table>

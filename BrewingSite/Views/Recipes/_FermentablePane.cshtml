@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BrewingSite.Models.Fermentable>
+<form action="/Recipes/FermentablePane" method="post">
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                PPG
+            </th>
+            <th>
+                Lovibond
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.amount) @Html.DisplayFor(modelItem => item.unit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ppg)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lovibond)
+                </td>
+                <td class="gravityPoints" style="display: none;">@(item.amount * item.ppg)</td>
+                <td class="lovibondPoints" style="display: none;">@(item.amount * item.lovibond)</td>
+                <td>
+                    <a href="#" id="@item.id" onclick="RemoveIngredientAsync(this.id)">Delete</a>
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td><img src="~/Images/x.jpeg" width="16" height="16" id="clearFermButton" style="display: none; cursor: pointer" onclick="ClearNewFermentable()" /></td>
+            <!--Add fermentable functionality-->
+            <td>
+                <!--Amount box here-->
+                <input id="fermentableAmountBox" type="text" name="fermentableAmount" style="width: 60px;" class="numbersOnly" />
+            </td>
+            <td>
+                <!--Grain type selector-->
+                <a href="#" id="fermentableNameField">Click to Add Fermentable</a>
+                <input id="fermentableIdBox" type="text" name="fermentableId" hidden="hidden" />
+            </td>
+            <td id="fermentablePpgField">
+                <!--Autofill ppg-->
+            </td>
+            <td id="fermentableLovibondField">
+                <!--Autofill lovibond-->
+            </td>
+            <td>
+                <!--Link for posting data to the model and then reloading the partial view-->
+                <a href="#" onclick="return PostFormAsync(this)">Add</a>
+            </td>
+
+        </tr>
+
+
+    </table>
+</form>

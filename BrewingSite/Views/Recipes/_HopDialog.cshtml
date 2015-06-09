@@ -1,0 +1,60 @@
+﻿@model IEnumerable<BrewingSite.Models.Hop>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#hopSearch').focus();
+        $('.hopAdd').on('click', function () {
+            var $hopName = $(this).parent().parent().children('td').eq(0).text();
+            var $hopAa = $(this).parent().parent().children('td').eq(1).text();
+            var $hopId = $(this).parent().parent().attr('id');
+
+            $('#hopIdBox').val($hopId);
+            $('#hopNameField').text($hopName);
+            $('#hopAaField').text($hopAa);
+
+            $('#clearHopButton').show();
+
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $('.ui-widget-overlay ui-front').hide();
+        });
+
+        var $rows = $('#hopList tr');
+        $('#hopSearch').keyup(function () {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+            $rows.show().filter(function () {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+
+            $('#hopListHeader').show();
+        });
+
+        $('.ui-widget-overlay ui-front').on('click', function () {
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $('.ui-widget-overlay ui-front').hide();
+        });
+
+        
+
+    });
+</script>
+
+<input type="text" placeholder="Search" id="hopSearch" />
+
+<table class="table-striped-wide" id="hopList">
+    <tr id="hopListHeader">
+        <th>Variety</th>
+        <th>AA</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.id">
+            <td>@item.name</td>
+            <td>@item.alphaAcid</td>
+            <td><button value="@item.id" class="hopAdd">Select</button></td>
+        </tr>
+    }
+</table>

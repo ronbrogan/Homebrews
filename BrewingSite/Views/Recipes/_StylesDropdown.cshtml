@@ -1,0 +1,8 @@
+﻿@model IEnumerable<BrewingSite.Models.Style>
+
+
+@foreach (var item in Model) {
+    <option>
+        @Html.DisplayFor(modelItem => item.Style1)
+    </option>
+}

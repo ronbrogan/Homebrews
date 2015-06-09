@@ -1,0 +1,84 @@
+﻿@model IEnumerable<BrewingSite.Models.Hop>
+<form action="/Recipes/HopPane" method="post">
+    <table class="table">
+        <tr>
+            <td></td>
+            <th>
+                Amount
+            </th>
+            <th>
+                Variety
+            </th>
+            <th>
+                AA
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Leaf
+            </th>
+            <th>
+                IBUs
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr class="hopEntry">
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.amount) @Html.DisplayFor(modelItem => item.unit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.alphaAcid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.additionTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isLeaf.Value)
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    <a href="#" id="@item.id" onclick="RemoveIngredientAsync(this.id)">Delete</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><img src="~/Images/x.jpeg" width="16" height="16" id="clearHopButton" style="display: none; cursor: pointer" onclick="ClearNewHop()" /></td>
+            <!--Add Hop functionality-->
+            <td>
+                <!--Amount box here-->
+                <input type="text" id="hopAmountBox" name="hopAmount" style="width: 40px;" class="numbersOnly" />
+            </td>
+            <td>
+                <!--Hop type selector-->
+                <a href="#" id="hopNameField">Click to Add Hop</a>
+                <input type="text" id="hopIdBox" name="hopId" hidden="hidden" />
+            </td>
+            <td id="hopAaField">
+                <!--Autofill AA-->
+            </td>
+            <td>
+                <input type="text" name="hopTime" style="width: 40px;" class="numbersOnly" />
+            </td>
+            <td colspan="2">
+                @Html.CheckBox("isLeaf") Whole Leaf
+            </td>
+            <td>
+                <!--Link for posting data to the model and then reloading the partial view-->
+                <a href="#" onclick="return PostFormAsync(this)">Add</a>
+            </td>
+
+        </tr>
+
+
+    </table>
+</form>

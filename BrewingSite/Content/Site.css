@@ -1,0 +1,115 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.float-left{
+    float: left;
+    width: 45%;
+}
+
+.float-right{
+    float: right;
+    width: 45%;
+}
+
+
+
+.table-striped-wide > tbody > tr:nth-child(odd) > td,
+.table-striped-wide > tbody > tr:nth-child(odd) > th {
+  background-color: #f9f9f9;
+  width: 100%;
+}
+
+.recipeReadout {
+    width: 20%;
+    height: 70px;
+    background-image: url("/Images/ScaleBars/scalebars.png");
+    background-repeat: no-repeat;
+    text-align: center;
+    vertical-align: top;
+    float: left;
+    margin-top: -20px;
+
+}
+
+.h7 {
+    
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.recipeTitle {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 36px;
+}
+
+.body-content{
+    margin-top: 25px;
+}
+
+.recipeReadoutDescriptive, .srm {
+    width: 142px;
+    height: 22px;
+    margin-left: 43px;
+    margin-top: 10px;
+    font-weight: 700;
+    padding-top: 5px;
+}
+
+.srm{
+    border: 1px solid #dddddd;
+    background-color: rgb(255, 255, 255);
+}
+
+.fermentationDay{
+    float: left;
+    height: 50px;
+    border: 2px solid blue;
+    border-radius: 3px;
+    width: 90%;
+    margin: 5%;
+}
+
+.fermentationSection{
+    float: left;
+    overflow: no-display;
+}
+
+.bold {
+    font-weight:bold;
+}
+
+.bigger{
+    font-size: medium;
+}
+
+.btn, .ui-button-text {
+    border-radius: 0px;
+}
+
+.jumbotron {
+    border-radius: 0px;
+}

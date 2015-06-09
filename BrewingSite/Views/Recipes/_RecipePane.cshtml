@@ -1,0 +1,20 @@
+﻿@model BrewingSite.Models.WholeRecipe
+
+
+<span class="recipeTitle">@Model.recipeTitle</span> <a href="" id="editTopLevel" data-recipeid="@Model.sourceRecipe.id">Edit</a> <br />
+<span>Author: @Model.sourceRecipe.authorName</span> <br />
+<span>@Model.recipeStyle.Style1</span> <br />
+<span>Batch Size: <span id="batchSize">@Model.batchSize.ToString()</span> Gallons</span><br />
+<span>Boil Time: <span id="boilTime">@Model.boilTime.ToString()</span> minutes</span>
+
+
+<hr style="clear:both"/>
+<div style="padding-bottom: 40px">
+    <div class="recipeReadout" data-min="@Model.recipeStyle.Low_OG" data-max="@Model.recipeStyle.Hi_OG"><span class="h7" id="ogReadout">1.000 OG</span><p class="recipeReadoutDescriptive">Extraction Eff: <span id="extractionEfficiency">75</span>%</p></div>
+    <div class="recipeReadout" data-min="@Model.recipeStyle.Low_FG" data-max="@Model.recipeStyle.Hi_FG"><span class="h7" id="fgReadout">1.000 FG</span></div>
+    <div class="recipeReadout" data-min="@Model.recipeStyle.Low_ABV" data-max="@Model.recipeStyle.Hi_ABV"><span class="h7" id="abvReadout">0.0% ABV</span><p class="recipeReadoutDescriptive">Attenuation: <span id="attenuationPercentage">75</span>%</p></div>
+    <div class="recipeReadout" data-min="@Model.recipeStyle.Low_IBU" data-max="@Model.recipeStyle.Hi_IBU"><span class="h7" id="ibuReadout">0.0 IBU</span></div>
+    <div class="recipeReadout" data-min="@Model.recipeStyle.Low_SRM" data-max="@Model.recipeStyle.Hi_SRM"><span class="h7" id="srmReadout">0.0 SRM</span><p class="srm"></p></div>
+</div>
+
+<hr />

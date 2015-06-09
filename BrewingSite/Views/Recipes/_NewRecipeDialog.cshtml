@@ -1,0 +1,39 @@
+﻿<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $('#recipeStyle').load("/Recipes/StylesDropdown", function () {});
+
+        $('#recipeStyle').on("change", function () {
+            $('#styleId').val($(this)[0].selectedIndex + 1);
+        });
+
+    });
+</script>
+
+<form action="/Recipes/NewRecipe" method="post">
+    <table class="table">
+        <tr>
+            <td>@Html.Label("Recipe Title")</td>
+            <td>@Html.TextBox("name")</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Author Name")</td>
+            <td>@Html.TextBox("authorName")</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Batch Size (Gallons)")</td>
+            <td>@Html.TextBox("batchSize")</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Boil Time (Minutes)")</td>
+            <td>@Html.TextBox("boilTime")</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Style")</td>
+            <td><select id="recipeStyle"><option data-styleid="-1">Loading styles...</option></select><input id="styleId" type="text" name="styleId" style="display: none;" /></td>
+        </tr>
+    </table>
+    <button value="submit" name="submit">Create Recipe</button>
+</form>

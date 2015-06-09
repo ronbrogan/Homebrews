@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BrewingSite.Models.MashEntry>
+
+<form action="/Recipes/MashPane" method="post">
+    <table class="table">
+        <tr>
+            <th>Rest Time</th>
+            <th>Temperature</th>
+            <th>Heat Method</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.time</td>
+                <td>@item.temperature</td>
+                <td>@item.method</td>
+                <td><a href="#" id="@item.id" onclick="RemoveMashEntry(this.id)">Delete</a></td>
+            </tr>
+        }
+
+        <tr>
+            <td>@Html.TextBox("time")</td>
+            <td>@Html.TextBox("temperature")</td>
+            <td><select id="method" name="method"><option>Infusion</option><option>Direct Heat</option><option>Decoction</option></select></td>
+            <td><a href="#" onclick="return PostFormAsyncNonCritical(this)">Add</a></td>
+        </tr>
+    </table>
+</form>
+

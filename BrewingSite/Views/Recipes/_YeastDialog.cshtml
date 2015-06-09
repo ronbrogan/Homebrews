@@ -1,0 +1,63 @@
+﻿@model IEnumerable<BrewingSite.Models.Yeast>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#yeastSearch').focus();
+
+        $('.yeastAdd').on('click', function () {
+            var $yeastName = $(this).parent().parent().children('td').eq(0).text();
+            var $yeastAttenuation = $(this).parent().parent().children('td').eq(1).text();
+            var $yeastType = $(this).parent().parent().children('td').eq(2).text();
+            var $yeastId = $(this).parent().parent().attr('id');
+
+            $('#yeastIdBox').val($yeastId);
+            $('#yeastNameField').text($yeastName);
+            $('#yeastAttenuationField').text($yeastAttenuation);
+            $('#yeastTypeField').text($yeastType);
+
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $('.ui-widget-overlay ui-front').hide();
+        });
+
+        var $rows = $('#yeastList tr');
+        $('#yeastSearch').keyup(function () {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+            $rows.show().filter(function () {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+
+            $('#yeastListHeader').show();
+        });
+
+        $('.ui-widget-overlay ui-front').on('click', function () {
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $('.ui-widget-overlay ui-front').hide();
+        });
+
+        
+
+    });
+</script>
+
+<input type="text" placeholder="Search" id="yeastSearch" />
+
+<table class="table-striped-wide" id="yeastList">
+    <tr id="yeastListHeader">
+        <th>Name</th>
+        <th>Attenuation</th>
+        <th>Type</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.id">
+            <td>@item.Name</td>
+            <td>@item.Attenuation</td>
+            <td>@item.Type</td>
+            <td><button value="@item.id" class="yeastAdd">Select</button></td>
+        </tr>
+    }
+</table>

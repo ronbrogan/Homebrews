@@ -1,0 +1,18 @@
+﻿@model BrewingSite.Models.EquipmentProfile
+
+<span class="h2">Equipment </span><a href="" id="editEquipment" data-recipeid="@Model"> Edit</a>
+<p></p>
+<table class="table">
+    <tr>
+        <td><span style="font-weight: bold">Kettle Volume</span><br />@Model.kettleVolume Gallons</td>
+        <td><span style="font-weight: bold">Kettle Loss</span><br />@Model.kettleVolumeLoss Gallons</td>
+        <td><span style="font-weight: bold">Kettle Boil-Off</span><br />@Model.kettleBoiloff Gallons/hour</td>
+        
+    </tr>
+    
+    <tr>
+        <td><span style="font-weight: bold">Mash Tun Volume</span> <br /> @Model.mashtunVolume Gallons</td>
+        <td><span style="font-weight: bold">Mash Tun Loss</span> <br /> @Model.mashtunVolumeLoss Gallons</td>
+        <td><span style="font-weight: bold">Mash Efficiency</span> <br /> @Model.mashEfficiency%</td>
+    </tr>
+</table>
