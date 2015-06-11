@@ -5,6 +5,10 @@
 *.suo
 *.user
 *.sln.docstates
+BrewingSite/Properties/PublishProfiles/homebrews.pubxml
+BrewingSite/Web.config
+BrewingSite/Web.Debug.config
+BrewingSite/Web.Release.config
 
 # Build results
 
