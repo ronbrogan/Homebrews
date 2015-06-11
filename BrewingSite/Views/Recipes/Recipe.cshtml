@@ -43,12 +43,21 @@
     }
 
     function UpdatePanesNonCritical(){
-        $("#equipment").load('@Url.Action("EquipmentPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
+
         $("#other").load('@Url.Action("OthersPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
         $("#mash").load('@Url.Action("MashPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
         $("#fermentation").load('@Url.Action("FermentationPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
     }
 
+    function StartLoadAnimation(){
+        $('#loadingBackdrop').show();
+        $('#loadingAnimation').show();
+    }
+
+    function StopLoadAnimation(){
+        $('#loadingBackdrop').hide();
+        $('#loadingAnimation').hide();
+    }
 
     function UpdatePanes(){
 
@@ -56,15 +65,17 @@
         var $hopsDone = $.Deferred();
         var $yeastDone = $.Deferred();
         var $detailsDone = $.Deferred();
+        var $equipDone = $.Deferred();
 
         $("#fermentables").load('@Url.Action("FermentablePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$fermentablesDone.resolve()});
         $("#hops").load('@Url.Action("HopPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$hopsDone.resolve()});
         $("#yeast").load('@Url.Action("YeastPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$yeastDone.resolve()});
         $("#recipeDetails").load('@Url.Action("RecipePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$detailsDone.resolve()});
+        $("#equipment").load('@Url.Action("EquipmentPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function () {$equipDone.resolve()});
 
 
 
-        $.when($fermentablesDone, $hopsDone, $yeastDone, $detailsDone).done(function() {calculateReadouts()});
+        $.when($fermentablesDone, $hopsDone, $yeastDone, $detailsDone, $equipDone).done(function() {calculateReadouts()});
         return false;
     }
 
@@ -77,6 +88,12 @@
             $('#attenuationPercentage').text($attenuationText);
         }
 
+        var $efficiencyText = $('#mashEff').text();
+
+        if($efficiencyText.length > 0)
+        {
+            $('#extractionEfficiency').text($efficiencyText);
+        }
 
 
         var $totalGravityPoints = 0.0;
@@ -239,6 +256,8 @@
         }
     }
 
+    
+
     $(document).ready(function() {
 
         $('#mashSpargeMethod').on("change", function () {
@@ -280,8 +299,8 @@
                 title: 'Add Fermentable',
                 modal: true,
                 open: function () {
-                    $('#fermentableAmountBox').focus();
-                    $(this).load('/Recipes/ShowFermentableDialog');
+                    $('#AddFermentableForm').addClass('loading');
+                    $(this).load('/Recipes/ShowFermentableDialog', function(){ $('#AddFermentableForm').removeClass('loading')});
                 },
                 close: function () {
                     $('#fermentableAmountBox').focus();
@@ -370,7 +389,7 @@
                         $(this).dialog("close");
                     },
                     Save: function() {
-                        PostFormAsyncNonCritical($(this).children('form').children('.table'));
+                        PostFormAsync($(this).children('form').children('.table'));
                         $(this).dialog("close");
                     }
                 }
@@ -433,14 +452,6 @@
 
 
 </script>
-
-
-
-
-
-
-
- 
 
 
 <div id="recipeDetails">
@@ -520,3 +531,4 @@
         </div>
         <div id="AddFermentationForm"></div>
 </div>
+<button value="go" onclick="StartLoadAnimation()">Go</button>

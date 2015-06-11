@@ -13,10 +13,10 @@
                 PPG
             </th>
             <th>
-                Lovibond
+                °L
             </th>
-            <th>Mashed</th>
-            <th></th>
+            <th colspan="2">Contributes Sugar</th>
+
         </tr>
 
         @foreach (var item in Model)
@@ -36,7 +36,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.lovibond)
                 </td>
-                <td class="gravityPoints" style="display: none;">@(item.amount * item.ppg)</td>
+                <td class="gravityPoints" style="display: none;">@(item.amount * item.ppg * Convert.ToInt32(item.isMashed))</td> @*Mulitplying by isMashed to zero the value if the ingredient is not mashed.*@
                 <td class="lovibondPoints" style="display: none;">@(item.amount * item.lovibond)</td>
                 <td>
                     @Html.DisplayFor(modelItem => item.isMashed.Value)
@@ -66,7 +66,7 @@
                 <!--Autofill lovibond-->
             </td>
             <td>
-                @Html.CheckBox("isMashed")
+                @Html.CheckBox("isMashed", true)
             </td>
             <td>
                 <!--Link for posting data to the model and then reloading the partial view-->

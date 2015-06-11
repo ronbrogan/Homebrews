@@ -106,8 +106,11 @@ textarea {
     font-size: medium;
 }
 
-.btn, .ui-button-text {
-    border-radius: 0px;
+.btn, .ui-button-text, .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr, ui-dialog-titlebar, ui-widget-header{
+    border-radius: 0px !important;
+    border: none !important;
+    border-bottom: 1px solid #DADADA !important;
+    background: #FFFFFF !important;
 }
 
 .jumbotron {
@@ -119,5 +122,23 @@ textarea {
     line-height: 40px;
     height: 40px;
     background-color: #bebebe;
+    display: none;
+}
+
+.loading {
+    position: absolute;
+    width: 182px;
+    height: 486px;
+    background-image: url("/Images/grain-load-animation.gif");
+    background-repeat: no-repeat;
+    left: 50%;
+    top: 50%;
+    margin-left: -91px;
+    margin-top: -243px;
+    display:none;
+}
+
+.backdrop{
+    opacity: .3;
     display: none;
 }
