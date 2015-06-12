@@ -256,7 +256,7 @@
         }
     }
 
-    
+
 
     $(document).ready(function() {
 
@@ -280,6 +280,15 @@
             $.ajax({type: "POST", url: "/Recipes/DeleteFermentable/" + $(this).attr('data-fermentableId')}).done(function(data) {
                 ShowError(data);
                 $("#fermentables").load('@Url.Action("FermentablePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {
+                    calculateReadouts();
+                });
+            });
+        });
+
+        $('#hops').on('click', '.removeHop', function () {
+            $.ajax({type: "POST", url: "/Recipes/DeleteHop/" + $(this).attr('data-hopId')}).done(function(data) {
+                ShowError(data);
+                $("#hops").load('@Url.Action("HopPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {
                     calculateReadouts();
                 });
             });

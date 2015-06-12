@@ -47,7 +47,7 @@
                     
                 </td>
                 <td>
-                    <a href="#" id="@item.id" onclick="RemoveIngredientAsync(this.id)">Delete</a>
+                    <a href="#" class="removeHop" data-hopId="@item.id">Delete</a>
                 </td>
             </tr>
         }
@@ -56,18 +56,18 @@
             <!--Add Hop functionality-->
             <td>
                 <!--Amount box here-->
-                <input type="text" id="hopAmountBox" name="hopAmount" style="width: 40px;" class="numbersOnly" />
+                <input type="text" id="hopAmountBox" name="amount" style="width: 40px;" class="numbersOnly" />
             </td>
             <td>
                 <!--Hop type selector-->
                 <a href="#" id="hopNameField">Click to Add Hop</a>
-                <input type="text" id="hopIdBox" name="hopId" hidden="hidden" />
+                <input type="text" id="hopIdBox" name="ingredientId" hidden="hidden" />
             </td>
             <td id="hopAaField">
                 <!--Autofill AA-->
             </td>
             <td>
-                <input type="text" name="hopTime" style="width: 40px;" class="numbersOnly" />
+                <input type="text" name="additionTime" style="width: 40px;" class="numbersOnly" />
             </td>
             <td colspan="2">
                 @Html.CheckBox("isLeaf") Whole Leaf

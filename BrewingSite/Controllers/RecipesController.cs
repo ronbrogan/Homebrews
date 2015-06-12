@@ -185,6 +185,40 @@ namespace BrewingSite.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        public String DeleteHop(string id = "-1")
+        {
+
+            if (id != "-1")
+            {
+                try
+                {
+                    RecipeHop toRemove = dbConn.RecipeHops.Find(Convert.ToInt32(id));
+
+                    if (User.Identity.Name != dbConn.Recipes.Find(toRemove.recipeId).authorId.TrimEnd(' '))
+                        return "Invalid user for access to recipe!";
+
+                    dbConn.RecipeHops.Remove(toRemove);
+                    dbConn.SaveChanges();
+                }
+                catch
+                {
+                    return "Error deleting record";
+                }
+
+            }
+            else
+            {
+                return "Not valid entry";
+            }
+
+            return "Success";
+        }
+
+
+
+
+        [HttpPost]
         public ActionResult NewRecipe(Recipe recipe)
         {
             try
@@ -306,47 +340,17 @@ namespace BrewingSite.Controllers
         [HttpPost]
         [ActionName("HopPane")]
         [Authorize]
-        public String HopPanePost(string id = "-1")
+        public String HopPanePost(RecipeHop newHop, string id = "-1")
         {
             try
             {
                 if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
                     return "Invalid user for access to recipe!";
 
-                string amount = Request["hopAmount"].ToString();
-                string hopId = Request["hopId"].ToString(); 
-                string hopTime = Request["hopTime"].ToString();
-                string isLeaf = Request["isLeaf"].ToString();
+                newHop.recipeId = Convert.ToInt32(id);
+                newHop.unit = "oz";
 
-                try
-                {
-                    Convert.ToDouble(amount);  //Converting to doubles will throw an error if text was submitted maliciously.
-                    Convert.ToDouble(hopId);
-                    Convert.ToDouble(hopTime);
-                }
-                catch
-                {
-                    return "No SQL Injections here...";
-                }
-
-                Recipe newHop = new Recipe();
-
-                newHop.amountUnit = "oz";
-                newHop.parentId = Convert.ToInt32(id);
-                newHop.isIngredient = true;
-                newHop.isNote = false;
-                newHop.isRecipe = false;
-                newHop.ingredientId = Convert.ToInt32(hopId);
-                newHop.ingredientAmount = Convert.ToDouble(amount);
-                newHop.ingredientType = "Hops";
-                newHop.additionTime = Convert.ToInt32(hopTime);
-                newHop.isLeafHop = false;
-
-                if (isLeaf == "true,false")
-                    newHop.isLeafHop = true;
-
-
-                dbConn.Recipes.Add(newHop);
+                dbConn.RecipeHops.Add(newHop);
                 dbConn.SaveChanges();
             }
             catch

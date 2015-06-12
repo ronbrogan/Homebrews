@@ -171,6 +171,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BrewdayController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -195,6 +196,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>brewappDb.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Brewday.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BrewdayEquipmentProfile.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BrewdayFermentable.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BrewdayFermentationProfile.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BrewdayMashEntry.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EquipmentProfile.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
@@ -218,6 +234,9 @@
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RecipeFermentable.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RecipeHop.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SRMtoRGB.cs">
@@ -341,6 +360,7 @@
     <Content Include="Views\Recipes\_MashPane.cshtml" />
     <Content Include="Views\Recipes\_NewRecipeDialog.cshtml" />
     <Content Include="Web.config" />
+    <Content Include="Views\Brewday\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -5,16 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d2bf6e6ea32b4f039eb36e1a02f71aa6" Name="Diagram1">
-        <EntityTypeShape EntityType="brewappModel.Fermentable" Width="1.5" PointX="5.75" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="brewappModel.Hop" Width="1.5" PointX="4.125" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="brewappModel.Style" Width="1.5" PointX="9" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="brewappModel.Fermentable" Width="1.5" PointX="13.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="brewappModel.Hop" Width="1.5" PointX="13.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="brewappModel.Style" Width="1.5" PointX="13.75" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="brewappModel.Recipe" Width="1.5" PointX="7.375" PointY="0.625" />
-        <EntityTypeShape EntityType="brewappModel.SRMtoRGB" Width="1.5" PointX="2.5" PointY="5" />
-        <EntityTypeShape EntityType="brewappModel.Yeast" Width="1.5" PointX="2.5" PointY="3" />
-        <EntityTypeShape EntityType="brewappModel.EquipmentProfile" Width="1.5" PointX="5.75" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="brewappModel.MashEntry" Width="1.5" PointX="2.5" PointY="0.625" />
-        <EntityTypeShape EntityType="brewappModel.FermentationProfile" Width="1.5" PointX="4.125" PointY="3.125" />
-        <EntityTypeShape EntityType="brewappModel.RecipeFermentable" Width="1.5" PointX="9" PointY="4.5" />
+        <EntityTypeShape EntityType="brewappModel.SRMtoRGB" Width="1.5" PointX="0.5" PointY="4.375" />
+        <EntityTypeShape EntityType="brewappModel.Yeast" Width="1.5" PointX="13.75" PointY="9.875" />
+        <EntityTypeShape EntityType="brewappModel.EquipmentProfile" Width="1.5" PointX="0.5" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="brewappModel.MashEntry" Width="1.5" PointX="0.5" PointY="6.25" />
+        <EntityTypeShape EntityType="brewappModel.FermentationProfile" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="brewappModel.RecipeFermentable" Width="1.5" PointX="10.5" PointY="6.625" />
+        <EntityTypeShape EntityType="brewappModel.Brewday" Width="1.5" PointX="5.75" PointY="0.625" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayEquipmentProfile" Width="1.5" PointX="2.125" PointY="8.5" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayFermentable" Width="1.5" PointX="12.125" PointY="6.625" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayFermentationProfile" Width="1.5" PointX="2.125" PointY="0.5" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayMashEntry" Width="1.5" PointX="2.125" PointY="6.25" />
+        <EntityTypeShape EntityType="brewappModel.RecipeHop" Width="1.5" PointX="12.125" PointY="4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
