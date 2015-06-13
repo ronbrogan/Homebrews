@@ -12,15 +12,15 @@ namespace BrewingSite.Models
 
         public Recipe sourceRecipe;
 
-        public List<Fermentable> fermentables = new List<Fermentable>();
-        public List<Hop> hops = new List<Hop>();
+        public List<ViewFermentable> fermentables = new List<ViewFermentable>();
+        public List<ViewHop> hops = new List<ViewHop>();
         public List<Yeast> yeasts = new List<Yeast>();
         public List<OtherIngredient> others = new List<OtherIngredient>();
 
-        public List<MashEntry> mashEntries = new List<MashEntry>();
+        public List<RecipeMashEntry> mashEntries = new List<RecipeMashEntry>();
 
-        public EquipmentProfile equipment;
-        public FermentationProfile fermentation;
+        public RecipeEquipmentProfile equipment;
+        public RecipeFermentationProfile fermentation;
 
         public Style recipeStyle;
 
@@ -46,7 +46,7 @@ namespace BrewingSite.Models
 
             recipeStyle = dbConn.Styles.Find(sourceRecipe.styleId);
 
-            equipment = new EquipmentProfile();
+            equipment = new RecipeEquipmentProfile();
             equipment.name = "";
             equipment.kettleVolume = null;
             equipment.kettleVolumeLoss = null;
@@ -56,26 +56,26 @@ namespace BrewingSite.Models
 
             if (sourceRecipe.equipmentProfile != null)
             {
-                    equipment = dbConn.EquipmentProfiles.Find(sourceRecipe.equipmentProfile);
+                equipment = dbConn.RecipeEquipmentProfiles.Find(sourceRecipe.equipmentProfile);
             }
 
-            fermentation = new FermentationProfile();
+            fermentation = new RecipeFermentationProfile();
 
             if(sourceRecipe.fermentationProfileId != null)
             {
-                fermentation = dbConn.FermentationProfiles.Find(sourceRecipe.fermentationProfileId);
+                fermentation = dbConn.RecipeFermentationProfiles.Find(sourceRecipe.fermentationProfileId);
             }
 
 
-            fermentables = dbConn.Database.SqlQuery<Fermentable>("exec dbo.FermentablesList " + sourceRecipe.id.ToString()).ToList<Fermentable>();
+            fermentables = dbConn.Database.SqlQuery<ViewFermentable>("exec dbo.FermentablesList " + sourceRecipe.id.ToString()).ToList<ViewFermentable>();
 
-            hops = dbConn.Database.SqlQuery<Hop>("exec dbo.HopsList " + sourceRecipe.id.ToString()).ToList<Hop>();
+            hops = dbConn.Database.SqlQuery<ViewHop>("exec dbo.HopsList " + sourceRecipe.id.ToString()).ToList<ViewHop>();
 
             yeasts = dbConn.Database.SqlQuery<Yeast>("exec dbo.YeastList " + sourceRecipe.id.ToString()).ToList<Yeast>();
 
             others = dbConn.Database.SqlQuery<OtherIngredient>("exec dbo.OthersList " + sourceRecipe.id.ToString()).ToList<OtherIngredient>();
 
-            mashEntries = dbConn.Database.SqlQuery<MashEntry>("exec dbo.MashEntryList " + sourceRecipe.id.ToString()).ToList<MashEntry>();
+            mashEntries = dbConn.Database.SqlQuery<RecipeMashEntry>("exec dbo.MashEntryList " + sourceRecipe.id.ToString()).ToList<RecipeMashEntry>();
         }
 
 

@@ -17,13 +17,9 @@ namespace BrewingSite.Models
         public int id { get; set; }
         public string name { get; set; }
         public int ppg { get; set; }
-        public Nullable<bool> isMashed { get; set; }
         public Nullable<double> attenuation { get; set; }
         public Nullable<double> lovibond { get; set; }
         public Nullable<int> diastaticPower { get; set; }
         public string phType { get; set; }
-        public string url { get; set; }
-        public Nullable<double> amount { get; set; }
-        public string unit { get; set; }
     }
 }

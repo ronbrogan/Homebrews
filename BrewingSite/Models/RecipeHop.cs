@@ -16,7 +16,6 @@ namespace BrewingSite.Models
     {
         public int id { get; set; }
         public Nullable<int> recipeId { get; set; }
-        public string name { get; set; }
         public Nullable<double> amount { get; set; }
         public string unit { get; set; }
         public Nullable<int> additionTime { get; set; }

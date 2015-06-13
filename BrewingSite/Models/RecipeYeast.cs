@@ -12,10 +12,10 @@ namespace BrewingSite.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Hop
+    public partial class RecipeYeast
     {
         public int id { get; set; }
-        public string name { get; set; }
-        public double alphaAcid { get; set; }
+        public Nullable<int> recipeId { get; set; }
+        public Nullable<int> ingredientId { get; set; }
     }
 }

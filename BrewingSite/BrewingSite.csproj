@@ -211,32 +211,40 @@
     <Compile Include="Models\BrewdayMashEntry.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EquipmentProfile.cs">
-      <DependentUpon>brewappDb.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Fermentable.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FermentationProfile.cs">
-      <DependentUpon>brewappDb.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ViewFermentable.cs" />
     <Compile Include="Models\FermentationProfilePartial.cs" />
     <Compile Include="Models\Hop.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewHop.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MashEntry.cs">
-      <DependentUpon>brewappDb.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\OtherIngredient.cs" />
     <Compile Include="Models\Recipe.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RecipeEquipmentProfile.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RecipeFermentable.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RecipeFermentationProfile.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RecipeHop.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RecipeMashEntry.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RecipeOther.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RecipeYeast.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SRMtoRGB.cs">

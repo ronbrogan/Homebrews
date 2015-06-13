@@ -5,10 +5,10 @@ using System.Web;
 
 namespace BrewingSite.Models
 {
-    public partial class FermentationProfile
+    public partial class RecipeFermentationProfile
     {
         public int totalDays;
-        public void absorbDetails(FermentationProfile source)
+        public void absorbDetails(RecipeFermentationProfile source)
         {
             primaryDays = source.primaryDays;
             primaryNote = source.primaryNote;

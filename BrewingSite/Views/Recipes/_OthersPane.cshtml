@@ -14,13 +14,13 @@
                 <td>@Html.DisplayFor(modelItem => item.amount)</td>
                 <td>@Html.DisplayFor(modelItem => item.item)</td>
                 <td>@Html.DisplayFor(modelItem => item.use)</td>
-                <td><a href="#" id="@item.id" onclick="RemoveIngredientAsyncNonCritical(this.id)">Delete</a></td>
+                <td><a href="#" class="removeOther" data-otherId="@item.id">Delete</a></td>
             </tr>
         }
         <tr>
-            <td>@Html.TextBox("otherAmount", null, new { style = "width: 80px" })</td>
-            <td>@Html.TextBox("otherItem")</td>
-            <td>@Html.TextBox("otherUse")</td>
+            <td>@Html.TextBox("amount", null, new { style = "width: 80px" })</td>
+            <td>@Html.TextBox("item")</td>
+            <td>@Html.TextBox("use")</td>
             <td><a href="#" onclick="return PostFormAsyncNonCritical(this)">Add</a></td>
         </tr>
     </table>

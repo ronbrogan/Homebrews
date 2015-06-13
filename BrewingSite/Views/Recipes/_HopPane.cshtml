@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BrewingSite.Models.Hop>
+﻿@model IEnumerable<BrewingSite.Models.ViewHop>
 <form action="/Recipes/HopPane" method="post">
     <table class="table">
         <tr>
@@ -41,7 +41,7 @@
                     @Html.DisplayFor(modelItem => item.additionTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.isLeaf.Value)
+                    @Html.DisplayFor(modelItem => item.isLeaf)
                 </td>
                 <td>
                     

@@ -31,9 +31,6 @@ namespace BrewingSite.Models
         public virtual DbSet<Recipe> Recipes { get; set; }
         public virtual DbSet<SRMtoRGB> SRMtoRGBs { get; set; }
         public virtual DbSet<Yeast> Yeasts { get; set; }
-        public virtual DbSet<EquipmentProfile> EquipmentProfiles { get; set; }
-        public virtual DbSet<MashEntry> MashEntries { get; set; }
-        public virtual DbSet<FermentationProfile> FermentationProfiles { get; set; }
         public virtual DbSet<RecipeFermentable> RecipeFermentables { get; set; }
         public virtual DbSet<Brewday> Brewdays { get; set; }
         public virtual DbSet<BrewdayEquipmentProfile> BrewdayEquipmentProfiles { get; set; }
@@ -41,5 +38,10 @@ namespace BrewingSite.Models
         public virtual DbSet<BrewdayFermentationProfile> BrewdayFermentationProfiles { get; set; }
         public virtual DbSet<BrewdayMashEntry> BrewdayMashEntries { get; set; }
         public virtual DbSet<RecipeHop> RecipeHops { get; set; }
+        public virtual DbSet<RecipeOther> RecipeOthers { get; set; }
+        public virtual DbSet<RecipeYeast> RecipeYeasts { get; set; }
+        public virtual DbSet<RecipeEquipmentProfile> RecipeEquipmentProfiles { get; set; }
+        public virtual DbSet<RecipeFermentationProfile> RecipeFermentationProfiles { get; set; }
+        public virtual DbSet<RecipeMashEntry> RecipeMashEntries { get; set; }
     }
 }

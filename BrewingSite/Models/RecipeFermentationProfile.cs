@@ -12,7 +12,7 @@ namespace BrewingSite.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FermentationProfile
+    public partial class RecipeFermentationProfile
     {
         public int id { get; set; }
         public Nullable<int> recipeId { get; set; }

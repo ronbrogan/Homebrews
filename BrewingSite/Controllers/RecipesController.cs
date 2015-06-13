@@ -39,9 +39,6 @@ namespace BrewingSite.Controllers
             {
                 Recipe requestedRecipe = dbConn.Recipes.Find(Convert.ToInt32(id));
 
-                if (requestedRecipe.isRecipe != true)
-                    return HttpNotFound("This is not a recipe entry");
-
                 if(User.Identity.Name != requestedRecipe.authorId.TrimEnd(' ') && !(bool)requestedRecipe.isPublicRead)
                     return HttpNotFound("Invalid user for access to recipe!");
 
@@ -90,24 +87,24 @@ namespace BrewingSite.Controllers
 
         public ActionResult ShowEquipmentDialog(string id = "-1")
         {
-            EquipmentProfile profile;
+            RecipeEquipmentProfile profile;
 
             if (dbConn.Recipes.Find(Convert.ToInt32(id)).equipmentProfile == null)
-                profile = new EquipmentProfile();
+                profile = new RecipeEquipmentProfile();
             else
-                profile = dbConn.EquipmentProfiles.Find(dbConn.Recipes.Find(Convert.ToInt32(id)).equipmentProfile);
+                profile = dbConn.RecipeEquipmentProfiles.Find(dbConn.Recipes.Find(Convert.ToInt32(id)).equipmentProfile);
 
             return PartialView("_EquipmentDialog", profile);
         }
 
         public ActionResult ShowFermentationDialog(string id = "-1")
         {
-            FermentationProfile profile;
+            RecipeFermentationProfile profile;
 
             if (dbConn.Recipes.Find(Convert.ToInt32(id)).fermentationProfileId == null)
-                profile = new FermentationProfile();
+                profile = new RecipeFermentationProfile();
             else
-                profile = dbConn.FermentationProfiles.Find(dbConn.Recipes.Find(Convert.ToInt32(id)).fermentationProfileId);
+                profile = dbConn.RecipeFermentationProfiles.Find(dbConn.Recipes.Find(Convert.ToInt32(id)).fermentationProfileId);
 
             return PartialView("_FermentationDialog", profile);
         }
@@ -216,45 +213,21 @@ namespace BrewingSite.Controllers
         }
 
 
-
-
-        [HttpPost]
-        public ActionResult NewRecipe(Recipe recipe)
-        {
-            try
-            {
-                recipe.authorId = User.Identity.Name;
-                recipe.isRecipe = true;
-                recipe.isIngredient = false;
-                recipe.isNote = false;
-                recipe.isPublicRead = false;
-
-
-                dbConn.Recipes.Add(recipe);
-                dbConn.SaveChanges();
-                return RedirectToAction("Recipe", new { recipe.id });
-            }
-            catch
-            {
-                return HttpNotFound("Unable to create new recipe");
-            }
-            
-        }
-
         [HttpPost]
         [Authorize]
-        public String DeleteMashEntry(string id = "-1")
+        public String DeleteOther(string id = "-1")
         {
+
             if (id != "-1")
             {
                 try
                 {
-                    MashEntry toRemove = dbConn.MashEntries.Find(Convert.ToInt32(id));
+                    RecipeOther toRemove = dbConn.RecipeOthers.Find(Convert.ToInt32(id));
 
                     if (User.Identity.Name != dbConn.Recipes.Find(toRemove.recipeId).authorId.TrimEnd(' '))
                         return "Invalid user for access to recipe!";
 
-                    dbConn.MashEntries.Remove(toRemove);
+                    dbConn.RecipeOthers.Remove(toRemove);
                     dbConn.SaveChanges();
                 }
                 catch
@@ -271,15 +244,102 @@ namespace BrewingSite.Controllers
             return "Success";
         }
 
+        [HttpPost]
+        [Authorize]
+        public String DeleteYeast(string id = "-1")
+        {
+
+            if (id != "-1")
+            {
+                try
+                {
+                    RecipeYeast toRemove = dbConn.RecipeYeasts.Find(Convert.ToInt32(id));
+
+                    if (User.Identity.Name != dbConn.Recipes.Find(toRemove.recipeId).authorId.TrimEnd(' '))
+                        return "Invalid user for access to recipe!";
+
+                    dbConn.RecipeYeasts.Remove(toRemove);
+                    dbConn.SaveChanges();
+                }
+                catch
+                {
+                    return "Error deleting record";
+                }
+
+            }
+            else
+            {
+                return "Not valid entry";
+            }
+
+            return "Success";
+        }
+
+        [HttpPost]
+        [Authorize]
+        public String DeleteMashEntry(string id = "-1")
+        {
+            if (id != "-1")
+            {
+                try
+                {
+                    RecipeMashEntry toRemove = dbConn.RecipeMashEntries.Find(Convert.ToInt32(id));
+
+                    if (User.Identity.Name != dbConn.Recipes.Find(toRemove.recipeId).authorId.TrimEnd(' '))
+                        return "Invalid user for access to recipe!";
+
+                    dbConn.RecipeMashEntries.Remove(toRemove);
+                    dbConn.SaveChanges();
+                }
+                catch
+                {
+                    return "Error deleting record";
+                }
+
+            }
+            else
+            {
+                return "Not valid entry";
+            }
+
+            return "Success";
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult NewRecipe(Recipe recipe)
+        {
+            try
+            {
+                recipe.authorId = User.Identity.Name;
+                recipe.isPublicRead = false;
+                recipe.mashSpargeType = "Batch";
+
+
+                dbConn.Recipes.Add(recipe);
+                dbConn.SaveChanges();
+                return RedirectToAction("Recipe", new { recipe.id });
+            }
+            catch
+            {
+                return HttpNotFound("Unable to create new recipe");
+            }
+            
+        }
+
+        
+
         public ActionResult FermentablePane(string id = "-1")
         {
             if (id != "-1")
             {
                 try
                 {
-                    List<Fermentable> ferms = new List<Fermentable>();
+                    List<ViewFermentable> ferms = new List<ViewFermentable>();
 
-                    ferms = dbConn.Database.SqlQuery<Fermentable>("exec dbo.FermentablesList " + id).ToList<Fermentable>();
+                    ferms = dbConn.Database.SqlQuery<ViewFermentable>("exec dbo.FermentablesList " + id).ToList<ViewFermentable>();
 
                     return PartialView("_FermentablePane", ferms);
                 }
@@ -322,9 +382,9 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
-                    List<Hop> hops = new List<Hop>();
+                    List<ViewHop> hops = new List<ViewHop>();
 
-                    hops = dbConn.Database.SqlQuery<Hop>("exec dbo.HopsList " + id).ToList<Hop>();
+                    hops = dbConn.Database.SqlQuery<ViewHop>("exec dbo.HopsList " + id).ToList<ViewHop>();
 
                     return PartialView("_HopPane", hops);
                 }
@@ -385,34 +445,16 @@ namespace BrewingSite.Controllers
         [HttpPost]
         [ActionName("YeastPane")]
         [Authorize]
-        public String YeastPanePost(string id = "-1")
+        public String YeastPanePost(RecipeYeast newYeast, string id = "-1")
         {
             try
             {
                 if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
                     return "Invalid user for access to recipe!";
 
-                int yeastId;
+                newYeast.recipeId = Convert.ToInt32(id);
 
-                try
-                {
-                    yeastId = Convert.ToInt32(Request["yeastId"].ToString());
-                }
-                catch
-                {
-                    return "No SQL Injections here...";
-                }
-
-                Recipe newYeast = new Recipe();
-
-                newYeast.parentId = Convert.ToInt32(id);
-                newYeast.isIngredient = true;
-                newYeast.isNote = false;
-                newYeast.isRecipe = false;
-                newYeast.ingredientId = yeastId;
-                newYeast.ingredientType = "Yeast";
-
-                dbConn.Recipes.Add(newYeast);
+                dbConn.RecipeYeasts.Add(newYeast);
                 dbConn.SaveChanges();
             }
             catch
@@ -431,9 +473,6 @@ namespace BrewingSite.Controllers
                 try
                 {
                     Recipe requestedRecipe = dbConn.Recipes.Find(Convert.ToInt32(id));
-
-                    if (requestedRecipe.isRecipe != true)
-                        return HttpNotFound("This is not a recipe entry");
 
                     WholeRecipe wholeShebang = new WholeRecipe(requestedRecipe);
 
@@ -490,20 +529,17 @@ namespace BrewingSite.Controllers
                 {
                     Recipe requestedRecipe = dbConn.Recipes.Find(Convert.ToInt32(id));
 
-                    EquipmentProfile profile;
+                    RecipeEquipmentProfile profile;
 
                     if (requestedRecipe.equipmentProfile != null)
                     {
                         int equipmentProfileId = (int)requestedRecipe.equipmentProfile;
-                        profile = dbConn.EquipmentProfiles.Find(equipmentProfileId);
+                        profile = dbConn.RecipeEquipmentProfiles.Find(equipmentProfileId);
                     }
                     else
                     {
-                        profile = new EquipmentProfile();
+                        profile = new RecipeEquipmentProfile();
                     }
-
-                    if (requestedRecipe.isRecipe != true)
-                        return HttpNotFound("This is not a recipe entry");
 
                     return PartialView("_EquipmentPane", profile);
                 }
@@ -530,7 +566,7 @@ namespace BrewingSite.Controllers
 
                 Recipe recipe = dbConn.Recipes.Find(recipeId);
 
-                EquipmentProfile profile;
+                RecipeEquipmentProfile profile;
 
                 double kettleVolume = Convert.ToDouble(Request["kettleVolume"]);
                 double kettleVolumeLoss = Convert.ToDouble(Request["kettleVolumeLoss"]);
@@ -544,11 +580,11 @@ namespace BrewingSite.Controllers
                 if(recipe.equipmentProfile != null)
                 {
                     int equipmentProfileId = (int)recipe.equipmentProfile;
-                    profile = dbConn.EquipmentProfiles.Find(equipmentProfileId);
+                    profile = dbConn.RecipeEquipmentProfiles.Find(equipmentProfileId);
                 }
                 else
                 {
-                    profile = new EquipmentProfile();
+                    profile = new RecipeEquipmentProfile();
 
                 }
 
@@ -563,13 +599,13 @@ namespace BrewingSite.Controllers
 
                 if(recipe.equipmentProfile != null)
                 {
-                    dbConn.EquipmentProfiles.Attach(profile);
+                    dbConn.RecipeEquipmentProfiles.Attach(profile);
                     dbConn.Entry(profile).State = System.Data.Entity.EntityState.Modified;
                     dbConn.SaveChanges();
                 }
                 else
                 {
-                    dbConn.EquipmentProfiles.Add(profile);
+                    dbConn.RecipeEquipmentProfiles.Add(profile);
 
                     dbConn.SaveChanges();
 
@@ -613,31 +649,16 @@ namespace BrewingSite.Controllers
         [HttpPost]
         [ActionName("OthersPane")]
         [Authorize]
-        public String OthersPanePost(string id = "-1")
+        public String OthersPanePost(RecipeOther newOther, string id = "-1")
         {
             try
             {
                 if (User.Identity.Name != dbConn.Recipes.Find(Convert.ToInt32(id)).authorId.TrimEnd(' '))
                     return "Invalid user for access to recipe!";
 
-                int recipeId = Convert.ToInt32(id);
+                newOther.recipeId = Convert.ToInt32(id);
 
-                string otherAmount = Request["otherAmount"];
-                string otherItem = Request["otherItem"];
-                string otherUse = Request["otherUse"];
-
-                Recipe newOther = new Recipe();
-
-                newOther.parentId = recipeId;
-                newOther.isIngredient = true;
-                newOther.isNote = false;
-                newOther.isRecipe = false;
-                newOther.ingredientType = "Other";
-                newOther.otherAmount = otherAmount;
-                newOther.otherItem = otherItem;
-                newOther.otherUse = otherUse;
-                
-                dbConn.Recipes.Add(newOther);
+                dbConn.RecipeOthers.Add(newOther);
                 dbConn.SaveChanges();
             }
             catch
@@ -655,9 +676,9 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
-                    List<MashEntry> mashEntries = new List<MashEntry>();
+                    List<RecipeMashEntry> mashEntries = new List<RecipeMashEntry>();
 
-                    mashEntries = dbConn.Database.SqlQuery<MashEntry>("exec dbo.MashEntryList " + id).ToList<MashEntry>();
+                    mashEntries = dbConn.Database.SqlQuery<RecipeMashEntry>("exec dbo.MashEntryList " + id).ToList<RecipeMashEntry>();
 
                     return PartialView("_MashPane", mashEntries);
                 }
@@ -686,14 +707,14 @@ namespace BrewingSite.Controllers
                 string temperature = Request["temperature"];
                 string method = Request["method"];
 
-                MashEntry newMashEntry = new MashEntry();
+                RecipeMashEntry newMashEntry = new RecipeMashEntry();
 
                 newMashEntry.recipeId = recipeId;
                 newMashEntry.time = Convert.ToInt32(time);
                 newMashEntry.temperature = Convert.ToInt32(temperature);
                 newMashEntry.method = method;
 
-                dbConn.MashEntries.Add(newMashEntry);
+                dbConn.RecipeMashEntries.Add(newMashEntry);
                 dbConn.SaveChanges();
             }
             catch
@@ -733,12 +754,12 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
-                    FermentationProfile profile;
+                    RecipeFermentationProfile profile;
 
                     if (dbConn.Recipes.Find(Convert.ToInt32(id)).fermentationProfileId == null)
-                        profile = new FermentationProfile();
+                        profile = new RecipeFermentationProfile();
                     else
-                        profile = dbConn.FermentationProfiles.Find(dbConn.Recipes.Find(Convert.ToInt32(id)).fermentationProfileId);
+                        profile = dbConn.RecipeFermentationProfiles.Find(dbConn.Recipes.Find(Convert.ToInt32(id)).fermentationProfileId);
 
                     return PartialView("_FermentationPane", profile);
                 }
@@ -754,7 +775,7 @@ namespace BrewingSite.Controllers
         [HttpPost]
         [ActionName("FermentationPane")]
         [Authorize]
-        public String FermentationPanePost(FermentationProfile inputProfile, string id = "-1")
+        public String FermentationPanePost(RecipeFermentationProfile inputProfile, string id = "-1")
         {
             try
             {
@@ -765,16 +786,16 @@ namespace BrewingSite.Controllers
 
                 Recipe recipe = dbConn.Recipes.Find(recipeId);
 
-                FermentationProfile profile;
+                RecipeFermentationProfile profile;
 
 
                 if (recipe.fermentationProfileId != null)
                 {
-                    profile = dbConn.FermentationProfiles.Find((int)recipe.fermentationProfileId);
+                    profile = dbConn.RecipeFermentationProfiles.Find((int)recipe.fermentationProfileId);
                 }
                 else
                 {
-                    profile = new FermentationProfile();
+                    profile = new RecipeFermentationProfile();
 
                 }
 
@@ -784,13 +805,13 @@ namespace BrewingSite.Controllers
 
                 if (recipe.fermentationProfileId != null)
                 {
-                    dbConn.FermentationProfiles.Attach(profile);
+                    dbConn.RecipeFermentationProfiles.Attach(profile);
                     dbConn.Entry(profile).State = System.Data.Entity.EntityState.Modified;
                     dbConn.SaveChanges();
                 }
                 else
                 {
-                    dbConn.FermentationProfiles.Add(profile);
+                    dbConn.RecipeFermentationProfiles.Add(profile);
 
                     dbConn.SaveChanges();
 

@@ -12,7 +12,7 @@ namespace BrewingSite.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class MashEntry
+    public partial class RecipeMashEntry
     {
         public int id { get; set; }
         public Nullable<int> recipeId { get; set; }

@@ -12,16 +12,12 @@ namespace BrewingSite.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EquipmentProfile
+    public partial class RecipeOther
     {
         public int id { get; set; }
-        public string authorId { get; set; }
-        public string name { get; set; }
-        public Nullable<double> kettleVolume { get; set; }
-        public Nullable<double> kettleBoiloff { get; set; }
-        public Nullable<double> kettleVolumeLoss { get; set; }
-        public Nullable<double> mashtunVolume { get; set; }
-        public Nullable<double> mashtunVolumeLoss { get; set; }
-        public Nullable<double> mashEfficiency { get; set; }
+        public Nullable<int> recipeId { get; set; }
+        public string amount { get; set; }
+        public string item { get; set; }
+        public string use { get; set; }
     }
 }

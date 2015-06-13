@@ -260,15 +260,16 @@
 
     $(document).ready(function() {
 
+        $globalRecipeId = @Model.sourceRecipe.id;
+
+        calculateReadouts();
+
         $('#mashSpargeMethod').on("change", function () {
             var $form = $(this).parents('form');
 
             $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()});
         });
 
-        $globalRecipeId = @Model.sourceRecipe.id;
-
-        calculateReadouts();
 
         $('.numbersOnly').keyup(function () {
             if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
@@ -291,6 +292,22 @@
                 $("#hops").load('@Url.Action("HopPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {
                     calculateReadouts();
                 });
+            });
+        });
+
+        $('#yeast').on('click', '.removeYeast', function () {
+            $.ajax({type: "POST", url: "/Recipes/DeleteYeast/" + $(this).attr('data-yeastId')}).done(function(data) {
+                ShowError(data);
+                $("#yeast").load('@Url.Action("YeastPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {
+                    calculateReadouts();
+                });
+            });
+        });
+
+        $('#other').on('click', '.removeOther', function () {
+            $.ajax({type: "POST", url: "/Recipes/DeleteOther/" + $(this).attr('data-otherId')}).done(function(data) {
+                ShowError(data);
+                $("#other").load('@Url.Action("OthersPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
             });
         });
 

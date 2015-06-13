@@ -27,7 +27,7 @@
                     @Html.DisplayFor(modelItem => item.Type)
                 </td>
                 <td>
-                    <a href="#" id="@item.id" onclick="RemoveIngredientAsync(this.id)">Delete</a>
+                    <a href="#" class="removeYeast" data-yeastId="@item.id">Delete</a>
                 </td>
             </tr>
             i = true;
@@ -37,7 +37,7 @@
             <td>
                 <!--Grain type selector-->
                 <a href="#" id="yeastNameField">Click to Add Yeast</a>
-                <input id="yeastIdBox" type="text" name="yeastId" hidden="hidden" />
+                <input id="yeastIdBox" type="text" name="ingredientId" hidden="hidden" />
             </td>
             <td id="yeastAttenuationField">
                 <!--Autofill lovibond-->

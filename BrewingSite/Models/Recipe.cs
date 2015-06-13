@@ -17,28 +17,12 @@ namespace BrewingSite.Models
         public int id { get; set; }
         public string name { get; set; }
         public string authorId { get; set; }
-        public Nullable<bool> isRecipe { get; set; }
-        public Nullable<bool> isNote { get; set; }
-        public Nullable<bool> isIngredient { get; set; }
-        public string ingredientType { get; set; }
-        public Nullable<int> ingredientId { get; set; }
-        public Nullable<int> parentId { get; set; }
-        public string note { get; set; }
-        public Nullable<System.DateTime> noteTimestamp { get; set; }
         public Nullable<int> styleId { get; set; }
-        public Nullable<double> ingredientAmount { get; set; }
-        public string amountUnit { get; set; }
         public Nullable<double> batchSize { get; set; }
-        public Nullable<int> additionTime { get; set; }
-        public Nullable<bool> isLeafHop { get; set; }
         public string authorName { get; set; }
-        public Nullable<bool> isSteepingGrain { get; set; }
         public Nullable<double> boilTime { get; set; }
         public Nullable<int> recipeType { get; set; }
         public Nullable<int> equipmentProfile { get; set; }
-        public string otherAmount { get; set; }
-        public string otherItem { get; set; }
-        public string otherUse { get; set; }
         public string mashSpargeType { get; set; }
         public Nullable<int> fermentationProfileId { get; set; }
         public Nullable<bool> isPublicRead { get; set; }
