@@ -1,7 +1,86 @@
-﻿
+﻿@model BrewingSite.Models.WholeBrewday
+
 @{
-    ViewBag.Title = "Brewday Homepage";
+    ViewBag.Title = "Brewday for " + @Model.brewday.recipeName;
 }
 
-<h2>View</h2>
+<h2>@Model.brewday.recipeName</h2>
+<p>@Model.brewday.authorName</p>
+<hr />
+
+<div class="clearfix">
+    <div class="float-left">
+        <p class="h7">Fermentables</p>
+        <table>
+            <tr>
+                <th>Fermentable</th>
+                <th>Amount</th>
+            </tr>
+            @foreach(var item in Model.fermentables)
+            {
+                <tr>
+                    <td>@item.name</td>
+                    <td>@item.amount @item.unit</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="float-right">
+        <p class="h7">Mash Procedure</p>
+        <table>
+            <tr>
+                <th>Step Temperature</th>
+                <th>Heating Method</th>
+                <th>Rest Time</th>
+            </tr>
+            @foreach (var item in Model.mashEntries)
+            {
+                <tr>
+                    <td>@item.temperature</td>
+                    <td>@item.method</td>
+                    <td>@item.time</td>
+                </tr>
+            }
+        </table>
+        <span class="bold">Sparge Method: </span><span>@Model.brewday.mashSpargeType</span><br />
+        <span>List Equipment details here.</span>
+    </div>
+</div>
+
+<div class="clearfix">
+    <div class="float-left">
+        <p class="h7">Hops</p>
+        <table>
+            <tr>
+                <th>Fermentable</th>
+                <th>Amount</th>
+            </tr>
+            @foreach (var item in Model.fermentables)
+            {
+                <tr>
+                    <td>@item.name</td>
+                    <td>@item.amount @item.unit</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="float-right">
+
+
+
+    </div>
+</div>
+
+<div class="clearfix">
+    <div class="float-left">
+
+
+    </div>
+    <div class="float-right">
+
+
+
+    </div>
+</div>
+
 

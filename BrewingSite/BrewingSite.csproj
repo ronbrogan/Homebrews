@@ -254,6 +254,7 @@
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserDashboardCollection.cs" />
+    <Compile Include="Models\WholeBrewday.cs" />
     <Compile Include="Models\WholeRecipe.cs" />
     <Compile Include="Models\Yeast.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>

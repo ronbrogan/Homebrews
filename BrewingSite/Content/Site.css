@@ -109,12 +109,10 @@ textarea {
 .btn, .ui-button-text, .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr, ui-dialog-titlebar, ui-widget-header{
     border-radius: 0px !important;
     border: none !important;
-    border-bottom: 1px solid #DADADA !important;
-    background: #FFFFFF !important;
 }
 
 .jumbotron {
-    border-radius: 0px;
+    border-radius: 0px !important;
 }
 
 .error {

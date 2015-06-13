@@ -14,47 +14,43 @@ namespace BrewingSite.Controllers
         // GET: Brewday
         public ActionResult Index()
         {
-            return View();
+            return Redirect("/Dashboard/");
         }
+
+        public ActionResult Index(string id="-1")
+        {
+            if (id == "-1")
+                return HttpNotFound("Unable to lookup brewday. A brewday was not specified.");
+
+            WholeBrewday brewday = new WholeBrewday(dbConn.Brewdays.Find(Convert.ToInt32(id)));
+
+            return View(brewday);
+
+        }
+
+
 
         //GET: Brewday/Create/x
 
         public ActionResult Create(string id = "-1")
         {
             if (id == "-1")
-                return HttpNotFound("Unable to create brewday. Recipe ID is not specified.");
-
-            List<RecipeFermentable> recipeFerms = new List<RecipeFermentable>();
-            List<BrewdayFermentable> brewdayFerms = new List<BrewdayFermentable>();
-
-            Recipe inputRecipe;
-            int brewdayId = 0;
+                return HttpNotFound("Unable to create brewday. Recipe ID was not specified.");
+            WholeBrewday newBrewday;
 
             try
             {
-                inputRecipe = dbConn.Recipes.Find(Convert.ToInt32(id));
+                Recipe inputRecipe = dbConn.Recipes.Find(Convert.ToInt32(id));
+                newBrewday = new WholeBrewday(inputRecipe);
             }
             catch
             {
-                return HttpNotFound("Unable to create brewday. Recipe ID is not valid");
+                return HttpNotFound("Critical error creating new brewday from recipe id" + id);
             }
 
-            try
-            {
-                brewdayFerms = dbConn.Database.SqlQuery<BrewdayFermentable>("exec dbo.BrewdayFermList " + id).ToList<BrewdayFermentable>();
+            
 
-            }
-            catch
-            {
-                return HttpNotFound("Unable to construct objects properly.");
-            }
-
-
-
-
-            return null;
-
-            //return Redirect("/Brewday/" + brewdayId);
+            return Redirect("/Brewday/" + newBrewday.brewday.id);
         }
     }
 }
