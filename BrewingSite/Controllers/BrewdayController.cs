@@ -11,12 +11,7 @@ namespace BrewingSite.Controllers
     {
         brewappEntities dbConn = new brewappEntities();
 
-        // GET: Brewday
-        public ActionResult Index()
-        {
-            return Redirect("/Dashboard/");
-        }
-
+        // GET: Brewday/x
         public ActionResult Index(string id="-1")
         {
             if (id == "-1")
@@ -45,7 +40,7 @@ namespace BrewingSite.Controllers
             }
             catch
             {
-                return HttpNotFound("Critical error creating new brewday from recipe id" + id);
+                return HttpNotFound("Critical error creating new brewday from recipe id: " + id);
             }
 
             

@@ -11,10 +11,10 @@
         <EntityTypeShape EntityType="brewappModel.Recipe" Width="1.5" PointX="7.375" PointY="0.625" />
         <EntityTypeShape EntityType="brewappModel.SRMtoRGB" Width="1.5" PointX="12.125" PointY="0.5" />
         <EntityTypeShape EntityType="brewappModel.Yeast" Width="1.5" PointX="13.75" PointY="9.125" />
-        <EntityTypeShape EntityType="brewappModel.RecipeFermentable" Width="1.5" PointX="10.5" PointY="6.625" />
+        <EntityTypeShape EntityType="brewappModel.RecipeFermentable" Width="1.5" PointX="12.125" PointY="6.625" />
         <EntityTypeShape EntityType="brewappModel.Brewday" Width="1.5" PointX="5.75" PointY="0.625" />
         <EntityTypeShape EntityType="brewappModel.BrewdayEquipmentProfile" Width="1.5" PointX="2.125" PointY="6.625" />
-        <EntityTypeShape EntityType="brewappModel.BrewdayFermentable" Width="1.5" PointX="12.125" PointY="6.625" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayFermentable" Width="1.5" PointX="10.5" PointY="6.625" />
         <EntityTypeShape EntityType="brewappModel.BrewdayFermentationProfile" Width="1.5" PointX="2.125" PointY="0.5" />
         <EntityTypeShape EntityType="brewappModel.BrewdayMashEntry" Width="1.5" PointX="2.125" PointY="4.375" />
         <EntityTypeShape EntityType="brewappModel.RecipeHop" Width="1.5" PointX="12.125" PointY="4.125" />
@@ -23,6 +23,9 @@
         <EntityTypeShape EntityType="brewappModel.RecipeEquipmentProfile" Width="1.5" PointX="0.5" PointY="6.625" />
         <EntityTypeShape EntityType="brewappModel.RecipeFermentationProfile" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="brewappModel.RecipeMashEntry" Width="1.5" PointX="0.5" PointY="4.375" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayHop" Width="1.5" PointX="10.5" PointY="4.125" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayOther" Width="1.5" PointX="2.125" PointY="9.5" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayYeast" Width="1.5" PointX="10.5" PointY="9.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

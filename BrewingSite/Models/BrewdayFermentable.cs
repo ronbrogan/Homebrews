@@ -15,11 +15,11 @@ namespace BrewingSite.Models
     public partial class BrewdayFermentable
     {
         public int id { get; set; }
-        public Nullable<int> recipeId { get; set; }
         public Nullable<int> ingredientId { get; set; }
         public Nullable<bool> isMashed { get; set; }
         public string url { get; set; }
         public Nullable<double> amount { get; set; }
         public string unit { get; set; }
+        public Nullable<int> brewdayId { get; set; }
     }
 }

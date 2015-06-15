@@ -11,13 +11,31 @@ namespace BrewingSite
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.MapRoute(
+                "Brewday", "Brewday/{id}",
+                new { controller = "Brewday", action = "Index" },
+                new { id = @"\d+" });
+
+        }
+
         protected void Application_Start()
         {
+            RegisterRoutes(RouteTable.Routes);
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
+
+            
         }
+
+        
     }
+
+    
 }
+

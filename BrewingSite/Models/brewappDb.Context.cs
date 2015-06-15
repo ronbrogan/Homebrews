@@ -43,5 +43,8 @@ namespace BrewingSite.Models
         public virtual DbSet<RecipeEquipmentProfile> RecipeEquipmentProfiles { get; set; }
         public virtual DbSet<RecipeFermentationProfile> RecipeFermentationProfiles { get; set; }
         public virtual DbSet<RecipeMashEntry> RecipeMashEntries { get; set; }
+        public virtual DbSet<BrewdayHop> BrewdayHops { get; set; }
+        public virtual DbSet<BrewdayOther> BrewdayOthers { get; set; }
+        public virtual DbSet<BrewdayYeast> BrewdayYeasts { get; set; }
     }
 }

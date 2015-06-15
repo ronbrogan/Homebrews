@@ -208,7 +208,16 @@
     <Compile Include="Models\BrewdayFermentationProfile.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BrewdayHop.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BrewdayMashEntry.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BrewdayOther.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BrewdayYeast.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Fermentable.cs">

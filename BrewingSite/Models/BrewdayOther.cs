@@ -12,13 +12,12 @@ namespace BrewingSite.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BrewdayMashEntry
+    public partial class BrewdayOther
     {
         public int id { get; set; }
-        public Nullable<int> time { get; set; }
-        public Nullable<double> temperature { get; set; }
-        public string method { get; set; }
-        public string mashSpargeType { get; set; }
         public Nullable<int> brewdayId { get; set; }
+        public string amount { get; set; }
+        public string item { get; set; }
+        public string use { get; set; }
     }
 }

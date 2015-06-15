@@ -40,7 +40,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="recipeId" Type="int" />
+          <Property Name="brewdayId" Type="int" />
           <Property Name="ingredientId" Type="int" />
           <Property Name="isMashed" Type="bit" />
           <Property Name="url" Type="nvarchar(max)" />
@@ -66,16 +66,46 @@
           <Property Name="bottleTemp" Type="float" />
           <Property Name="bottleNote" Type="varchar" MaxLength="256" />
         </EntityType>
+        <EntityType Name="BrewdayHop">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="brewdayId" Type="int" />
+          <Property Name="ingredientId" Type="int" />
+          <Property Name="amount" Type="float" />
+          <Property Name="unit" Type="varchar" MaxLength="50" />
+          <Property Name="additionTime" Type="int" />
+          <Property Name="isLeaf" Type="bit" />
+        </EntityType>
         <EntityType Name="BrewdayMashEntry">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="recipeId" Type="int" />
+          <Property Name="brewdayId" Type="int" />
           <Property Name="time" Type="int" />
           <Property Name="temperature" Type="float" />
           <Property Name="method" Type="varchar" MaxLength="15" />
           <Property Name="mashSpargeType" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="BrewdayOther">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="brewdayId" Type="int" />
+          <Property Name="amount" Type="varchar" MaxLength="128" />
+          <Property Name="item" Type="varchar" MaxLength="128" />
+          <Property Name="use" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="BrewdayYeast">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="brewdayId" Type="int" />
+          <Property Name="ingredientId" Type="int" />
         </EntityType>
         <EntityType Name="Fermentables">
           <Key>
@@ -241,7 +271,10 @@
           <EntitySet Name="BrewdayEquipmentProfile" EntityType="Self.BrewdayEquipmentProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrewdayFermentable" EntityType="Self.BrewdayFermentable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrewdayFermentationProfile" EntityType="Self.BrewdayFermentationProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrewdayHop" EntityType="Self.BrewdayHop" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrewdayMashEntry" EntityType="Self.BrewdayMashEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrewdayOther" EntityType="Self.BrewdayOther" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrewdayYeast" EntityType="Self.BrewdayYeast" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Fermentables" EntityType="Self.Fermentables" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hops" EntityType="Self.Hops" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecipeEquipmentProfile" EntityType="Self.RecipeEquipmentProfile" Schema="dbo" store:Type="Tables" />
@@ -317,6 +350,9 @@
           <EntitySet Name="RecipeEquipmentProfiles" EntityType="brewappModel.RecipeEquipmentProfile" />
           <EntitySet Name="RecipeFermentationProfiles" EntityType="brewappModel.RecipeFermentationProfile" />
           <EntitySet Name="RecipeMashEntries" EntityType="brewappModel.RecipeMashEntry" />
+          <EntitySet Name="BrewdayHops" EntityType="brewappModel.BrewdayHop" />
+          <EntitySet Name="BrewdayOthers" EntityType="brewappModel.BrewdayOther" />
+          <EntitySet Name="BrewdayYeasts" EntityType="brewappModel.BrewdayYeast" />
           </EntityContainer>
         <EntityType Name="Recipe">
           <Key>
@@ -400,12 +436,12 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="recipeId" Type="Int32" />
           <Property Name="ingredientId" Type="Int32" />
           <Property Name="isMashed" Type="Boolean" />
           <Property Name="url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="amount" Type="Double" />
           <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="brewdayId" Type="Int32" />
         </EntityType>
         <EntityType Name="BrewdayFermentationProfile">
           <Key>
@@ -431,11 +467,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="recipeId" Type="Int32" />
           <Property Name="time" Type="Int32" />
           <Property Name="temperature" Type="Double" />
           <Property Name="method" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="mashSpargeType" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="brewdayId" Type="Int32" />
         </EntityType>
         <EntityType Name="RecipeHop">
           <Key>
@@ -510,6 +546,36 @@
           <Property Name="temperature" Type="Double" />
           <Property Name="method" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="mashSpargeType" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="BrewdayHop">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="brewdayId" Type="Int32" />
+          <Property Name="ingredientId" Type="Int32" />
+          <Property Name="amount" Type="Double" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="additionTime" Type="Int32" />
+          <Property Name="isLeaf" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="BrewdayOther">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="brewdayId" Type="Int32" />
+          <Property Name="amount" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="item" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="use" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="BrewdayYeast">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="brewdayId" Type="Int32" />
+          <Property Name="ingredientId" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -644,12 +710,12 @@
           <EntitySetMapping Name="BrewdayFermentables">
             <EntityTypeMapping TypeName="brewappModel.BrewdayFermentable">
               <MappingFragment StoreEntitySet="BrewdayFermentable">
+                <ScalarProperty Name="brewdayId" ColumnName="brewdayId" />
                 <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
                 <ScalarProperty Name="url" ColumnName="url" />
                 <ScalarProperty Name="isMashed" ColumnName="isMashed" />
                 <ScalarProperty Name="ingredientId" ColumnName="ingredientId" />
-                <ScalarProperty Name="recipeId" ColumnName="recipeId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -677,11 +743,11 @@
           <EntitySetMapping Name="BrewdayMashEntries">
             <EntityTypeMapping TypeName="brewappModel.BrewdayMashEntry">
               <MappingFragment StoreEntitySet="BrewdayMashEntry">
+                <ScalarProperty Name="brewdayId" ColumnName="brewdayId" />
                 <ScalarProperty Name="mashSpargeType" ColumnName="mashSpargeType" />
                 <ScalarProperty Name="method" ColumnName="method" />
                 <ScalarProperty Name="temperature" ColumnName="temperature" />
                 <ScalarProperty Name="time" ColumnName="time" />
-                <ScalarProperty Name="recipeId" ColumnName="recipeId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -762,6 +828,39 @@
                 <ScalarProperty Name="temperature" ColumnName="temperature" />
                 <ScalarProperty Name="time" ColumnName="time" />
                 <ScalarProperty Name="recipeId" ColumnName="recipeId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BrewdayHops">
+            <EntityTypeMapping TypeName="brewappModel.BrewdayHop">
+              <MappingFragment StoreEntitySet="BrewdayHop">
+                <ScalarProperty Name="isLeaf" ColumnName="isLeaf" />
+                <ScalarProperty Name="additionTime" ColumnName="additionTime" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="ingredientId" ColumnName="ingredientId" />
+                <ScalarProperty Name="brewdayId" ColumnName="brewdayId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BrewdayOthers">
+            <EntityTypeMapping TypeName="brewappModel.BrewdayOther">
+              <MappingFragment StoreEntitySet="BrewdayOther">
+                <ScalarProperty Name="use" ColumnName="use" />
+                <ScalarProperty Name="item" ColumnName="item" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="brewdayId" ColumnName="brewdayId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BrewdayYeasts">
+            <EntityTypeMapping TypeName="brewappModel.BrewdayYeast">
+              <MappingFragment StoreEntitySet="BrewdayYeast">
+                <ScalarProperty Name="ingredientId" ColumnName="ingredientId" />
+                <ScalarProperty Name="brewdayId" ColumnName="brewdayId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
