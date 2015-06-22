@@ -16,7 +16,7 @@
                 width: 550,
                 height: 400,
                 resizable: false,
-                title: 'Edit Recipe Details',
+                title: 'New Recipe Details',
                 modal: true,
                 open: function () {
                     $(this).load('/Recipes/ShowNewRecipeDialog/');
@@ -52,7 +52,7 @@
                     <tr>
                         <td>@item.name</td>
                         <td>@item.styleId</td>
-                        <td><a href="/Recipes/recipe/@item.id">Edit</a> | <a href="#" id="brewButton" data-recipeId="@item.id">Brew</a></td>
+                        <td><a href="/Recipes/recipe/@item.id">Edit</a> | <a href="/Brewday/Create/@item.id" class="brewButton">Brew</a></td>
                     </tr>
                 }
                 <tr>
@@ -73,7 +73,23 @@
         <span class="h2">My Brewdays</span>
         <p></p>
         <div id="brewdays">
-            <span>Coming soon!</span>
+            <table class="table">
+                <tr>
+                    <th>Recipe Name</th>
+                    <th>Style</th>
+                    <th>Brew Date</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.brewdays)
+                {
+                    <tr>
+                        <td>@item.recipeName</td>
+                        <td>@item.styleId</td>
+                        <td>@item.timestamp</td>
+                        <td><a href="/Brewday/@item.id">View</a></td>
+                    </tr>
+                }
+            </table>
         </div>
         <div id="AddBrewdayForm"></div>
 
@@ -83,7 +99,7 @@
 <div class="clearfix">
     <span class="h2">Ongoing Fermentations</span>
     <div id="fermentationPipeline">
-        <span>Initiate a Brewday to get data here!</span>
+        <span>Coming Soon!</span>
     </div>
     <div id="AddFermentationForm"></div>
 </div>

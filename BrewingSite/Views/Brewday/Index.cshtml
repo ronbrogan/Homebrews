@@ -4,98 +4,323 @@
     ViewBag.Title = "Brewday for " + @Model.brewday.recipeName;
 }
 
-<p class="h2">@Model.brewday.recipeName</p>
-<p>@Model.brewday.authorName</p>
-<p>@Model.recipeStyle.Style1</p>
+<script type="text/javascript">
+
+    function PostFormAsync(btnClicked, event) {
+        var $form = $(btnClicked).parents('form');
+
+        $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.brewday.id, data: $form.serialize()});
+        return false;
+    }
+
+    $(document).ready(function (){
+        $('#measurementsPanel').on('click', '#logFermenterGravity', function (event) {
+            event.preventDefault();
+
+            $("#logFermenterGravityDialog").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 550,
+                height: 250,
+                resizable: false,
+                title: 'Log Fermenter OG',
+                modal: true,
+                open: function () {
+                    $(this).load('/Brewday/ShowLogFermenterGravityDialog/' + @Model.measurement.id);
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    },
+                    Save: function () {
+                        PostFormAsync($(this).children('form').children('.table'));
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+
+    });
+
+    $(document).ready(function (){
+        $('#measurementsPanel').on('click', '#logFinalGravity', function (event) {
+            event.preventDefault();
+
+            $("#logFinalGravityDialog").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 550,
+                height: 250,
+                resizable: false,
+                title: 'Log Fermenter FG',
+                modal: true,
+                open: function () {
+                    $(this).load('/Brewday/ShowLogFinalGravityDialog/' + @Model.measurement.id);
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    },
+                    Save: function () {
+                        PostFormAsync($(this).children('form').children('.table'));
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+
+    });
+
+    $(document).ready(function (){
+        $('#measurementsPanel').on('click', '#logPreboilGravity', function (event) {
+            event.preventDefault();
+
+            $("#logPreboilGravityDialog").dialog({
+                autoOpen: true,
+                position: { my: "center", at: "top+350", of: window },
+                width: 550,
+                height: 250,
+                resizable: false,
+                title: 'Log Preboil Gravity',
+                modal: true,
+                open: function () {
+                    $(this).load('/Brewday/ShowLogPreboilGravityDialog/' + @Model.measurement.id);
+                },
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    },
+                    Save: function () {
+                        PostFormAsync($(this).children('form').children('.table'));
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return false;
+        });
+
+
+    });
+
+
+
+
+</script>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <span class="h2">@Model.brewday.recipeName</span><br />
+        <span>@Model.brewday.authorName</span><br />
+        <span>@Model.recipeStyle.Style1</span>
+
+    </div>
+    <div class="col-md-6 text-right">
+        <span>Brewed On: @Model.brewday.timestamp</span><br />
+        <span>Placeholder</span>
+    </div>
+</div>
+
 <hr />
 
-<div class="clearfix">
-    <div class="float-left">
+<div class="row">
+    <div class="col-md-6">
         <p class="h7">Fermentables</p>
-        <table class="table">
+        <table class="table table-hover">
             <tr>
                 <th>Fermentable</th>
-                <th>Amount</th>
+                <th class="text-center">Amount</th>
             </tr>
             @foreach (var item in Model.fermentables)
             {
                 <tr>
                     <td>@item.name</td>
-                    <td>@item.amount @item.unit</td>
+                    <td class="text-center">@item.amount @item.unit</td>
                 </tr>
             }
         </table>
     </div>
-    <div class="float-right">
+    <div class="col-md-6">
+        <p class="h7">Hops</p>
+        <table class="table table-hover">
+            <tr>
+                <th>Variety</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Time</th>
+            </tr>
+            @foreach (var item in Model.hops)
+            {
+                <tr>
+                    <td>@item.name</td>
+                    <td class="text-center">@item.amount @item.unit</td>
+                    <td class="text-center">@item.additionTime min</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <p class="h7">Yeast</p>
+        <table class="table table-hover">
+            <tr>
+                <th>Strain</th>
+                <th class="text-center">Attenuation</th>
+            </tr>
+            @foreach (var item in Model.yeasts)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td class="text-center">@item.Attenuation%</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <p class="h7">Other Ingredients</p>
+        <table class="table table-hover">
+            <tr>
+                <th>Item</th>
+                <th>Use</th>
+                <th class="text-center">Amount</th>
+            </tr>
+            @foreach (var item in Model.others)
+            {
+                <tr>
+                    <td>@item.item</td>
+                    <td>@item.use</td>
+                    <td class="text-center">@item.amount</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <p class="h7">Equipment</p>
+        <table class="table table-hover">
+            <tr>
+                <td><span class="bold">Kettle Volume</span><br />@Model.equipment.kettleVolume Gallons</td>
+                <td><span class="bold">Kettle Loss</span><br />@Model.equipment.kettleVolumeLoss Gallons</td>
+                <td><span class="bold">Kettle Boil-Off</span><br />@Model.equipment.kettleBoiloff Gallons/hour</td>
+
+            </tr>
+
+            <tr>
+                <td><span class="bold">Mash Tun Volume</span> <br /> @Model.equipment.mashtunVolume Gallons</td>
+                <td><span class="bold">Mash Tun Loss</span> <br /> @Model.equipment.mashtunVolumeLoss Gallons</td>
+                <td><span class="bold">Mash Efficiency</span> <br /> <span id="mashEff">@Model.equipment.mashEfficiency</span>%</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-6">
         <p class="h7">Mash Procedure</p>
-        <table class="table">
+        <table class="table table-hover">
             <tr>
                 <th>Step Temperature</th>
                 <th>Heating Method</th>
-                <th>Rest Time</th>
+                <th class="text-center">Rest Time</th>
             </tr>
             @foreach (var item in Model.mashEntries)
             {
                 <tr>
                     <td>@item.temperature</td>
                     <td>@item.method</td>
-                    <td>@item.time</td>
+                    <td class="text-center">@item.time min</td>
                 </tr>
             }
         </table>
         <p><span class="bold">Sparge Method: </span>@Model.brewday.mashSpargeType</p>
-        <p>List Equipment details here.</p>
     </div>
+    
 </div>
 
-<div class="clearfix">
-    <div class="float-left">
-        <p class="h7">Hops</p>
-        <table class="table">
+<hr />
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2" id="measurementsPanel">
+        <p class="h7">Measurements</p>
+        <table class="table table-hover-col">
             <tr>
-                <th>Variety</th>
-                <th>Amount</th>
-                <th>Time</th>
+                <th width="40%">Predictions</th>
+                <th>Measurements</th>
+                <th>Deviation</th>
             </tr>
-            @foreach (var item in Model.hops)
-            {
-                <tr>
-                    <td>@item.name</td>
-                    <td>@item.amount @item.unit</td>
-                    <td>@item.additionTime</td>
-                </tr>
-            }
+            <tr>
+                <td><span class="bold">Pre-boil OG: </span>  @@ @(Model.brewday.batchSize + ((Model.equipment.kettleBoiloff / 60) * Model.brewday.boilTime)) Gallons</td>
+                <td>
+                    <span class="bold">Pre-boil OG: </span>
+                        @if (Model.measurement.preboilGravityReal != null)
+                        {
+                            <span>@string.Format("{0:0.000}", Model.measurement.preboilGravityReal) @@ @(Model.measurement.preboilGravityVolume) Gallons</span> <span style="font-size: smaller"><button class="btn-link" id="logPreboilGravity">Edit</button></span>
+                        }
+                        else
+                        {
+                            <button class="btn-link" id="logPreboilGravity">Log value</button>
+                        }
+                </td>
+                <td>@string.Format("{0:0.0}%", Model.measurement.preboilGravityDeviation)</td>
+            </tr>
+            <tr>
+                <td><span class="bold">Fermenter OG: </span>@string.Format("{0:0.000}", Model.measurement.fermenterGravityCalc)  @@ @(Model.brewday.batchSize) Gallons</td>
+                <td>
+                    <span class="bold">Fermenter OG: </span>
+                    @if (Model.measurement.fermenterGravityReal != null)
+                    {
+                        <span>@string.Format("{0:0.000}", Model.measurement.fermenterGravityReal) @@ @(Model.measurement.fermenterGravityVolume) Gallons</span> <span style="font-size: smaller"><button class="btn-link" id="logFermenterGravity">Edit</button></span>
+                    }
+                    else
+                    {
+                        <button class="btn-link" id="logFermenterGravity">Log value</button>
+                    }
+                
+                
+                </td>
+                <td>@string.Format("{0:0.0}%", Model.measurement.fermenterGravityDeviation)</td>
+            </tr>
+            <tr>
+                <td><span class="bold">Fermenter FG: </span> @string.Format("{0:0.000}",Model.measurement.finalGravityCalc) @@ @(Model.brewday.batchSize) Gallons</td>
+                <td>
+                    <span class="bold">Fermenter FG: </span> 
+                    @if (Model.measurement.finalGravityReal != null)
+                    {
+                        <span>@string.Format("{0:0.000}", Model.measurement.finalGravityReal) @@ @(Model.measurement.finalGravityVolume) Gallons</span> <span style="font-size: smaller"><button class="btn-link" id="logFinalGravity">Edit</button></span>
+                    }
+                    else
+                    {
+                        <button class="btn-link" id="logFinalGravity">Log value</button>
+                    }
+                
+                
+                </td>
+                <td>@string.Format("{0:0.0}%", Model.measurement.finalGravityDeviation)</td>
+            </tr>
+            <tr>
+                <td><span class="bold">Calculated ABV: </span> @string.Format("{0:0.0}",Model.measurement.abvCalc)%</td>
+                <td><span class="bold">Calculated ABV: </span>
+                    @if(Model.measurement.fermenterGravityReal != null && Model.measurement.finalGravityReal != null)
+                    {
+                        <span>@((Model.measurement.fermenterGravityReal - Model.measurement.finalGravityReal) * 131.25)</span>
+                    }
+                    
+                    
+                
+                
+                
+                </td>
+                <td>@string.Format("{0:0.0}%", ((((Model.measurement.fermenterGravityReal - Model.measurement.finalGravityReal) * 131.25) - Model.measurement.abvCalc) / Model.measurement.abvCalc) * 100)</td>
+            </tr>
+
         </table>
     </div>
-    <div class="float-right">
-        <p class="h7">Yeast</p>
-        <table class="table">
-            <tr>
-                <th>Strain</th>
-                <th>Attenuation</th>
-            </tr>
-            @foreach(var item in Model.yeasts)
-            {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Attenuation</td>
-                </tr>
-            }
-        </table>
 
-    </div>
 </div>
-
-<div class="clearfix">
-    <div class="float-left">
-
-
-    </div>
-    <div class="float-right">
-
-
-
-    </div>
-</div>
-
+<div id="logFermenterGravityDialog"></div>
+<div id="logFinalGravityDialog"></div>
+<div id="logPreboilGravityDialog"></div>
 

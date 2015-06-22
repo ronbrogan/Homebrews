@@ -21,6 +21,8 @@ namespace BrewingSite.Models
         public BrewdayEquipmentProfile equipment = new BrewdayEquipmentProfile();
         public BrewdayFermentationProfile fermentation = new BrewdayFermentationProfile();
 
+        public BrewdayMeasurement measurement = new BrewdayMeasurement();
+
         public Style recipeStyle;
 
         public int recipeType;
@@ -38,6 +40,7 @@ namespace BrewingSite.Models
             brewday.recipeName = inputRecipe.name;
             brewday.mashSpargeType = inputRecipe.mashSpargeType;
             brewday.styleId = inputRecipe.styleId;
+            brewday.timestamp = DateTime.Now;
 
             dbConn.Brewdays.Add(brewday);
             dbConn.SaveChanges();
@@ -47,6 +50,105 @@ namespace BrewingSite.Models
 
 
             //Need to calculate OG, FG, ABV, IBU, SRM when brewday is created and store in measurements table
+            double originalGravityCalc, finalGravityCalc, abvCalc, ibuCalc, srmCalc;
+
+
+            //Get data that was copied to make calculations with
+            yeasts = (from yeast in dbConn.BrewdayYeasts
+                      join ingredients in dbConn.Yeasts on yeast.ingredientId equals ingredients.id
+                      where yeast.brewdayId == brewday.id
+                      orderby ingredients.Attenuation descending
+                      select ingredients).ToList<Yeast>();
+
+            equipment = (from equip in dbConn.BrewdayEquipmentProfiles where equip.brewdayId == brewday.id select equip).FirstOrDefault();
+
+            fermentables = (from ferms in dbConn.BrewdayFermentables
+                            join ingredients in dbConn.Fermentables on ferms.ingredientId equals ingredients.id
+                            where ferms.brewdayId == brewday.id
+                            select new ViewFermentable()
+                            {
+                                id = ferms.id,
+                                name = ingredients.name,
+                                amount = ferms.amount,
+                                unit = ferms.unit,
+                                lovibond = ingredients.lovibond,
+                                ppg = ingredients.ppg,
+                                isMashed = ferms.isMashed
+                            }).ToList<ViewFermentable>();
+
+            hops = (from hop in dbConn.BrewdayHops
+                    join ingredients in dbConn.Hops on hop.ingredientId equals ingredients.id
+                    where hop.brewdayId == brewday.id
+                    select new ViewHop()
+                    {
+                        id = hop.id,
+                        name = ingredients.name,
+                        amount = hop.amount,
+                        unit = hop.unit,
+                        additionTime = hop.additionTime
+                    }).ToList<ViewHop>();
+
+            //Begin calculations
+            BrewdayMeasurement measurements = new BrewdayMeasurement();
+
+            double extractionEfficiency;
+            double totalGravityPoints = 0;
+            double fermenterVolume = (double)brewday.batchSize;
+            double yeastAttenuation = (double)yeasts.FirstOrDefault().Attenuation;
+
+
+            if (equipment.mashEfficiency != null)
+                extractionEfficiency = (double)equipment.mashEfficiency;
+            else
+                extractionEfficiency = 75;
+
+            foreach(var ferm in fermentables)
+            {
+                totalGravityPoints += ((double)ferm.amount * (double)ferm.ppg * Convert.ToInt32(ferm.isMashed));
+            }
+
+            double totalExtractedSugarPoints = (totalGravityPoints / fermenterVolume) * (extractionEfficiency / 100);
+
+            originalGravityCalc = 1 + (totalExtractedSugarPoints / 1000);
+
+            finalGravityCalc = 1 + (totalExtractedSugarPoints * ((100 - yeastAttenuation) / 100)) / 1000;
+
+            abvCalc = (originalGravityCalc - finalGravityCalc) * 131.25;
+
+
+            double bignessFactor = 1.65 * Math.Pow(0.000125, (originalGravityCalc - 1));
+            ibuCalc = 0;
+
+            foreach( var hop in hops)
+            {
+                double boilTimeFactor = (1 - Math.Pow(Math.E, (-0.04 * (double)hop.additionTime))) / 4.15;
+
+                double utilization = bignessFactor * boilTimeFactor;
+
+                ibuCalc += ((double)hop.amount * (double)hop.alphaAcid) * 75 * utilization / (double)brewday.batchSize;
+            }
+
+            double totalLovibondPoints = 0;
+            double maltColorUnits;
+
+            foreach(var ferm in fermentables)
+            {
+                totalLovibondPoints += ((double)ferm.amount * (double)ferm.lovibond);
+            }
+
+            maltColorUnits = totalLovibondPoints / (double)brewday.batchSize;
+
+            srmCalc = 1.4922 * Math.Pow(maltColorUnits, 0.6859);
+
+            measurements.fermenterGravityCalc = originalGravityCalc;
+            measurements.finalGravityCalc = finalGravityCalc;
+            measurements.ibuCalc = ibuCalc;
+            measurements.srmCalc = srmCalc;
+            measurements.abvCalc = abvCalc;
+            measurements.brewdayId = brewday.id;
+
+            dbConn.BrewdayMeasurements.Add(measurements);
+            dbConn.SaveChanges();
 
         }
 
@@ -57,6 +159,7 @@ namespace BrewingSite.Models
 
             recipeStyle = dbConn.Styles.Find(brewday.styleId);
 
+            measurement = (from measure in dbConn.BrewdayMeasurements where measure.brewdayId == brewday.id select measure).FirstOrDefault();
 
             equipment = (from equip in dbConn.BrewdayEquipmentProfiles where equip.brewdayId == brewday.id select equip).FirstOrDefault();
 

@@ -12,13 +12,16 @@ namespace BrewingSite.Models
         brewappEntities dbConn = new brewappEntities();
 
         public List<Recipe> recipes;
-        //public List<Brewday> brewdays;
+        public List<Brewday> brewdays;
         //public List<Fermentation> fermentations;
 
         public UserDashboardCollection(IPrincipal user)
         {
             var recipesQuery = from recipe in dbConn.Recipes where recipe.authorId == user.Identity.Name select recipe;
             recipes = recipesQuery.ToList<Recipe>();
+
+            var brewdaysQuery = from brewday in dbConn.Brewdays where brewday.authorId == user.Identity.Name select brewday;
+            brewdays = brewdaysQuery.ToList<Brewday>();
         }
 
 

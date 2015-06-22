@@ -1,4 +1,4 @@
-/* NUGET: BEGIN LICENSE TEXT
+*/ NUGET: BEGIN LICENSE TEXT
  *
  * Microsoft grants you the right to use these script files for the sole
  * purpose of either: (i) interacting through your browser with the Microsoft
@@ -1486,7 +1486,7 @@ th {
 
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-  background-color: #f9f9f9;
+  background-color: #E8E8E8;
 }
 
 .table-hover > tbody > tr:hover > td,

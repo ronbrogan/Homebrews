@@ -20,6 +20,7 @@
           <Property Name="mashSpargeType" Type="varchar" MaxLength="10" />
           <Property Name="fermentationProfileId" Type="int" />
           <Property Name="publicRead" Type="bit" />
+          <Property Name="timestamp" Type="datetime" />
         </EntityType>
         <EntityType Name="BrewdayEquipmentProfile">
           <Key>
@@ -88,6 +89,35 @@
           <Property Name="temperature" Type="float" />
           <Property Name="method" Type="varchar" MaxLength="15" />
           <Property Name="mashSpargeType" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="BrewdayMeasurements">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="brewdayId" Type="int" />
+          <Property Name="fermenterGravityCalc" Type="float" />
+          <Property Name="fermenterGravityReal" Type="float" />
+          <Property Name="fermenterGravityVolume" Type="float" />
+          <Property Name="fermenterGravityTimestamp" Type="datetime" />
+          <Property Name="fermenterGravityDeviation" Type="float" />
+          <Property Name="finalGravityCalc" Type="float" />
+          <Property Name="finalGravityReal" Type="float" />
+          <Property Name="finalGravityVolume" Type="float" />
+          <Property Name="finalGravityTimestamp" Type="datetime" />
+          <Property Name="finalGravityDeviation" Type="float" />
+          <Property Name="preboilGravityVolume" Type="float" />
+          <Property Name="preboilGravityReal" Type="float" />
+          <Property Name="preboilGravityTimestamp" Type="datetime" />
+          <Property Name="preboilGravityDeviation" Type="float" />
+          <Property Name="pitchTemperature" Type="float" />
+          <Property Name="pitchTimestamp" Type="datetime" />
+          <Property Name="boiloffVolume" Type="float" />
+          <Property Name="abvCalc" Type="float" />
+          <Property Name="abvReal" Type="float" />
+          <Property Name="srmCalc" Type="float" />
+          <Property Name="ibuCalc" Type="float" />
+          <Property Name="srmRgb" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="BrewdayOther">
           <Key>
@@ -273,6 +303,7 @@
           <EntitySet Name="BrewdayFermentationProfile" EntityType="Self.BrewdayFermentationProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrewdayHop" EntityType="Self.BrewdayHop" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrewdayMashEntry" EntityType="Self.BrewdayMashEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrewdayMeasurements" EntityType="Self.BrewdayMeasurements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrewdayOther" EntityType="Self.BrewdayOther" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrewdayYeast" EntityType="Self.BrewdayYeast" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Fermentables" EntityType="Self.Fermentables" Schema="dbo" store:Type="Tables" />
@@ -353,6 +384,7 @@
           <EntitySet Name="BrewdayHops" EntityType="brewappModel.BrewdayHop" />
           <EntitySet Name="BrewdayOthers" EntityType="brewappModel.BrewdayOther" />
           <EntitySet Name="BrewdayYeasts" EntityType="brewappModel.BrewdayYeast" />
+          <EntitySet Name="BrewdayMeasurements" EntityType="brewappModel.BrewdayMeasurement" />
           </EntityContainer>
         <EntityType Name="Recipe">
           <Key>
@@ -416,6 +448,7 @@
           <Property Name="mashSpargeType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="fermentationProfileId" Type="Int32" />
           <Property Name="publicRead" Type="Boolean" />
+          <Property Name="timestamp" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="BrewdayEquipmentProfile">
           <Key>
@@ -577,6 +610,35 @@
           <Property Name="brewdayId" Type="Int32" />
           <Property Name="ingredientId" Type="Int32" />
         </EntityType>
+        <EntityType Name="BrewdayMeasurement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="brewdayId" Type="Int32" />
+          <Property Name="fermenterGravityCalc" Type="Double" />
+          <Property Name="fermenterGravityReal" Type="Double" />
+          <Property Name="fermenterGravityVolume" Type="Double" />
+          <Property Name="fermenterGravityTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="finalGravityCalc" Type="Double" />
+          <Property Name="finalGravityReal" Type="Double" />
+          <Property Name="finalGravityVolume" Type="Double" />
+          <Property Name="finalGravityTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="preboilGravityVolume" Type="Double" />
+          <Property Name="preboilGravityReal" Type="Double" />
+          <Property Name="preboilGravityTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="pitchTemperature" Type="Double" />
+          <Property Name="pitchTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="boiloffVolume" Type="Double" />
+          <Property Name="abvCalc" Type="Double" />
+          <Property Name="abvReal" Type="Double" />
+          <Property Name="srmCalc" Type="Double" />
+          <Property Name="ibuCalc" Type="Double" />
+          <Property Name="fermenterGravityDeviation" Type="Double" />
+          <Property Name="finalGravityDeviation" Type="Double" />
+          <Property Name="preboilGravityDeviation" Type="Double" />
+          <Property Name="srmRgb" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -678,6 +740,7 @@
           <EntitySetMapping Name="Brewdays">
             <EntityTypeMapping TypeName="brewappModel.Brewday">
               <MappingFragment StoreEntitySet="Brewday">
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
                 <ScalarProperty Name="publicRead" ColumnName="publicRead" />
                 <ScalarProperty Name="fermentationProfileId" ColumnName="fermentationProfileId" />
                 <ScalarProperty Name="mashSpargeType" ColumnName="mashSpargeType" />
@@ -860,6 +923,36 @@
             <EntityTypeMapping TypeName="brewappModel.BrewdayYeast">
               <MappingFragment StoreEntitySet="BrewdayYeast">
                 <ScalarProperty Name="ingredientId" ColumnName="ingredientId" />
+                <ScalarProperty Name="brewdayId" ColumnName="brewdayId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BrewdayMeasurements">
+            <EntityTypeMapping TypeName="brewappModel.BrewdayMeasurement">
+              <MappingFragment StoreEntitySet="BrewdayMeasurements">
+                <ScalarProperty Name="srmRgb" ColumnName="srmRgb" />
+                <ScalarProperty Name="preboilGravityDeviation" ColumnName="preboilGravityDeviation" />
+                <ScalarProperty Name="finalGravityDeviation" ColumnName="finalGravityDeviation" />
+                <ScalarProperty Name="fermenterGravityDeviation" ColumnName="fermenterGravityDeviation" />
+                <ScalarProperty Name="ibuCalc" ColumnName="ibuCalc" />
+                <ScalarProperty Name="srmCalc" ColumnName="srmCalc" />
+                <ScalarProperty Name="abvReal" ColumnName="abvReal" />
+                <ScalarProperty Name="abvCalc" ColumnName="abvCalc" />
+                <ScalarProperty Name="boiloffVolume" ColumnName="boiloffVolume" />
+                <ScalarProperty Name="pitchTimestamp" ColumnName="pitchTimestamp" />
+                <ScalarProperty Name="pitchTemperature" ColumnName="pitchTemperature" />
+                <ScalarProperty Name="preboilGravityTimestamp" ColumnName="preboilGravityTimestamp" />
+                <ScalarProperty Name="preboilGravityReal" ColumnName="preboilGravityReal" />
+                <ScalarProperty Name="preboilGravityVolume" ColumnName="preboilGravityVolume" />
+                <ScalarProperty Name="finalGravityTimestamp" ColumnName="finalGravityTimestamp" />
+                <ScalarProperty Name="finalGravityVolume" ColumnName="finalGravityVolume" />
+                <ScalarProperty Name="finalGravityReal" ColumnName="finalGravityReal" />
+                <ScalarProperty Name="finalGravityCalc" ColumnName="finalGravityCalc" />
+                <ScalarProperty Name="fermenterGravityTimestamp" ColumnName="fermenterGravityTimestamp" />
+                <ScalarProperty Name="fermenterGravityVolume" ColumnName="fermenterGravityVolume" />
+                <ScalarProperty Name="fermenterGravityReal" ColumnName="fermenterGravityReal" />
+                <ScalarProperty Name="fermenterGravityCalc" ColumnName="fermenterGravityCalc" />
                 <ScalarProperty Name="brewdayId" ColumnName="brewdayId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>

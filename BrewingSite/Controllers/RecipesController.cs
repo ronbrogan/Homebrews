@@ -14,9 +14,7 @@ namespace BrewingSite.Controllers
         // GET: Recipes
         public ActionResult Index()
         {
-            string query = "select top 50 * from recipes where isRecipe=1";
-
-            var data = dbConn.Recipes.SqlQuery(query);
+            var data = from recipes in dbConn.Recipes where (bool)recipes.isPublicRead==true select recipes;
 
             return View(data);
         }
@@ -28,11 +26,7 @@ namespace BrewingSite.Controllers
             
             if (id == "")
             {
-                string query = "select top 50 * from recipes where isRecipe=1";
-
-                var data = dbConn.Recipes.SqlQuery(query);
-
-                return View("Index", data);
+                return Redirect("/Dashboard/");
             }
                 
             try

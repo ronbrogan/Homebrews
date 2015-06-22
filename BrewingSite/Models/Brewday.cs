@@ -25,5 +25,6 @@ namespace BrewingSite.Models
         public string mashSpargeType { get; set; }
         public Nullable<int> fermentationProfileId { get; set; }
         public Nullable<bool> publicRead { get; set; }
+        public Nullable<System.DateTime> timestamp { get; set; }
     }
 }

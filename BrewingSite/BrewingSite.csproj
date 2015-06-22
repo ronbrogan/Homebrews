@@ -214,6 +214,9 @@
     <Compile Include="Models\BrewdayMashEntry.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BrewdayMeasurement.cs">
+      <DependentUpon>brewappDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BrewdayOther.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
@@ -379,6 +382,9 @@
     <Content Include="Views\Recipes\_NewRecipeDialog.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Views\Brewday\Index.cshtml" />
+    <Content Include="Views\Brewday\_LogFermenterGravity.cshtml" />
+    <Content Include="Views\Brewday\_LogFinalGravity.cshtml" />
+    <Content Include="Views\Brewday\_LogPreboilGravity.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

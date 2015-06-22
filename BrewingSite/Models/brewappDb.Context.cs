@@ -46,5 +46,6 @@ namespace BrewingSite.Models
         public virtual DbSet<BrewdayHop> BrewdayHops { get; set; }
         public virtual DbSet<BrewdayOther> BrewdayOthers { get; set; }
         public virtual DbSet<BrewdayYeast> BrewdayYeasts { get; set; }
+        public virtual DbSet<BrewdayMeasurement> BrewdayMeasurements { get; set; }
     }
 }

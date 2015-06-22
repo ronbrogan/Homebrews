@@ -1,0 +1,25 @@
+﻿@model BrewingSite.Models.BrewdayMeasurement
+
+@using (Html.BeginForm("logPreboilGravity", "Brewday"))
+{
+    @Html.AntiForgeryToken()
+    
+    <table class="table">
+        <tr>
+            <td>Preboil Gravity</td>
+            <td>
+                @Html.EditorFor(model => model.preboilGravityReal, new { htmlAttributes = new { @class = "form-control", @style = "width: 240px" } })
+                @Html.ValidationMessageFor(model => model.preboilGravityReal, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>Preboil Volume (gal)</td>
+            <td>
+                @Html.EditorFor(model => model.preboilGravityVolume, new { htmlAttributes = new { @class = "form-control", @style = "width: 240px" } })
+                @Html.ValidationMessageFor(model => model.preboilGravityVolume, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+
+    </table>
+
+}
