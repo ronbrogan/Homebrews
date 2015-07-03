@@ -17,26 +17,28 @@ namespace BrewingSite.Controllers
             if (id == "-1")
                 return HttpNotFound("Unable to lookup brewday. A brewday was not specified.");
 
-            WholeBrewday brewday = new WholeBrewday(dbConn.Brewdays.Find(Convert.ToInt32(id)));
+            BrewdayViewmodel brewday = new BrewdayViewmodel(dbConn.Brewdays.Find(Convert.ToInt32(id)));
             return View(brewday);
         }
 
         //GET: Brewday/Create/x
+        [Authorize]
         public ActionResult Create(string id = "-1")
         {
             if (id == "-1")
                 return HttpNotFound("Unable to create brewday. Recipe ID was not specified.");
-            WholeBrewday newBrewday;
+            BrewdayViewmodel newBrewday;
 
             try
             {
                 Recipe inputRecipe = dbConn.Recipes.Find(Convert.ToInt32(id));
-                newBrewday = new WholeBrewday(inputRecipe);
+                newBrewday = new BrewdayViewmodel(inputRecipe);
             }
-            catch
+            catch (Exception ex)
             {
-                return HttpNotFound("Critical error creating new brewday from recipe id: " + id);
+                return Redirect("/Dashboard/Index/" + ex.Message);
             }
+            
 
             
 

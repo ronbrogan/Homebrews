@@ -26,5 +26,6 @@ namespace BrewingSite.Models
         public Nullable<int> fermentationProfileId { get; set; }
         public Nullable<bool> publicRead { get; set; }
         public Nullable<System.DateTime> timestamp { get; set; }
+        public Nullable<int> originalRecipeId { get; set; }
     }
 }

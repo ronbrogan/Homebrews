@@ -18,23 +18,23 @@
     <table class="table">
         <tr>
             <td>@Html.Label("Recipe Title")</td>
-            <td>@Html.TextBox("name")</td>
+            <td>@Html.TextBox("name", null, new { required = "required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Author Name")</td>
-            <td>@Html.TextBox("authorName")</td>
+            <td>@Html.TextBox("authorName", null, new { required = "required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Batch Size (Gallons)")</td>
-            <td>@Html.TextBox("batchSize")</td>
+            <td>@Html.TextBox("batchSize", null, new { required = "required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Boil Time (Minutes)")</td>
-            <td>@Html.TextBox("boilTime")</td>
+            <td>@Html.TextBox("boilTime", null, new { required = "required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Style")</td>
-            <td><select id="recipeStyle"><option data-styleid="-1">Loading styles...</option></select><input id="styleId" type="text" name="styleId" style="display: none;" /></td>
+            <td><select id="recipeStyle" required="required"><option data-styleid="-1">Loading styles...</option></select><input id="styleId" type="text" name="styleId" style="display: none;" /></td>
         </tr>
     </table>
     <button value="submit" name="submit">Create Recipe</button>

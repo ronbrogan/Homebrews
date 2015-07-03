@@ -20,14 +20,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td class="@(i?"yeastItem":"yeastAttenuationItem")">
+                <td class="@(i?"yeastItem":"yeastAttenuationItem")">@*This is so that I can quickly find the requisite field when performing calculations with JS.*@
                     @Html.DisplayFor(modelItem => item.Attenuation)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Type)
                 </td>
                 <td>
-                    <a href="#" class="removeYeast" data-yeastId="@item.id">Delete</a>
+                    <button type="button" class="removeYeast btn-link" data-yeastId="@item.id">Delete</button>
                 </td>
             </tr>
             i = true;
@@ -36,8 +36,8 @@
         <tr>
             <td>
                 <!--Grain type selector-->
-                <a href="#" id="yeastNameField">Click to Add Yeast</a>
-                <input id="yeastIdBox" type="text" name="ingredientId" hidden="hidden" />
+                <button class="btn-link" type="button" id="yeastNameField">Click to Add Yeast</button>
+                <input id="yeastIdBox" type="text" name="ingredientId" hidden="hidden" required="required"/>
             </td>
             <td id="yeastAttenuationField">
                 <!--Autofill lovibond-->
@@ -47,7 +47,7 @@
             </td>
             <td>
                 <!--Link for posting data to the model and then reloading the partial view-->
-                <a href="#" onclick="return PostFormAsync(this)">Add</a>
+                <button class="btn-link" onclick="return PostFormAsync(this)">Add</button>
             </td>
 
         </tr>

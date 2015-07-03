@@ -36,7 +36,7 @@ namespace BrewingSite.Controllers
                 if(User.Identity.Name != requestedRecipe.authorId.TrimEnd(' ') && !(bool)requestedRecipe.isPublicRead)
                     return HttpNotFound("Invalid user for access to recipe!");
 
-                WholeRecipe wholeShebang = new WholeRecipe(requestedRecipe);
+                RecipeViewmodel wholeShebang = new RecipeViewmodel(requestedRecipe);
 
                 return View(wholeShebang);
             }
@@ -47,6 +47,11 @@ namespace BrewingSite.Controllers
             }
         }
 
+
+        public ActionResult LoadingAnimation()
+        {
+            return PartialView("_Loading");
+        }
 
 
         public ActionResult ShowNewRecipeDialog()
@@ -468,7 +473,7 @@ namespace BrewingSite.Controllers
                 {
                     Recipe requestedRecipe = dbConn.Recipes.Find(Convert.ToInt32(id));
 
-                    WholeRecipe wholeShebang = new WholeRecipe(requestedRecipe);
+                    RecipeViewmodel wholeShebang = new RecipeViewmodel(requestedRecipe);
 
                     return PartialView("_RecipePane", wholeShebang);
                 }
@@ -503,6 +508,7 @@ namespace BrewingSite.Controllers
                 dbConn.Recipes.Find(recipeId).authorName = Request["authorName"].ToString();
                 dbConn.Recipes.Find(recipeId).batchSize = Convert.ToDouble(Request["batchSize"].ToString());
                 dbConn.Recipes.Find(recipeId).boilTime = Convert.ToDouble(Request["boilTime"].ToString());
+                dbConn.Recipes.Find(recipeId).recipeSummary = Request["recipeSummary"].ToString();
 
                 dbConn.SaveChanges();
             }

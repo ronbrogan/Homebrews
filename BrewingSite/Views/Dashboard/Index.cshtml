@@ -5,6 +5,15 @@
 }
 
 <script type="text/javascript">
+
+    function ShowError(errorText) {
+        if (errorText != 'Success') {
+            $('.error').text(errorText);
+            $('.error').slideDown(500).delay(3000).slideUp(500);
+        }
+    }
+
+
     $(document).ready(function () {
 
         $('#newRecipe').on('click', function (event) {
@@ -24,6 +33,13 @@
             });
             return false;
         });
+
+        var errorMessage = "@Model.errorMessage";
+
+        if(errorMessage != "")
+        {
+            ShowError(errorMessage);
+        }
     });
 
 

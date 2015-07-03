@@ -1,6 +1,8 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿@media screen {
+    body {
+        padding-top: 50px;
+        padding-bottom: 20px;
+    }
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -86,6 +88,10 @@
     background-color: rgb(255, 255, 255);
 }
 
+.numbersOnly{
+    width: 60px;
+}
+
 .fermentationDay{
     float: left;
     height: 50px;
@@ -138,6 +144,321 @@
     display: none;
 }
 
-.table{
-    width: 95% !important;
+@media print 
+{
+    body {
+        margin-top: 0;
+    }
+
+    .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+      float: left!important;
+    }
+    .col-md-12 {
+      width: 100%;
+    }
+    .col-md-11 {
+      width: 91.66666666666666%;
+    }
+    .col-md-10 {
+      width: 83.33333333333334%;
+    }
+    .col-md-9 {
+      width: 75%;
+    }
+    .col-md-8 {
+      width: 66.66666666666666%;
+    }
+    .col-md-7 {
+      width: 58.333333333333336%;
+    }
+    .col-md-6 {
+      width: 50%;
+    }
+    .col-md-5 {
+      width: 41.66666666666667%;
+    }
+    .col-md-4 {
+      width: 33.33333333333333%;
+    }
+    .col-md-3 {
+      width: 25%;
+    }
+    .col-md-2 {
+      width: 16.666666666666664%;
+    }
+    .col-md-1 {
+      width: 8.333333333333332%;
+    }
+
+}
+
+.accent-color {
+    color: #C07938 !important;
+}
+
+.accent-color:hover{
+    color: #ffffff !important;
+}
+
+@media screen and (max-width: 992px) {
+  .right-align-small {
+    text-align: left !important;
+  }
+}
+
+input {
+    border: 1px solid #bababa;
+}
+
+.ui-dialog-titlebar-close{
+    /*display: none !important;*/
+}
+
+.btn-link{
+    margin-left: -.7em;
+}
+
+.image-center{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+@keyframes loading
+{
+    from {background-color: transparent;}
+    to {background-color: black;}
+}
+
+#loadAnimation {
+    position: absolute;
+    margin-left: auto;
+    margin-top: auto;
+}
+.parallelogram {
+    margin-left: 20px;
+    width: 20px;
+    height: 20px;
+    -webkit-transform: skew(20deg) rotate(20deg);
+    -moz-transform: skew(20deg) rotate(20deg);
+    -o-transform: skew(20deg) rotate(20deg);
+    transform: skew(20deg) rotate(20deg);
+    background: black;
+    border-radius: 0 10px 0 10px;
+    animation: loading; 
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.barley-top {
+    margin-left: 32px;
+    width: 20px;
+    height: 20px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background: black;
+    border-radius: 0 10px 0 10px;
+    animation: loading; 
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.reverse-parallelogram {
+    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+    background: black;
+    border-radius: 0 10px 0 10px;
+    -moz-transform: scaleX(-1) skew(20deg) rotate(20deg);
+    -o-transform: scaleX(-1) skew(20deg) rotate(20deg);
+    -webkit-transform: scaleX(-1) skew(20deg) rotate(20deg);
+    transform: scaleX(-1) skew(20deg) rotate(20deg);
+    filter: FlipH;
+    -ms-filter:"FlipH";
+    animation: loading; 
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.barley-stem {
+    margin-top: 5px;
+    margin-left: 41px;
+    background: black;
+    width: 4px;
+    height: 20px;
+    animation: loading; 
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.leaf, .leaf2, .leaf3, .leaf4, .leaf5, .leaf6 {
+    margin-left: 50px;
+    margin-top: -20px;
+    width: 30px;
+    height: 30px;
+    transform: scaleY(2.5) scaleX(1.5) rotate(70deg);
+    background: black;
+    border: 1px solid white;
+    border-radius: 15px 15px 0px 15px;
+    z-index: 4;
+    animation: loading;
+    animation-duration: 2s;
+    animation-delay: 0.2s;
+    animation-iteration-count: infinite;
+}
+.leaf2, .leaf6 {
+    margin-left: -2px;
+    margin-top: 0px;
+    transform: scaleY(2.5) scaleX(1.5) rotate(45deg);
+    z-index: 3;
+    animation-delay: 0.3s;
+}
+.leaf3, .leaf5 {
+    margin-left: -2px;
+    margin-top: -20px;
+    transform: scaleY(2.5) scaleX(1.5) rotate(20deg);
+    animation-delay: 0.4s;
+}
+.leaf4 {
+    z-index: 2;
+    margin-left: 70px;
+    margin-top: -20px;
+    animation-delay: 0.5s;
+}
+.leaf5 {
+    z-index: 2;
+    margin-left: -10px;
+    margin-top: -20px;
+    animation-delay: 0.6s;
+}
+.leaf6 {
+    margin-left: 80px;
+    margin-top: -20px;
+    z-index: 1;
+    animation-delay: 0.7s;
+}
+.hop-top {
+    margin-left: 32px;
+    position: relative;
+    border: 1px solid black;
+    width: 60px;
+    height: 60px;
+    background: black;
+    border: 2px solid white;
+    border-radius: 30px 30px 30px 0;
+    -moz-transform: skew(-10deg);
+    z-index: 5;
+    animation: loading;
+    animation-delay: 0.1s;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+.hop-top::after {
+    content:'';
+    margin-top: -1px;
+    position: absolute;
+    margin-left: 30px;
+    width: 60px;
+    height: 60px;
+    background: black;
+    border: 2px solid white;
+    border-radius: 30px 30px 0 30px;
+    -moz-transform: skew(10deg) rotate(45deg);
+    z-index: 3;
+    animation: loading;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+.hop-top::before {
+    content:'';
+    margin-top: -2px;
+    position: absolute;
+    margin-left: 60px;
+    width: 60px;
+    height: 60px;
+    background: black;
+    border: 2px solid white;
+    border-radius: 30px 30px 0 30px;
+    -moz-transform: skew(20deg);
+    z-index: 5;
+    animation: loading;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.hop-stem {
+    margin-top: 5px;
+    margin-bottom: -8px;
+    margin-left: 90px;
+    border: 2px solid white;
+    border-radius: 5px;
+    background: black;
+    width: 6px;
+    height: 35px;
+    animation: loading;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.icon{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin:auto;
+	display:block;
+}
+
+.calculator{
+	width:8.5em;
+	height:9.5em;
+	background:#fff;
+    border-radius:0.4em;
+}
+
+.calculator:before{
+	content:"";
+	position:absolute;
+	top:0.5em;
+	left:0.5em;
+	width:5.5em;
+	height:2em;
+	background:#000;
+  z-index:2;
+  border-radius:0.2em;
+}
+
+.calculator:after{
+	content:"";
+	position:absolute;
+    top:3.5em;
+    left:0.5em;
+	width:1.5em;
+	height:1.5em;
+    background:#000;
+    border-radius:0.2em;
+    box-shadow:
+        2em 0 #000,
+        4em 0 #000,
+        0 2em #000,
+        2em 2em #000,
+        4em 2em #000,
+        0em 4em #000,
+        2em 4em #000,
+        4em 4em #000;
 }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
 namespace BrewingSite.Models
 {
-    public class WholeBrewday
+    public class BrewdayViewmodel
     {
         brewappEntities dbConn = new brewappEntities();
 
@@ -28,8 +31,12 @@ namespace BrewingSite.Models
         public int recipeType;
         public string recipeTypeDisplay;
 
-        public WholeBrewday(Recipe inputRecipe)  //If passed a recipe object, we're to create a new brewday entry in the database from that recipe object then compile data to display
+        public BrewdayViewmodel(Recipe inputRecipe)  //If passed a recipe object, we're to create a new brewday entry in the database from that recipe object then compile data to display
         {
+            //Ensure that we have the necessary data to construct a Brewday, if not throw an error.
+            if (inputRecipe.equipmentProfile == null || inputRecipe.fermentationProfileId == null || inputRecipe.batchSize == null || inputRecipe.boilTime == null)
+                throw new Exception("1");
+
             brewday = new Brewday();
             //Copy relevant data from inputRecipe to brewday object
 
@@ -40,14 +47,24 @@ namespace BrewingSite.Models
             brewday.recipeName = inputRecipe.name;
             brewday.mashSpargeType = inputRecipe.mashSpargeType;
             brewday.styleId = inputRecipe.styleId;
+            brewday.originalRecipeId = inputRecipe.id;
             brewday.timestamp = DateTime.Now;
 
             dbConn.Brewdays.Add(brewday);
             dbConn.SaveChanges();
 
-            //Copy list of ferms, hops, yeast, others,  and mash steps to corresponding Brewday tables for a "snapshot" of the recipe at time of brewing
-            dbConn.Database.ExecuteSqlCommand("exec dbo.CreateBrewdayEntries " + inputRecipe.id + ", " + brewday.id);
+            SqlParameter parm = new SqlParameter()
+            {
+                ParameterName = "@Return",
+                SqlDbType = SqlDbType.Int,
+                Direction = System.Data.ParameterDirection.Output
+            };
 
+            //Copy list of ferms, hops, yeast, others,  and mash steps to corresponding Brewday tables for a "snapshot" of the recipe at time of brewing
+            dbConn.Database.ExecuteSqlCommand("exec @Return = dbo.CreateBrewdayEntries " + inputRecipe.id + ", " + brewday.id, parm);
+
+            if ((int)parm.Value != 0)
+                throw new Exception("2");
 
             //Need to calculate OG, FG, ABV, IBU, SRM when brewday is created and store in measurements table
             double originalGravityCalc, finalGravityCalc, abvCalc, ibuCalc, srmCalc;
@@ -152,7 +169,7 @@ namespace BrewingSite.Models
 
         }
 
-        public WholeBrewday(Brewday inputBrewday)  //If we're given a Brewday object, we'll simply compile the necessary data to display the brewday.
+        public BrewdayViewmodel(Brewday inputBrewday)  //If we're given a Brewday object, we'll simply compile the necessary data to display the brewday.
         {
 
             brewday = inputBrewday;

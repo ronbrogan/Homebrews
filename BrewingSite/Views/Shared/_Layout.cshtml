@@ -6,10 +6,13 @@
     <title>@ViewBag.Title - Home</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    
+    
     <script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/jquery-ui.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
+
     @RenderSection("scripts", required: false)
 
 </head>
@@ -22,21 +25,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Ho.mebre.ws", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Ho.mebre.ws", "Index", "Home", new { area = "" }, new { @class = "navbar-brand accent-color" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Recipes", "Index", "Recipes")</li>
-                    <li>@Html.ActionLink("Dashboard", "Index", "Dashboard")</li>
+                    <li><a href="/Dashboard/">Dashboard</a></li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
+        <div class="error">
+            Error status
+        </div>
     </div>
-    <div class="error">
-        Error status
-    </div>
+    
     <div class="container body-content">
         @RenderBody()
         
@@ -48,7 +52,7 @@
         </footer>
     </div>
 
-        
+    
 
 
 </body>

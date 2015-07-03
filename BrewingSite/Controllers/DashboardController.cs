@@ -11,9 +11,31 @@ namespace BrewingSite.Controllers
     public class DashboardController : Controller
     {
         // GET: Dashboard
-        public ActionResult Index()
+        public ActionResult Index(string id = "-1")
         {
-            return View(new UserDashboardCollection(User));
+            UserDashboardCollection dashboard = new UserDashboardCollection(User);
+
+            if (id != "-1")
+            {
+                switch (Convert.ToInt32(id))
+                {
+                    case 1: dashboard.errorMessage = "Recipe is missing a necessary field to create the brewday.";
+                        break;
+
+                    case 2: dashboard.errorMessage = "Error during database transaction.";
+                        break;
+
+                    default: dashboard.errorMessage = "Error " + id;
+                        break;
+                }
+                
+                
+
+            }
+            
+                
+
+            return View(dashboard);
         }
     }
 }

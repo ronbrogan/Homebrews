@@ -1,30 +1,30 @@
 ﻿@model BrewingSite.Models.RecipeEquipmentProfile
 
-<form action="/Recipes/EquipmentPane" method="post">
+<form action="/Recipes/EquipmentPane" method="post" id="equipmentForm">
     <table class="table">
         <tr>
             <td>Kettle Volume</td>
-            <td>@Html.TextBoxFor( m => m.kettleVolume)</td>
+            <td>@Html.TextBoxFor(m => m.kettleVolume, new { required = "required" })</td>
         </tr>
         <tr>
             <td>Kettle Loss</td>
-            <td>@Html.TextBoxFor(m => m.kettleVolumeLoss)</td>
+            <td>@Html.TextBoxFor(m => m.kettleVolumeLoss, new { required = "required" })</td>
         </tr>
         <tr>
             <td>Kettle Boiloff (gallons/hour)</td>
-            <td>@Html.TextBoxFor(m => m.kettleBoiloff)</td>
+            <td>@Html.TextBoxFor(m => m.kettleBoiloff, new { required = "required" })</td>
         </tr>
         <tr>
             <td>Mash Tun Volume</td>
-            <td>@Html.TextBoxFor(m => m.mashtunVolume)</td>
+            <td>@Html.TextBoxFor(m => m.mashtunVolume, new { required = "required" })</td>
         </tr>
         <tr>
             <td>Mash Tun Loss</td>
-            <td>@Html.TextBoxFor(m => m.mashtunVolumeLoss)</td>
+            <td>@Html.TextBoxFor(m => m.mashtunVolumeLoss, new { required = "required" })</td>
         </tr>
         <tr>
             <td>Mash Extraction Efficiency</td>
-            <td>@Html.TextBoxFor(m => m.mashEfficiency)</td>
+            <td>@Html.TextBoxFor(m => m.mashEfficiency, new { required = "required" })</td>
         </tr>
     </table>
 </form>

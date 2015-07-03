@@ -26,7 +26,7 @@
         <EntityTypeShape EntityType="brewappModel.BrewdayHop" Width="1.5" PointX="10.5" PointY="4.125" />
         <EntityTypeShape EntityType="brewappModel.BrewdayOther" Width="1.5" PointX="2.125" PointY="9.5" />
         <EntityTypeShape EntityType="brewappModel.BrewdayYeast" Width="1.5" PointX="10.5" PointY="9.125" />
-        <EntityTypeShape EntityType="brewappModel.BrewdayMeasurement" Width="1.5" PointX="5.75" PointY="4.125" />
+        <EntityTypeShape EntityType="brewappModel.BrewdayMeasurement" Width="1.5" PointX="5.75" PointY="4.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

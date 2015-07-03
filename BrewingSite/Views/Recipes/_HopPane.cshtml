@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BrewingSite.Models.ViewHop>
 <form action="/Recipes/HopPane" method="post">
-    <table class="table">
+    <table class="table table-condensed">
         <tr>
             <td></td>
             <th>
@@ -41,13 +41,13 @@
                     @Html.DisplayFor(modelItem => item.additionTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.isLeaf)
+                    @Html.DisplayFor(modelItem => item.isLeaf.Value)
                 </td>
                 <td>
                     
                 </td>
                 <td>
-                    <a href="#" class="removeHop" data-hopId="@item.id">Delete</a>
+                    <button type="button" class="btn-link removeHop" data-hopId="@item.id">Delete</button>
                 </td>
             </tr>
         }
@@ -56,25 +56,25 @@
             <!--Add Hop functionality-->
             <td>
                 <!--Amount box here-->
-                <input type="text" id="hopAmountBox" name="amount" style="width: 40px;" class="numbersOnly" />
+                <input type="text" id="hopAmountBox" name="amount"  class="numbersOnly" required="required" placeholder=" (oz)" />
             </td>
             <td>
                 <!--Hop type selector-->
-                <a href="#" id="hopNameField">Click to Add Hop</a>
-                <input type="text" id="hopIdBox" name="ingredientId" hidden="hidden" />
+                <button type="button" class="btn-link" id="hopNameField">Click to Add Hop</button>
+                <input type="text" id="hopIdBox" name="ingredientId" hidden="hidden" required="required" />
             </td>
             <td id="hopAaField">
                 <!--Autofill AA-->
             </td>
             <td>
-                <input type="text" name="additionTime" style="width: 40px;" class="numbersOnly" />
+                <input type="text" name="additionTime" class="numbersOnly" required="required" placeholder=" (min)" />
             </td>
             <td colspan="2">
                 @Html.CheckBox("isLeaf") Whole Leaf
             </td>
             <td>
                 <!--Link for posting data to the model and then reloading the partial view-->
-                <a href="#" onclick="return PostFormAsync(this)">Add</a>
+                <button class="btn-link"  onclick="return PostFormAsync(this)">Add</button>
             </td>
 
         </tr>

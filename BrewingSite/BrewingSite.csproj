@@ -266,8 +266,8 @@
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserDashboardCollection.cs" />
-    <Compile Include="Models\WholeBrewday.cs" />
-    <Compile Include="Models\WholeRecipe.cs" />
+    <Compile Include="Models\BrewdayViewmodel.cs" />
+    <Compile Include="Models\RecipeViewmodel.cs" />
     <Compile Include="Models\Yeast.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
@@ -277,10 +277,12 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery-ui-1.10.3.theme.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\grain-load-animation.gif" />
     <Content Include="Images\ScaleBars\1.png" />
     <Content Include="Images\ScaleBars\10.png" />
     <Content Include="Images\ScaleBars\11.png" />
@@ -385,6 +387,8 @@
     <Content Include="Views\Brewday\_LogFermenterGravity.cshtml" />
     <Content Include="Views\Brewday\_LogFinalGravity.cshtml" />
     <Content Include="Views\Brewday\_LogPreboilGravity.cshtml" />
+    <Content Include="Views\Brewday\MeasurementsPane.cshtml" />
+    <Content Include="Views\Recipes\_Loading.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

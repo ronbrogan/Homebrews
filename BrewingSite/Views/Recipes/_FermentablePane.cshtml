@@ -42,7 +42,7 @@
                     @Html.DisplayFor(modelItem => item.isMashed.Value)
                 </td>
                 <td>
-                    <a href="#" class="removeFermentable" data-fermentableId="@item.id">Delete</a>
+                    <button type="button" class="btn-link removeFermentable" data-fermentableId="@item.id">Delete</button>
                 </td>
             </tr>
         }
@@ -52,12 +52,12 @@
             <!--Add fermentable functionality-->
             <td>
                 <!--Amount box here-->
-                <input id="fermentableAmountBox" type="text" name="amount" style="width: 60px;" class="numbersOnly" />
+                <input id="fermentableAmountBox" type="text" name="amount" class="numbersOnly" required="required" placeholder=" (lbs)" />
             </td>
             <td>
                 <!--Grain type selector-->
-                <a href="#" id="fermentableNameField">Click to Add Fermentable</a>
-                <input id="fermentableIdBox" type="text" name="ingredientId" hidden="hidden" />
+                <button type="button" class="btn-link" id="fermentableNameField">Click to Add Fermentable</button>
+                <input id="fermentableIdBox" type="text" name="ingredientId" hidden="hidden" required="required" />
             </td>
             <td id="fermentablePpgField">
                 <!--Autofill ppg-->
@@ -70,7 +70,7 @@
             </td>
             <td>
                 <!--Link for posting data to the model and then reloading the partial view-->
-                <a href="#" onclick="return PostFormAsync(this)">Add</a>
+                <button class="btn-link" onclick="return PostFormAsync(this)">Add</button>
             </td>
 
         </tr>

@@ -32,23 +32,29 @@
     <table class="table">
         <tr>
             <td>@Html.Label("Recipe Title")</td>
-            <td>@Html.TextBoxFor(m => m.name)</td>
+            <td>@Html.TextBoxFor(m => m.name, new { required="required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Author Name")</td>
-            <td>@Html.TextBoxFor(m => m.authorName)</td>
+            <td>@Html.TextBoxFor(m => m.authorName, new { required = "required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Batch Size (Gallons)")</td>
-            <td>@Html.TextBoxFor(m => m.batchSize)</td>
+            <td>@Html.TextBoxFor(m => m.batchSize, new { required = "required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Boil Time (Minutes)")</td>
-            <td>@Html.TextBoxFor(m => m.boilTime)</td>
+            <td>@Html.TextBoxFor(m => m.boilTime, new { required = "required" })</td>
         </tr>
         <tr>
             <td>@Html.Label("Style")</td>
-            <td><select id="recipeStyle"><option data-styleid="-1">Loading styles...</option></select><input id="styleId" type="text" name="styleId" style="display: none;" /></td>
+            <td><select id="recipeStyle" required="required"><option data-styleid="-1">Loading styles...</option></select><input id="styleId" type="text" name="styleId" class="hidden" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @Html.Label("Recipe Summary") <br />
+                @Html.TextAreaFor(m => m.recipeSummary, new { cols = 50, rows = 10})
+            </td>
         </tr>
     </table>
 

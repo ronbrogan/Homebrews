@@ -6,7 +6,7 @@ using System.Web;
 
 namespace BrewingSite.Models
 {
-    public class WholeRecipe
+    public class RecipeViewmodel
     {
         brewappEntities dbConn = new brewappEntities();
 
@@ -31,7 +31,7 @@ namespace BrewingSite.Models
         public string recipeTitle;
         public double batchSize;
 
-        public WholeRecipe(Recipe inputRecipe)
+        public RecipeViewmodel(Recipe inputRecipe)
         {
             sourceRecipe = inputRecipe;
             if(sourceRecipe.boilTime != null)

@@ -1,4 +1,4 @@
-﻿@model BrewingSite.Models.WholeRecipe
+﻿@model BrewingSite.Models.RecipeViewmodel
 
 @using BrewingSite.Models;
 
@@ -12,15 +12,36 @@
     function PostFormAsync(btnClicked, event) {
         var $form = $(btnClicked).parents('form');
 
-        $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()}).done(setTimeout(function() {UpdatePanes()}, 350));
-        return false;
+        if(requiredFieldsValid($form))
+        {
+            $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()}).done(setTimeout(function() {UpdatePanes()}, 350));
+            return false;
+        }
+        else
+        {
+            ShowError("Please ensure all fields are completed.");
+            $($form).effect('shake', {distance: 10, times: 2}, 150);
+            return true;
+        }
+
+
     }
 
     function PostFormAsyncNonCritical(btnClicked, event) {
         var $form = $(btnClicked).parents('form');
 
-        $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()}).done(setTimeout(function() {UpdatePanesNonCritical()}, 350));
-        return false;
+
+        if(requiredFieldsValid($form))
+        {
+            $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()}).done(setTimeout(function() {UpdatePanesNonCritical()}, 350));
+            return false;
+        }
+        else
+        {
+            ShowError("Please ensure all fields are completed.");
+            $($form).effect('shake', {distance: 10, times: 2}, 150);
+            return true;
+        }
     }
 
     function RemoveIngredientAsync(itemId, event)
@@ -49,16 +70,6 @@
         $("#fermentation").load('@Url.Action("FermentationPane", "Recipes")' + "/" + @Model.sourceRecipe.id);
     }
 
-    function StartLoadAnimation(){
-        $('#loadingBackdrop').show();
-        $('#loadingAnimation').show();
-    }
-
-    function StopLoadAnimation(){
-        $('#loadingBackdrop').hide();
-        $('#loadingAnimation').hide();
-    }
-
     function UpdatePanes(){
 
         var $fermentablesDone = $.Deferred();
@@ -67,7 +78,7 @@
         var $detailsDone = $.Deferred();
         var $equipDone = $.Deferred();
 
-        $("#fermentables").load('@Url.Action("FermentablePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$fermentablesDone.resolve()});
+        $("#fermentables").load('@Url.Action("FermentablePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$fermentablesDone.resolve();});
         $("#hops").load('@Url.Action("HopPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$hopsDone.resolve()});
         $("#yeast").load('@Url.Action("YeastPane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$yeastDone.resolve()});
         $("#recipeDetails").load('@Url.Action("RecipePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {$detailsDone.resolve()});
@@ -205,7 +216,6 @@
                 }
 
                 $(this).css("background-position", "50% -" + (($imageNumber - 1) * 70).toString() + "px");
-                //alert((($imageNumber - 1) * 70).toString());
             }
             else
             {
@@ -219,8 +229,6 @@
                 }
 
                 $(this).css("background-position", "50% -" + (($imageNumber - 1) * 70).toString() + "px");
-
-                //alert((($imageNumber - 1) * 70).toString());
             }
         });
 
@@ -256,6 +264,23 @@
         }
     }
 
+    function requiredFieldsValid(form)
+    {
+        var valid = true;
+
+
+        $(form).find('input').each(function(){
+            if($(this).is('[required]'))
+            {
+                if($(this).val().length == 0)
+                {
+                    valid = false;
+                }
+            }
+        });
+
+        return valid;
+    }
 
 
     $(document).ready(function() {
@@ -267,7 +292,7 @@
         $('#mashSpargeMethod').on("change", function () {
             var $form = $(this).parents('form');
 
-            $.ajax({type: "POST", url: $form.attr('action') + "/" + @Model.sourceRecipe.id, data: $form.serialize()});
+            $.ajax({type: "POST", url: $form.attr('action') + "/" + $globalRecipeId, data: $form.serialize()});
         });
 
 
@@ -280,7 +305,7 @@
         $('#fermentables').on('click', '.removeFermentable', function () {
             $.ajax({type: "POST", url: "/Recipes/DeleteFermentable/" + $(this).attr('data-fermentableId')}).done(function(data) {
                 ShowError(data);
-                $("#fermentables").load('@Url.Action("FermentablePane", "Recipes")' + "/" + @Model.sourceRecipe.id, function() {
+                $("#fermentables").load('/Recipes/FermentablePane/' + $globalRecipeId, function() {
                     calculateReadouts();
                 });
             });
@@ -318,15 +343,14 @@
             event.preventDefault();
             $("#AddFermentableForm").dialog({
                 autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
                 width: 450,
-                height: 350,
+                height: 450,
                 resizable: false,
                 title: 'Add Fermentable',
                 modal: true,
                 open: function () {
-                    $('#AddFermentableForm').addClass('loading');
-                    $(this).load('/Recipes/ShowFermentableDialog', function(){ $('#AddFermentableForm').removeClass('loading')});
+                    $('#loadingAnimation').show();
+                    $(this).load('/Recipes/ShowFermentableDialog', function(){$('#loadingAnimation').hide();});
                 },
                 close: function () {
                     $('#fermentableAmountBox').focus();
@@ -345,15 +369,14 @@
             event.preventDefault();
             $("#AddHopForm").dialog({
                 autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
-                width: 400,
-                height: 350,
+                width: 450,
+                height: 450,
                 resizable: false,
                 title: 'Add Hop',
                 modal: true,
                 open: function () {
-                    $('#hopAmountBox').focus();
-                    $(this).load('/Recipes/ShowHopDialog');
+                    $('#loadingAnimation').show();
+                    $(this).load('/Recipes/ShowHopDialog', function(){$('#loadingAnimation').hide();});
                 },
                 close: function () {
                     $('#hopAmountBox').focus();
@@ -374,24 +397,33 @@
 
             $("#EditRecipeForm").dialog({
                 autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
                 width: 550,
-                height: 350,
+                height: 450,
                 resizable: false,
                 title: 'Edit Recipe Details',
                 modal: true,
                 open: function () {
-                    $(this).load('/Recipes/ShowRecipeDialog/' + $recipeId);
+                    $('#loadingAnimation').show();
+                    $(this).load('/Recipes/ShowRecipeDialog/' + $recipeId, function(){$('#loadingAnimation').hide();});
                 },
-                buttons: {
-                    Cancel: function () {
-                        $(this).dialog("close");
+                buttons: [
+                    {
+                        text: "Close",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     },
-                    Save: function() {
-                        PostFormAsync($(this).children('form').children('.table'));
-                        $(this).dialog("close");
+                    {
+                        text: 'Save',
+                        type: 'button',
+                        click: function(event) {
+                            if(!PostFormAsync($(this).children('form').children('.table')))
+                            {
+                                $(this).dialog("close");
+                            }
+                        }
                     }
-                }
+                ]
             });
             return false;
         });
@@ -401,24 +433,34 @@
 
             $("#EditEquipmentForm").dialog({
                 autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
                 width: 550,
                 height: 450,
                 resizable: false,
                 title: 'Edit Equipment',
                 modal: true,
                 open: function () {
-                    $(this).load('/Recipes/ShowEquipmentDialog/' + $globalRecipeId);
+                    $('#loadingAnimation').show();
+                    $(this).load('/Recipes/ShowEquipmentDialog/' + $globalRecipeId, function(){$('#loadingAnimation').hide();});
                 },
-                buttons: {
-                    Cancel: function () {
-                        $(this).dialog("close");
+                buttons: [
+                    {
+                        text: "Close",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     },
-                    Save: function() {
-                        PostFormAsync($(this).children('form').children('.table'));
-                        $(this).dialog("close");
+                    {
+                        text: 'Save',
+                        form: 'equipmentForm',
+                        type: 'button',
+                        click: function(event) {
+                            if(!PostFormAsync($(this).children('form').children('.table')))
+                            {
+                                $(this).dialog("close");
+                            }
+                        }
                     }
-                }
+                ]
             });
             return false;
         });
@@ -429,14 +471,14 @@
 
             $("#AddFermentationForm").dialog({
                 autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
                 width: 550,
                 height: 450,
                 resizable: false,
                 title: 'Edit Fermentation',
                 modal: true,
                 open: function () {
-                    $(this).load('/Recipes/ShowFermentationDialog/' + $globalRecipeId);
+                    $('#loadingAnimation').show();
+                    $(this).load('/Recipes/ShowFermentationDialog/' + $globalRecipeId, function(){$('#loadingAnimation').hide();});
                 },
                 buttons: {
                     Cancel: function () {
@@ -456,14 +498,14 @@
             event.preventDefault();
             $("#AddYeastForm").dialog({
                 autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
-                width: 400,
-                height: 350,
+                width: 450,
+                height: 450,
                 resizable: false,
                 title: 'Add Yeast',
                 modal: true,
                 open: function () {
-                    $(this).load('/Recipes/ShowYeastDialog');
+                    $('#loadingAnimation').show();
+                    $(this).load('/Recipes/ShowYeastDialog', function(){$('#loadingAnimation').hide();});
                 },
                 buttons: {
                     Cancel: function () {
@@ -479,14 +521,15 @@
 
 </script>
 
+@{Html.RenderAction("LoadingAnimation");}
 
 <div id="recipeDetails">
     @{Html.RenderPartial("_RecipePane", Model);}
 </div>
 <div id="EditRecipeForm"></div>
 
-<div class="clearfix">
-    <div class="float-left">
+<div class="row">
+    <div class="col-md-6">
         <span class="h2">Fermentables</span>
         <p></p>
         <div id="fermentables">
@@ -495,66 +538,72 @@
         <div id="AddFermentableForm"></div>
 
     </div>
-    <div class="float-right">
+    <div class="col-md-6">
         <span class="h2">Hops</span>
         <p></p>
-            <div id="hops">
-                @{Html.RenderPartial("_HopPane", Model.hops);}
-            </div>
-            <div id="AddHopForm"></div>
+        <div id="hops">
+            @{Html.RenderPartial("_HopPane", Model.hops);}
+        </div>
+        <div id="AddHopForm"></div>
 
     </div>
 </div>
-<div class="clearfix">
-    <div class="float-left">
+<div class="row">
+    <div class="col-md-6">
         <span class="h2">Other Additions</span>
         <p></p>
-            <div id="other">
-                @{Html.RenderPartial("_OthersPane", Model.others);}
-            </div>
+        <div id="other">
+            @{Html.RenderPartial("_OthersPane", Model.others);}
+        </div>
 
     </div>
-    <div class="float-right">
+    <div class="col-md-6">
         <span class="h2">Yeast</span>
         <p></p>
         <div id="yeast">
             @{Html.RenderPartial("_YeastPane", Model.yeasts);}
         </div>
         <div id="AddYeastForm"></div>
-        
+
 
     </div>
 </div>
-<div class="clearfix">
-    <div class="float-left">
+<div class="row">
+    <div class="col-md-6">
         <div id="equipment">
             @{Html.RenderPartial("_EquipmentPane", Model.equipment);}
         </div>
         <div id="EditEquipmentForm"></div>
 
     </div>
-    <div class="float-right">
+    <div class="col-md-6">
         <span class="h2">Mash Profile</span>
         <p></p>
         <div id="mash">
             @{Html.RenderPartial("_MashPane", Model.mashEntries);}
         </div>
         <form action="/Recipes/UpdateMashSpargeType" method="post">
-            <span style="font-weight: bold">Sparge Method: <select id="mashSpargeMethod" name="mashSpargeMethod">@if (Model.sourceRecipe.mashSpargeType != null)
-            {<option selected="selected">@Model.sourceRecipe.mashSpargeType</option>}
-            <option>Batch</option>
-            <option>Fly</option>
-            <option>No-sparge</option></select></span>
+            <span style="font-weight: bold">
+                Sparge Method: <select id="mashSpargeMethod" name="mashSpargeMethod">
+                    @if (Model.sourceRecipe.mashSpargeType != null)
+                    {
+                        <option selected="selected">@Model.sourceRecipe.mashSpargeType</option>}
+                    <option>Batch</option>
+                    <option>Fly</option>
+                    <option>No-sparge</option>
+                </select>
+            </span>
         </form>
         <br />
-    
+
 
     </div>
 </div>
-<div class="clearfix">
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
         <div id="fermentation">
             @{Html.RenderPartial("_FermentationPane", Model.fermentation);}
         </div>
         <div id="AddFermentationForm"></div>
+    </div>
 </div>
-<button value="go" onclick="StartLoadAnimation()">Go</button>

@@ -11,6 +11,8 @@ namespace BrewingSite.Models
     {
         brewappEntities dbConn = new brewappEntities();
 
+        public string errorMessage;
+
         public List<Recipe> recipes;
         public List<Brewday> brewdays;
         //public List<Fermentation> fermentations;

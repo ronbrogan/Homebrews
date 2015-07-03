@@ -11,18 +11,18 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.time</td>
-                <td>@item.temperature</td>
+                <td>@item.time Minutes</td>
+                <td>@item.temperature°F</td>
                 <td>@item.method</td>
-                <td><a href="#" id="@item.id" onclick="RemoveMashEntry(this.id)">Delete</a></td>
+                <td><button class="btn-link" type="button" id="@item.id" onclick="RemoveMashEntry(this.id)">Delete</button></td>
             </tr>
         }
 
         <tr>
-            <td>@Html.TextBox("time")</td>
-            <td>@Html.TextBox("temperature")</td>
-            <td><select id="method" name="method"><option>Infusion</option><option>Direct Heat</option><option>Decoction</option></select></td>
-            <td><a href="#" onclick="return PostFormAsyncNonCritical(this)">Add</a></td>
+            <td>@Html.TextBox("time", null, new { placeholder = " Time (minutes)", required="required" })</td>
+            <td>@Html.TextBox("temperature", null, new { placeholder = " Rest Temp (°F)", required = "required" })</td>
+            <td><select id="method" name="method" required="required"><option>Infusion</option><option>Direct Heat</option><option>Decoction</option></select></td>
+            <td><button class="btn-link" onclick="return PostFormAsyncNonCritical(this)">Add</button></td>
         </tr>
     </table>
 </form>

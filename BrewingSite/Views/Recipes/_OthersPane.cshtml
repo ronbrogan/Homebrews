@@ -18,10 +18,10 @@
             </tr>
         }
         <tr>
-            <td>@Html.TextBox("amount", null, new { style = "width: 80px" })</td>
-            <td>@Html.TextBox("item")</td>
-            <td>@Html.TextBox("use")</td>
-            <td><a href="#" onclick="return PostFormAsyncNonCritical(this)">Add</a></td>
+            <td>@Html.TextBox("amount", null, new { placeholder = " Amount", style = "width: 80px", required = "required" })</td>
+            <td>@Html.TextBox("item", null, new { placeholder = " Item name", required = "required" })</td>
+            <td>@Html.TextBox("use", null, new { placeholder = " Item use", required = "required" })</td>
+            <td><button class="btn-link" onclick="return PostFormAsyncNonCritical(this)">Add</button></td>
         </tr>
     </table>
 </form>

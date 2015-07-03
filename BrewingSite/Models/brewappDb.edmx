@@ -21,6 +21,7 @@
           <Property Name="fermentationProfileId" Type="int" />
           <Property Name="publicRead" Type="bit" />
           <Property Name="timestamp" Type="datetime" />
+          <Property Name="originalRecipeId" Type="int" />
         </EntityType>
         <EntityType Name="BrewdayEquipmentProfile">
           <Key>
@@ -251,6 +252,7 @@
           <Property Name="mashSpargeType" Type="varchar" MaxLength="10" />
           <Property Name="fermentationProfileId" Type="int" />
           <Property Name="isPublicRead" Type="bit" />
+          <Property Name="recipeSummary" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="RecipeYeast">
           <Key>
@@ -402,6 +404,7 @@
           <Property Name="mashSpargeType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="fermentationProfileId" Type="Int32" />
           <Property Name="isPublicRead" Type="Boolean" />
+          <Property Name="recipeSummary" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SRMtoRGB">
           <Key>
@@ -449,6 +452,7 @@
           <Property Name="fermentationProfileId" Type="Int32" />
           <Property Name="publicRead" Type="Boolean" />
           <Property Name="timestamp" Type="DateTime" Precision="3" />
+          <Property Name="originalRecipeId" Type="Int32" />
         </EntityType>
         <EntityType Name="BrewdayEquipmentProfile">
           <Key>
@@ -689,6 +693,7 @@
           <EntitySetMapping Name="Recipes">
             <EntityTypeMapping TypeName="brewappModel.Recipe">
               <MappingFragment StoreEntitySet="Recipes">
+                <ScalarProperty Name="recipeSummary" ColumnName="recipeSummary" />
                 <ScalarProperty Name="isPublicRead" ColumnName="isPublicRead" />
                 <ScalarProperty Name="fermentationProfileId" ColumnName="fermentationProfileId" />
                 <ScalarProperty Name="mashSpargeType" ColumnName="mashSpargeType" />
@@ -740,6 +745,7 @@
           <EntitySetMapping Name="Brewdays">
             <EntityTypeMapping TypeName="brewappModel.Brewday">
               <MappingFragment StoreEntitySet="Brewday">
+                <ScalarProperty Name="originalRecipeId" ColumnName="originalRecipeId" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
                 <ScalarProperty Name="publicRead" ColumnName="publicRead" />
                 <ScalarProperty Name="fermentationProfileId" ColumnName="fermentationProfileId" />

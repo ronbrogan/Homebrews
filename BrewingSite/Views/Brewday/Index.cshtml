@@ -1,4 +1,4 @@
-﻿@model BrewingSite.Models.WholeBrewday
+﻿@model BrewingSite.Models.BrewdayViewmodel
 
 @{
     ViewBag.Title = "Brewday for " + @Model.brewday.recipeName;
@@ -111,17 +111,16 @@
 
 </script>
 
-
+<span class="h2">Brewing @Model.brewday.recipeName on @Model.brewday.timestamp.Value.ToShortDateString()</span><br />
 <div class="row">
     <div class="col-md-6">
-        <span class="h2">@Model.brewday.recipeName</span><br />
-        <span>@Model.brewday.authorName</span><br />
-        <span>@Model.recipeStyle.Style1</span>
+        <span><strong>Generated from:</strong> <a href="/Recipes/Recipe/@Model.brewday.originalRecipeId" style="text-decoration: none;">@Model.brewday.recipeName</a></span><br />
+        <span><strong>Brewer:</strong> @User.Identity.Name.Substring(0, User.Identity.Name.IndexOf('@'))</span>
 
     </div>
-    <div class="col-md-6 text-right">
-        <span>Brewed On: @Model.brewday.timestamp</span><br />
-        <span>Placeholder</span>
+    <div class="col-md-6 text-right right-align-small">
+        <span><strong>Recipe Style:</strong> @Model.recipeStyle.Style1</span><br />
+        <span><strong>Brewed On:</strong> @Model.brewday.timestamp.Value.ToShortDateString()</span>
     </div>
 </div>
 
@@ -130,7 +129,7 @@
 <div class="row">
     <div class="col-md-6">
         <p class="h7">Fermentables</p>
-        <table class="table table-hover">
+        <table class="table table-hover table-condensed">
             <tr>
                 <th>Fermentable</th>
                 <th class="text-center">Amount</th>
@@ -146,7 +145,7 @@
     </div>
     <div class="col-md-6">
         <p class="h7">Hops</p>
-        <table class="table table-hover">
+        <table class="table table-hover table-condensed">
             <tr>
                 <th>Variety</th>
                 <th class="text-center">Amount</th>
@@ -164,7 +163,7 @@
     </div>
     <div class="col-md-6">
         <p class="h7">Yeast</p>
-        <table class="table table-hover">
+        <table class="table table-hover table-condensed">
             <tr>
                 <th>Strain</th>
                 <th class="text-center">Attenuation</th>
@@ -180,7 +179,7 @@
     </div>
     <div class="col-md-6">
         <p class="h7">Other Ingredients</p>
-        <table class="table table-hover">
+        <table class="table table-hover table-condensed">
             <tr>
                 <th>Item</th>
                 <th>Use</th>
@@ -203,7 +202,7 @@
 <div class="row">
     <div class="col-md-6">
         <p class="h7">Equipment</p>
-        <table class="table table-hover">
+        <table class="table table-hover table-condensed">
             <tr>
                 <td><span class="bold">Kettle Volume</span><br />@Model.equipment.kettleVolume Gallons</td>
                 <td><span class="bold">Kettle Loss</span><br />@Model.equipment.kettleVolumeLoss Gallons</td>
@@ -220,7 +219,7 @@
     </div>
     <div class="col-md-6">
         <p class="h7">Mash Procedure</p>
-        <table class="table table-hover">
+        <table class="table table-hover table-condensed">
             <tr>
                 <th>Step Temperature</th>
                 <th>Heating Method</th>
@@ -242,10 +241,12 @@
 
 <hr />
 
-<div class="row">
-    <div class="col-md-8 col-md-offset-2" id="measurementsPanel">
+@*We need to make the measurement able a partial view. This way it can be reloaded dynamically via AJAX. Also, we need to make this not visible on print, and make a new table for print media to allow hand-written notes.*@
+
+<div class="row" style="page-break-before: always;">
+    <div class="col-sm-8 col-sm-offset-2" id="measurementsPanel">
         <p class="h7">Measurements</p>
-        <table class="table table-hover-col">
+        <table class="table table-hover-col table-condensed">
             <tr>
                 <th width="40%">Predictions</th>
                 <th>Measurements</th>
@@ -255,14 +256,14 @@
                 <td><span class="bold">Pre-boil OG: </span>  @@ @(Model.brewday.batchSize + ((Model.equipment.kettleBoiloff / 60) * Model.brewday.boilTime)) Gallons</td>
                 <td>
                     <span class="bold">Pre-boil OG: </span>
-                        @if (Model.measurement.preboilGravityReal != null)
-                        {
-                            <span>@string.Format("{0:0.000}", Model.measurement.preboilGravityReal) @@ @(Model.measurement.preboilGravityVolume) Gallons</span> <span style="font-size: smaller"><button class="btn-link" id="logPreboilGravity">Edit</button></span>
-                        }
-                        else
-                        {
-                            <button class="btn-link" id="logPreboilGravity">Log value</button>
-                        }
+                    @if (Model.measurement.preboilGravityReal != null)
+                    {
+                        <span>@string.Format("{0:0.000}", Model.measurement.preboilGravityReal) @@ @(Model.measurement.preboilGravityVolume) Gallons</span> <span style="font-size: smaller"><button class="btn-link" id="logPreboilGravity">Edit</button></span>
+                    }
+                    else
+                    {
+                        <button class="btn-link" id="logPreboilGravity">Log value</button>
+                    }
                 </td>
                 <td>@string.Format("{0:0.0}%", Model.measurement.preboilGravityDeviation)</td>
             </tr>
@@ -278,15 +279,15 @@
                     {
                         <button class="btn-link" id="logFermenterGravity">Log value</button>
                     }
-                
-                
+
+
                 </td>
                 <td>@string.Format("{0:0.0}%", Model.measurement.fermenterGravityDeviation)</td>
             </tr>
             <tr>
-                <td><span class="bold">Fermenter FG: </span> @string.Format("{0:0.000}",Model.measurement.finalGravityCalc) @@ @(Model.brewday.batchSize) Gallons</td>
+                <td><span class="bold">Fermenter FG: </span> @string.Format("{0:0.000}", Model.measurement.finalGravityCalc) @@ @(Model.brewday.batchSize) Gallons</td>
                 <td>
-                    <span class="bold">Fermenter FG: </span> 
+                    <span class="bold">Fermenter FG: </span>
                     @if (Model.measurement.finalGravityReal != null)
                     {
                         <span>@string.Format("{0:0.000}", Model.measurement.finalGravityReal) @@ @(Model.measurement.finalGravityVolume) Gallons</span> <span style="font-size: smaller"><button class="btn-link" id="logFinalGravity">Edit</button></span>
@@ -295,32 +296,148 @@
                     {
                         <button class="btn-link" id="logFinalGravity">Log value</button>
                     }
-                
-                
+
+
                 </td>
                 <td>@string.Format("{0:0.0}%", Model.measurement.finalGravityDeviation)</td>
             </tr>
             <tr>
-                <td><span class="bold">Calculated ABV: </span> @string.Format("{0:0.0}",Model.measurement.abvCalc)%</td>
-                <td><span class="bold">Calculated ABV: </span>
-                    @if(Model.measurement.fermenterGravityReal != null && Model.measurement.finalGravityReal != null)
+                <td><span class="bold">Calculated ABV: </span> @string.Format("{0:0.0}", Model.measurement.abvCalc)%</td>
+                <td>
+                    <span class="bold">Calculated ABV: </span>
+                    @if (Model.measurement.fermenterGravityReal != null && Model.measurement.finalGravityReal != null)
                     {
-                        <span>@((Model.measurement.fermenterGravityReal - Model.measurement.finalGravityReal) * 131.25)</span>
+                        <span>@string.Format("{0:0.0}%", ((Model.measurement.fermenterGravityReal - Model.measurement.finalGravityReal) * 131.25))</span>
                     }
-                    
-                    
-                
-                
-                
+
+
+
+
+
                 </td>
                 <td>@string.Format("{0:0.0}%", ((((Model.measurement.fermenterGravityReal - Model.measurement.finalGravityReal) * 131.25) - Model.measurement.abvCalc) / Model.measurement.abvCalc) * 100)</td>
             </tr>
 
         </table>
+
     </div>
 
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Instructions</h2>
+        <hr />
+        <ol>
+            @if(Model.mashEntries.Count > 0)
+            {
+                int count = 0;
+                
+                foreach(var mashEntry in Model.mashEntries)
+                {
+                    if(count == 0)
+                    {
+                        <li>Mash in your grains with the necessary volume of water to achieve @mashEntry.temperature°F and rest for <strong>@mashEntry.time minutes.</strong></li>
+                    }
+                    else
+                    {
+                        <li>Alter the mash temperature to <strong>@mashEntry.temperature°F</strong> by @mashEntry.method and rest for <strong>@mashEntry.time</strong> minutes.</li>
+                    }
+                    count++;
+                }
+                
+            }
+            @if(Model.brewday.mashSpargeType == "No Sparge")
+            { 
+                <li>Run off the wort into kettle. Do not sparge.</li>
+            }
+            else
+            {
+                <li>Run off wort into kettle. Then sparge with the necessary water to acheive boil volume using the <strong>@Model.brewday.mashSpargeType method.</strong></li>
+            }
+            <li>
+                Bring your wort to a boil. Add hops as indicated below:
+                <ol>
+                    @foreach (var hop in Model.hops)
+                    {
+                        <li>@hop.additionTime minutes: @hop.name -- @hop.amount oz</li>
+                    }
+                </ol>
+            </li>
+
+            @if (Model.others.Count > 0)
+            {
+                <li>Add any kettle finings or other boil ingredients as necessary. Refer to "Other ingredients" listing above.</li>
+            }
+            
+            <li>Once boil is complete, chill wort to the desired pitching temp for the <strong>@Model.yeasts.FirstOrDefault().Name</strong> yeast strain.</li>
+
+            <li>Transfer to primary and pitch the desired amount of @Model.yeasts.FirstOrDefault().Name. Proceed with primary fermentation for <strong>@Model.fermentation.primaryDays days at @Model.fermentation.primaryTemp°F.</strong>
+                @if(Model.fermentation.primaryNote != null && Model.fermentation.primaryNote.Length > 0)
+                {
+                    <ul>
+                        <li>@Model.fermentation.primaryNote</li>
+                    </ul>
+                }
+            </li>
+
+            @if(Model.fermentation.secondaryDays > 0)
+            {
+                <li>Transfer to secondary fermenter for @Model.fermentation.secondaryDays at @Model.fermentation.secondaryTemp°F.
+                    @if (Model.fermentation.secondaryNote != null && Model.fermentation.secondaryNote.Length > 0)
+                    {
+                        <ul>
+                            <li>@Model.fermentation.secondaryNote</li>
+                        </ul>
+                    }
+                </li>
+            }
+            
+            @if (Model.fermentation.kegDays > 0)
+            {
+                <li>
+                    Transfer to appropriate keg for @Model.fermentation.kegDays at @Model.fermentation.kegTemp°F.
+                    @if (Model.fermentation.kegNote != null && Model.fermentation.kegNote.Length > 0)
+                    {
+                        <ul>
+                            <li>@Model.fermentation.kegNote</li>
+                        </ul>
+                    }
+                </li>
+            }
+            
+            @if (Model.fermentation.bottleDays > 0)
+            {
+                <li>
+                    Transfer to secondary fermenter for @Model.fermentation.bottleDays at @Model.fermentation.bottleTemp°F.
+                    @if (Model.fermentation.bottleNote != null && Model.fermentation.bottleNote.Length > 0)
+                    {
+                        <ul>
+                            <li>@Model.fermentation.bottleNote</li>
+                        </ul>
+                    }
+                </li>
+            }
+
+            <li>Enjoy!</li>
+
+
+
+
+
+
+        </ol>
+
+
+    </div>
+
+</div>
+
+
+
+
 <div id="logFermenterGravityDialog"></div>
 <div id="logFinalGravityDialog"></div>
 <div id="logPreboilGravityDialog"></div>
+
 
