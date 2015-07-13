@@ -17,17 +17,45 @@ namespace BrewingSite.Controllers
 
             if (id != "-1")
             {
-                switch (Convert.ToInt32(id))
+                try
                 {
-                    case 1: dashboard.errorMessage = "Recipe is missing a necessary field to create the brewday.";
-                        break;
+                    switch (Convert.ToInt32(id))
+                    {
+                        case 1: dashboard.errorMessage = "Recipe is missing a necessary field to create the brewday.";
+                            break;
 
-                    case 2: dashboard.errorMessage = "Error during database transaction.";
-                        break;
+                        case 2: dashboard.errorMessage = "Error during database transaction.";
+                            break;
 
-                    default: dashboard.errorMessage = "Error " + id;
-                        break;
+                        case 3: dashboard.errorMessage = "Unable to create new recipe for unspecified reason.";
+                            break;
+
+                        case 4: dashboard.errorMessage = "Recipe contains no yeast entity. Please add a yeast.";
+                            break;
+
+                        case 5: dashboard.errorMessage = "Recipe contains no mash entry. Please add a mash entry.";
+                            break;
+
+                        case 6: dashboard.errorMessage = "Recipe contains no fermentable entity. Please add a fermentable.";
+                            break;
+
+                        case 7: dashboard.errorMessage = "Recipe contains no hop entity. Please add a hop.";
+                            break;
+
+
+                        case -2147467261: dashboard.errorMessage = "Unknown error occured, please correct any errors and try again";
+                            break;
+
+                        default: dashboard.errorMessage = "Error " + id;
+                            break;
+                    }
                 }
+
+                catch
+                {
+                    dashboard.errorMessage = "It's broke. All hope is lost. Save yourself.";
+                }
+                
                 
                 
 

@@ -313,7 +313,7 @@ namespace BrewingSite.Controllers
             try
             {
                 recipe.authorId = User.Identity.Name;
-                recipe.isPublicRead = false;
+                recipe.isPublicRead = true;
                 recipe.mashSpargeType = "Batch";
 
 
@@ -323,7 +323,7 @@ namespace BrewingSite.Controllers
             }
             catch
             {
-                return HttpNotFound("Unable to create new recipe");
+                return Redirect("/Dashboard/3");
             }
             
         }

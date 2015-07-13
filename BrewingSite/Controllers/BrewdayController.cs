@@ -12,6 +12,7 @@ namespace BrewingSite.Controllers
         brewappEntities dbConn = new brewappEntities();
 
         // GET: Brewday/x
+        [Authorize]
         public ActionResult Index(string id="-1")
         {
             if (id == "-1")

@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BrewingSite.Models;
+using System.Net;
+using System.Collections.Specialized;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace BrewingSite.Controllers
 {
@@ -152,9 +156,30 @@ namespace BrewingSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            string clientResponse = Request["g-recaptcha-response"];
+            string googleResponse;
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                using (WebClient client = new WebClient())
+                {
+
+                    byte[] response =
+                    client.UploadValues("https://www.google.com/recaptcha/api/siteverify", new NameValueCollection()
+                       {
+                           { "secret", "secret" },
+                           { "response", clientResponse }
+                       });
+
+                    googleResponse = System.Text.Encoding.UTF8.GetString(response);
+                }
+
+                var json = JObject.Parse(googleResponse);
+
+                if(!(bool)json["Success"])
+                    return View(model);
+
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

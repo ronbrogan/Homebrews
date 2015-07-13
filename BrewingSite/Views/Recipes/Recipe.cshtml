@@ -20,7 +20,7 @@
         else
         {
             ShowError("Please ensure all fields are completed.");
-            $($form).effect('shake', {distance: 10, times: 2}, 150);
+            $($form).effect('shake', {distance: 10, times: 1}, 150);
             return true;
         }
 
@@ -39,7 +39,7 @@
         else
         {
             ShowError("Please ensure all fields are completed.");
-            $($form).effect('shake', {distance: 10, times: 2}, 150);
+            $($form).effect('shake', {distance: 10, times: 1}, 150);
             return true;
         }
     }
@@ -260,7 +260,7 @@
         if(errorText != 'Success')
         {
             $('.error').text(errorText);
-            $('.error').slideDown(500).delay(3000).slideUp(500);
+            $('.error').slideDown(250).delay(2000).slideUp(250);
         }
     }
 
@@ -600,7 +600,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-10 col-md-offset-1">
         <div id="fermentation">
             @{Html.RenderPartial("_FermentationPane", Model.fermentation);}
         </div>

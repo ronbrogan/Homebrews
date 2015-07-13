@@ -53,18 +53,46 @@ namespace BrewingSite.Models
             dbConn.Brewdays.Add(brewday);
             dbConn.SaveChanges();
 
-            SqlParameter parm = new SqlParameter()
+            SqlParameter returnValue = new SqlParameter()
             {
                 ParameterName = "@Return",
                 SqlDbType = SqlDbType.Int,
                 Direction = System.Data.ParameterDirection.Output
             };
 
-            //Copy list of ferms, hops, yeast, others,  and mash steps to corresponding Brewday tables for a "snapshot" of the recipe at time of brewing
-            dbConn.Database.ExecuteSqlCommand("exec @Return = dbo.CreateBrewdayEntries " + inputRecipe.id + ", " + brewday.id, parm);
+            if((from yeast in dbConn.RecipeYeasts where yeast.recipeId == inputRecipe.id select yeast).Count() == 0)
+            {
+                dbConn.Brewdays.Remove(brewday);
+                dbConn.SaveChanges();
+                throw new Exception("4");
+            }
 
-            if ((int)parm.Value != 0)
+            if ((from ferms in dbConn.RecipeFermentables where ferms.recipeId == inputRecipe.id select ferms).Count() == 0)
+            {
+                dbConn.Brewdays.Remove(brewday);
+                dbConn.SaveChanges();
+                throw new Exception("6");
+            }
+
+            if ((from hop in dbConn.RecipeHops where hop.recipeId == inputRecipe.id select hop).Count() == 0)
+            {
+                dbConn.Brewdays.Remove(brewday);
+                dbConn.SaveChanges();
+                throw new Exception("7");
+            }
+
+
+
+
+            //Copy list of ferms, hops, yeast, others,  and mash steps to corresponding Brewday tables for a "snapshot" of the recipe at time of brewing
+            dbConn.Database.ExecuteSqlCommand("exec @Return = dbo.CreateBrewdayEntries " + inputRecipe.id + ", " + brewday.id, returnValue);
+
+            if ((int)returnValue.Value != 0)
+            {
+                dbConn.Brewdays.Remove(brewday);
                 throw new Exception("2");
+            }
+                
 
             //Need to calculate OG, FG, ABV, IBU, SRM when brewday is created and store in measurements table
             double originalGravityCalc, finalGravityCalc, abvCalc, ibuCalc, srmCalc;
@@ -77,7 +105,6 @@ namespace BrewingSite.Models
                       orderby ingredients.Attenuation descending
                       select ingredients).ToList<Yeast>();
 
-            equipment = (from equip in dbConn.BrewdayEquipmentProfiles where equip.brewdayId == brewday.id select equip).FirstOrDefault();
 
             fermentables = (from ferms in dbConn.BrewdayFermentables
                             join ingredients in dbConn.Fermentables on ferms.ingredientId equals ingredients.id
@@ -92,6 +119,8 @@ namespace BrewingSite.Models
                                 ppg = ingredients.ppg,
                                 isMashed = ferms.isMashed
                             }).ToList<ViewFermentable>();
+
+            
 
             hops = (from hop in dbConn.BrewdayHops
                     join ingredients in dbConn.Hops on hop.ingredientId equals ingredients.id
@@ -196,6 +225,7 @@ namespace BrewingSite.Models
             hops = (from hop in dbConn.BrewdayHops
                     join ingredients in dbConn.Hops on hop.ingredientId equals ingredients.id
                     where hop.brewdayId == brewday.id
+                    orderby hop.additionTime descending
                     select new ViewHop() 
                     { 
                         id=hop.id,

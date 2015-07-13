@@ -15,6 +15,7 @@ namespace BrewingSite.Models
 
         public List<Recipe> recipes;
         public List<Brewday> brewdays;
+        public List<Style> styles;
         //public List<Fermentation> fermentations;
 
         public UserDashboardCollection(IPrincipal user)
@@ -23,7 +24,11 @@ namespace BrewingSite.Models
             recipes = recipesQuery.ToList<Recipe>();
 
             var brewdaysQuery = from brewday in dbConn.Brewdays where brewday.authorId == user.Identity.Name select brewday;
+
             brewdays = brewdaysQuery.ToList<Brewday>();
+
+            var listQuery = from style in dbConn.Styles select style;
+            styles = listQuery.ToList<Style>();
         }
 
 

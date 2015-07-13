@@ -46,14 +46,33 @@
 }
 
 .recipeReadout {
+    position: relative;
     width: 20%;
+    min-width: 144px;
     height: 70px;
     background-image: url("/Images/ScaleBars/scalebars.png");
     background-repeat: no-repeat;
     text-align: center;
     vertical-align: top;
     float: left;
-    margin-top: -20px;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.recipeReadoutDescriptive, .srm {
+    width: 144px;
+    height: 22px;
+    margin: 0 auto;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+.srm{
+    border: 1px solid #dddddd;
+    background-color: rgb(255, 255, 255);
+}
+
+@media (min-width: 992px) {
 
 }
 
@@ -74,32 +93,12 @@
     margin-top: 25px;
 }
 
-.recipeReadoutDescriptive, .srm {
-    width: 142px;
-    height: 22px;
-    margin-left: 43px;
-    margin-top: 10px;
-    font-weight: 700;
-    padding-top: 5px;
-}
 
-.srm{
-    border: 1px solid #dddddd;
-    background-color: rgb(255, 255, 255);
-}
 
 .numbersOnly{
     width: 60px;
 }
 
-.fermentationDay{
-    float: left;
-    height: 50px;
-    border: 2px solid blue;
-    border-radius: 3px;
-    width: 90%;
-    margin: 5%;
-}
 
 .fermentationSection{
     float: left;
@@ -115,6 +114,10 @@
 }
 
 .jumbotron {
+    border-radius: 0px !important;
+}
+
+.btn{
     border-radius: 0px !important;
 }
 
@@ -230,7 +233,10 @@ input {
 
 
 
-
+.g-recaptcha{
+      padding-left: 5px;
+      margin-bottom: 15px;
+}
 
 
 

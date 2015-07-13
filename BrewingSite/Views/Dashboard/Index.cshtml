@@ -1,5 +1,7 @@
 ﻿@model BrewingSite.Models.UserDashboardCollection
 
+@using System.Linq
+
 @{
     ViewBag.Title = "User Dashboard";
 }
@@ -46,7 +48,7 @@
 </script>
 
 <div>
-    <h2>Welcome @User.Identity.Name.Substring(0, User.Identity.Name.IndexOf('@'))!</h2>
+    <h2>Welcome @User.Identity.Name!</h2>
     <p></p>
     <p></p>
     <hr />
@@ -67,7 +69,7 @@
                 {
                     <tr>
                         <td>@item.name</td>
-                        <td>@item.styleId</td>
+                        <td>@Model.styles[((int)item.styleId - 1)].Style1</td>
                         <td><a href="/Recipes/recipe/@item.id">Edit</a> | <a href="/Brewday/Create/@item.id" class="brewButton">Brew</a></td>
                     </tr>
                 }
@@ -92,7 +94,6 @@
             <table class="table">
                 <tr>
                     <th>Recipe Name</th>
-                    <th>Style</th>
                     <th>Brew Date</th>
                     <th></th>
                 </tr>
@@ -100,8 +101,7 @@
                 {
                     <tr>
                         <td>@item.recipeName</td>
-                        <td>@item.styleId</td>
-                        <td>@item.timestamp</td>
+                        <td>@item.timestamp.Value.ToShortDateString()</td>
                         <td><a href="/Brewday/@item.id">View</a></td>
                     </tr>
                 }
