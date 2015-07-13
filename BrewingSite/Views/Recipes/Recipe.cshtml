@@ -355,11 +355,16 @@
                 close: function () {
                     $('#fermentableAmountBox').focus();
                 },
-                buttons: {
-                    Cancel: function () {
-                        $(this).dialog("close");
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        type: 'button',
+                        "class": "btn-link",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     }
-                }
+                ]
             });
             return false;
         });
@@ -381,11 +386,16 @@
                 close: function () {
                     $('#hopAmountBox').focus();
                 },
-                buttons: {
-                    Cancel: function () {
-                        $(this).dialog("close");
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        type: 'button',
+                        "class": "btn-link",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     }
-                }
+                ]
             });
             return false;
         });
@@ -409,6 +419,8 @@
                 buttons: [
                     {
                         text: "Close",
+                        type: 'button',
+                        "class": "btn-link",
                         click: function () {
                             $(this).dialog("close");
                         }
@@ -416,6 +428,7 @@
                     {
                         text: 'Save',
                         type: 'button',
+                        "class": "btn-link",
                         click: function(event) {
                             if(!PostFormAsync($(this).children('form').children('.table')))
                             {
@@ -445,6 +458,8 @@
                 buttons: [
                     {
                         text: "Close",
+                        type: "button",
+                        "class": "btn-link",
                         click: function () {
                             $(this).dialog("close");
                         }
@@ -453,6 +468,7 @@
                         text: 'Save',
                         form: 'equipmentForm',
                         type: 'button',
+                        "class": "btn-link",
                         click: function(event) {
                             if(!PostFormAsync($(this).children('form').children('.table')))
                             {
@@ -480,15 +496,25 @@
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowFermentationDialog/' + $globalRecipeId, function(){$('#loadingAnimation').hide();});
                 },
-                buttons: {
-                    Cancel: function () {
-                        $(this).dialog("close");
+                buttons: [
+                    {
+                        text: "Cancel",
+                        type: "button",
+                        "class": "btn-link",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     },
-                    Save: function() {
-                        PostFormAsyncNonCritical($(this).children('form').children('.table'));
-                        $(this).dialog("close");
+                    {
+                        text: "Save",
+                        type: "button",
+                        "class": "btn-link",
+                        click: function() {
+                            PostFormAsyncNonCritical($(this).children('form').children('.table'));
+                            $(this).dialog("close");
+                        }
                     }
-                }
+                ]
             });
             return false;
         });
@@ -507,11 +533,16 @@
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowYeastDialog', function(){$('#loadingAnimation').hide();});
                 },
-                buttons: {
-                    Cancel: function () {
-                        $(this).dialog("close");
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        type: 'button',
+                        "class": "btn-link",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     }
-                }
+                ]
             });
             return false;
         });
@@ -528,7 +559,7 @@
 </div>
 <div id="EditRecipeForm"></div>
 
-<div class="row">
+<div class="row pagebreak-inside-avoid">
     <div class="col-md-6">
         <span class="h2">Fermentables</span>
         <p></p>
@@ -548,7 +579,7 @@
 
     </div>
 </div>
-<div class="row">
+<div class="row pagebreak-inside-avoid">
     <div class="col-md-6">
         <span class="h2">Other Additions</span>
         <p></p>
@@ -568,7 +599,7 @@
 
     </div>
 </div>
-<div class="row">
+<div class="row pagebreak-inside-avoid">
     <div class="col-md-6">
         <div id="equipment">
             @{Html.RenderPartial("_EquipmentPane", Model.equipment);}
@@ -599,7 +630,7 @@
 
     </div>
 </div>
-<div class="row">
+<div class="row pagebreak-inside-avoid fermentationSection">
     <div class="col-md-10 col-md-offset-1">
         <div id="fermentation">
             @{Html.RenderPartial("_FermentationPane", Model.fermentation);}

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<BrewingSite.Models.OtherIngredient>
 
 <form action="/Recipes/OthersPane" method="post">
-    <table class="table">
+    <table class="table table-hover pagebreak-inside-avoid">
         <tr>
             <th>Amount</th>
             <th>Item</th>
@@ -17,7 +17,7 @@
                 <td><a href="#" class="removeOther" data-otherId="@item.id">Delete</a></td>
             </tr>
         }
-        <tr>
+        <tr class="entry-row">
             <td>@Html.TextBox("amount", null, new { placeholder = " Amount", style = "width: 80px", required = "required" })</td>
             <td>@Html.TextBox("item", null, new { placeholder = " Item name", required = "required" })</td>
             <td>@Html.TextBox("use", null, new { placeholder = " Item use", required = "required" })</td>

@@ -10,19 +10,14 @@
         <span>Boil Time: <span id="boilTime">@Model.boilTime.ToString()</span> minutes</span>
     </div>
     <div class="col-md-9">
-        <p>Summary:</p>
-        <p>@Model.sourceRecipe.recipeSummary</p>
+        @{if(@Model.sourceRecipe.recipeSummary.Length > 0){<p>Summary: @Model.sourceRecipe.recipeSummary</p>}}
     </div>
 </div>
 
-<hr class="clearfix"/>
-
-<div class="row">
+<div class="row clearfix recipeReadoutRow">
     <div class="recipeReadout" data-min="@Model.recipeStyle.Low_OG" data-max="@Model.recipeStyle.Hi_OG"><span class="h7" id="ogReadout">1.000 OG</span><p class="recipeReadoutDescriptive">Extraction Eff: <span id="extractionEfficiency">75</span>%</p></div>
     <div class="recipeReadout" data-min="@Model.recipeStyle.Low_FG" data-max="@Model.recipeStyle.Hi_FG"><span class="h7" id="fgReadout">1.000 FG</span></div>
     <div class="recipeReadout" data-min="@Model.recipeStyle.Low_ABV" data-max="@Model.recipeStyle.Hi_ABV"><span class="h7" id="abvReadout">0.0% ABV</span><p class="recipeReadoutDescriptive">Attenuation: <span id="attenuationPercentage">75</span>%</p></div>
     <div class="recipeReadout" data-min="@Model.recipeStyle.Low_IBU" data-max="@Model.recipeStyle.Hi_IBU"><span class="h7" id="ibuReadout">0.0 IBU</span></div>
     <div class="recipeReadout" data-min="@Model.recipeStyle.Low_SRM" data-max="@Model.recipeStyle.Hi_SRM"><span class="h7" id="srmReadout">0.0 SRM</span><p class="srm"></p></div>
 </div>
-
-<hr />

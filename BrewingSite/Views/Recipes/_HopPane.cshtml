@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BrewingSite.Models.ViewHop>
 <form action="/Recipes/HopPane" method="post">
-    <table class="table table-condensed">
+    <table class="table table-condensed table-hover pagebreak-inside-avoid">
         <tr>
             <td></td>
             <th>
@@ -51,7 +51,7 @@
                 </td>
             </tr>
         }
-        <tr>
+        <tr class="entry-row">
             <td><img src="~/Images/x.jpeg" width="16" height="16" id="clearHopButton" style="display: none; cursor: pointer" onclick="ClearNewHop()" /></td>
             <!--Add Hop functionality-->
             <td>

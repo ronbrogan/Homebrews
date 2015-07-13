@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BrewingSite.Models.Yeast>
 <form action="/Recipes/YeastPane" method="post">
-    <table class="table">
+    <table class="table table-hover pagebreak-inside-avoid">
         <tr>
             <th>
                 Name
@@ -33,7 +33,7 @@
             i = true;
         }
 
-        <tr>
+        <tr class="entry-row">
             <td>
                 <!--Grain type selector-->
                 <button class="btn-link" type="button" id="yeastNameField">Click to Add Yeast</button>

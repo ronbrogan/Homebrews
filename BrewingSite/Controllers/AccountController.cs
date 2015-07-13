@@ -167,7 +167,7 @@ namespace BrewingSite.Controllers
                     byte[] response =
                     client.UploadValues("https://www.google.com/recaptcha/api/siteverify", new NameValueCollection()
                        {
-                           { "secret", "secret" },
+                           { "secret", "" },
                            { "response", clientResponse }
                        });
 
@@ -176,7 +176,7 @@ namespace BrewingSite.Controllers
 
                 var json = JObject.Parse(googleResponse);
 
-                if(!(bool)json["Success"])
+                if(!(bool)json["success"])
                     return View(model);
 
                 var user = new ApplicationUser { UserName = model.Username, Email = model.Email };

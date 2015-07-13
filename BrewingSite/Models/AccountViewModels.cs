@@ -68,7 +68,6 @@ namespace BrewingSite.Models
         [Display(Name = "Username")]
         public string Username { get; set; }
 
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

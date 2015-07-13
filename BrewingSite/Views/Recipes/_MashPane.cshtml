@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<BrewingSite.Models.RecipeMashEntry>
 
 <form action="/Recipes/MashPane" method="post">
-    <table class="table">
+    <table class="table table-hover pagebreak-inside-avoid">
         <tr>
             <th>Rest Time</th>
             <th>Temperature</th>
@@ -18,7 +18,7 @@
             </tr>
         }
 
-        <tr>
+        <tr class="entry-row">
             <td>@Html.TextBox("time", null, new { placeholder = " Time (minutes)", required="required" })</td>
             <td>@Html.TextBox("temperature", null, new { placeholder = " Rest Temp (°F)", required = "required" })</td>
             <td><select id="method" name="method" required="required"><option>Infusion</option><option>Direct Heat</option><option>Decoction</option></select></td>

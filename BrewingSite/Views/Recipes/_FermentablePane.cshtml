@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BrewingSite.Models.ViewFermentable>
 <form action="/Recipes/FermentablePane" method="post">
-    <table class="table">
+    <table class="table table-hover pagebreak-inside-avoid">
         <tr>
             <th></th>
             <th>
@@ -47,7 +47,7 @@
             </tr>
         }
 
-        <tr>
+        <tr class="entry-row">
             <td><img src="~/Images/x.jpeg" width="16" height="16" id="clearFermButton" style="display: none; cursor: pointer" onclick="ClearNewFermentable()" /></td>
             <!--Add fermentable functionality-->
             <td>

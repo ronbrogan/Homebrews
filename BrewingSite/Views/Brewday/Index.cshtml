@@ -381,7 +381,7 @@
 
             @if(Model.fermentation.secondaryDays > 0)
             {
-                <li>Transfer to secondary fermenter for @Model.fermentation.secondaryDays at @Model.fermentation.secondaryTemp°F.
+                <li>Transfer to secondary fermenter for <strong>@Model.fermentation.secondaryDays days at @Model.fermentation.secondaryTemp°F.</strong>
                     @if (Model.fermentation.secondaryNote != null && Model.fermentation.secondaryNote.Length > 0)
                     {
                         <ul>
@@ -394,7 +394,7 @@
             @if (Model.fermentation.kegDays > 0)
             {
                 <li>
-                    Transfer to appropriate keg for @Model.fermentation.kegDays at @Model.fermentation.kegTemp°F.
+                    Transfer to appropriate keg for <strong>@Model.fermentation.kegDays days at @Model.fermentation.kegTemp°F.</strong>
                     @if (Model.fermentation.kegNote != null && Model.fermentation.kegNote.Length > 0)
                     {
                         <ul>
@@ -407,7 +407,7 @@
             @if (Model.fermentation.bottleDays > 0)
             {
                 <li>
-                    Transfer to secondary fermenter for @Model.fermentation.bottleDays at @Model.fermentation.bottleTemp°F.
+                    Add priming sugar and bottle. Allow to carbonate for <strong>@Model.fermentation.bottleDays days at @Model.fermentation.bottleTemp°F.</strong>
                     @if (Model.fermentation.bottleNote != null && Model.fermentation.bottleNote.Length > 0)
                     {
                         <ul>
