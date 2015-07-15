@@ -196,6 +196,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>brewappDb.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\brewappDbPartials.cs" />
     <Compile Include="Models\Brewday.cs">
       <DependentUpon>brewappDb.tt</DependentUpon>
     </Compile>
@@ -388,7 +389,8 @@
     <Content Include="Views\Brewday\_LogFinalGravity.cshtml" />
     <Content Include="Views\Brewday\_LogPreboilGravity.cshtml" />
     <Content Include="Views\Brewday\MeasurementsPane.cshtml" />
-    <Content Include="Views\Recipes\_Loading.cshtml" />
+    <Content Include="Views\Recipes\_Loading1.cshtml" />
+    <Content Include="Views\Recipes\_Loading0.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

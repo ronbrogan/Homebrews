@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<BrewingSite.Models.Yeast>
-<form action="/Recipes/YeastPane" method="post">
+<form action="/Recipes/YeastPane" method="post" id="yeastForm">
     <table class="table table-hover pagebreak-inside-avoid">
         <tr>
             <th>
@@ -46,8 +46,6 @@
                 <!--Autofill ppg-->
             </td>
             <td>
-                <!--Link for posting data to the model and then reloading the partial view-->
-                <button class="btn-link" onclick="return PostFormAsync(this)">Add</button>
             </td>
 
         </tr>

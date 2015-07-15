@@ -50,7 +50,11 @@ namespace BrewingSite.Controllers
 
         public ActionResult LoadingAnimation()
         {
-            return PartialView("_Loading");
+            int totalLoadingAnimations = 2;
+
+            int number = new Random().Next() % totalLoadingAnimations;
+
+            return PartialView("_Loading" + number.ToString());
         }
 
 
@@ -336,9 +340,11 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
+                    int recipeId = Convert.ToInt32(id);
+
                     List<ViewFermentable> ferms = new List<ViewFermentable>();
 
-                    ferms = dbConn.Database.SqlQuery<ViewFermentable>("exec dbo.FermentablesList " + id).ToList<ViewFermentable>();
+                    ferms = dbConn.Database.SqlQuery<ViewFermentable>("exec dbo.FermentablesList " + recipeId).ToList<ViewFermentable>();
 
                     return PartialView("_FermentablePane", ferms);
                 }
@@ -365,6 +371,9 @@ namespace BrewingSite.Controllers
                 newFermentable.recipeId = Convert.ToInt32(id);
                 newFermentable.unit = "lbs";
 
+                if (newFermentable.amount == null || newFermentable.ingredientId == null)
+                    throw new Exception();
+
                 dbConn.RecipeFermentables.Add(newFermentable);
                 dbConn.SaveChanges();
             }
@@ -381,9 +390,11 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
+                    int recipeId = Convert.ToInt32(id);
+
                     List<ViewHop> hops = new List<ViewHop>();
 
-                    hops = dbConn.Database.SqlQuery<ViewHop>("exec dbo.HopsList " + id).ToList<ViewHop>();
+                    hops = dbConn.Database.SqlQuery<ViewHop>("exec dbo.HopsList " + recipeId).ToList<ViewHop>();
 
                     return PartialView("_HopPane", hops);
                 }
@@ -409,6 +420,9 @@ namespace BrewingSite.Controllers
                 newHop.recipeId = Convert.ToInt32(id);
                 newHop.unit = "oz";
 
+                if (newHop.amount == null || newHop.ingredientId == null)
+                    throw new Exception();
+
                 dbConn.RecipeHops.Add(newHop);
                 dbConn.SaveChanges();
             }
@@ -426,9 +440,11 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
+                    int recipeId = Convert.ToInt32(id);
+
                     List<Yeast> yeasts = new List<Yeast>();
 
-                    yeasts = dbConn.Database.SqlQuery<Yeast>("exec dbo.YeastList " + id).ToList<Yeast>();
+                    yeasts = dbConn.Database.SqlQuery<Yeast>("exec dbo.YeastList " + recipeId).ToList<Yeast>();
 
                     return PartialView("_YeastPane", yeasts);
                 }
@@ -452,6 +468,9 @@ namespace BrewingSite.Controllers
                     return "Invalid user for access to recipe!";
 
                 newYeast.recipeId = Convert.ToInt32(id);
+
+                if (newYeast.ingredientId == null)
+                    throw new Exception();
 
                 dbConn.RecipeYeasts.Add(newYeast);
                 dbConn.SaveChanges();
@@ -631,9 +650,11 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
+                    int recipeId = Convert.ToInt32(id);
+
                     List<OtherIngredient> others = new List<OtherIngredient>();
 
-                    others = dbConn.Database.SqlQuery<OtherIngredient>("exec dbo.OthersList " + id).ToList<OtherIngredient>();
+                    others = dbConn.Database.SqlQuery<OtherIngredient>("exec dbo.OthersList " + recipeId).ToList<OtherIngredient>();
 
                     return PartialView("_OthersPane", others);
                 }
@@ -676,9 +697,11 @@ namespace BrewingSite.Controllers
             {
                 try
                 {
+                    int recipeId = Convert.ToInt32(id);
+
                     List<RecipeMashEntry> mashEntries = new List<RecipeMashEntry>();
 
-                    mashEntries = dbConn.Database.SqlQuery<RecipeMashEntry>("exec dbo.MashEntryList " + id).ToList<RecipeMashEntry>();
+                    mashEntries = dbConn.Database.SqlQuery<RecipeMashEntry>("exec dbo.MashEntryList " + recipeId).ToList<RecipeMashEntry>();
 
                     return PartialView("_MashPane", mashEntries);
                 }
@@ -845,7 +868,7 @@ namespace BrewingSite.Controllers
 
                 if(srmDouble >= 0 && srmDouble <= 30)
                 {
-                    SRMtoRGB rgb = dbConn.Database.SqlQuery<SRMtoRGB>("exec dbo.srmToRgbProcedure " + srm.ToString()).ToList<SRMtoRGB>().First();
+                    SRMtoRGB rgb = dbConn.Database.SqlQuery<SRMtoRGB>("exec dbo.srmToRgbProcedure " + srmDouble.ToString()).ToList<SRMtoRGB>().First();
 
                     return rgb.Red.ToString() + "," + rgb.Green.ToString() + "," + rgb.Blue.ToString();
                 }
@@ -861,7 +884,7 @@ namespace BrewingSite.Controllers
             }
             catch
             {
-                return "No SQL Injections Here...";
+                return "Could not retrieve RGB value.";
             }
 
             

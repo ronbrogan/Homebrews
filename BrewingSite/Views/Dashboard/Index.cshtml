@@ -23,7 +23,6 @@
 
             $("#NewRecipeForm").dialog({
                 autoOpen: true,
-                position: { my: "center", at: "top+350", of: window },
                 width: 550,
                 height: 400,
                 resizable: false,
@@ -54,8 +53,8 @@
     <hr />
 </div>
 
-<div class="clearfix">
-    <div class="float-left">
+<div class="row">
+    <div class="col-md-6">
         <span class="h2">My Recipes</span>
         <p></p>
         <div id="recipes">
@@ -87,7 +86,7 @@
 
     </div>
     
-    <div class="float-right">
+    <div class="col-md-6">
         <span class="h2">My Brewdays</span>
         <p></p>
         <div id="brewdays">
@@ -112,10 +111,11 @@
     </div>
 </div>
 <hr />
-<div class="clearfix">
-    <span class="h2">Ongoing Fermentations</span>
-    <div id="fermentationPipeline">
-        <span>Coming Soon!</span>
+<div class="row">
+    <div class="col-md-12">
+        <span class="h2">Ongoing Fermentations</span>
+        <div id="fermentationPipeline">
+            <span>Coming Soon!</span>
+        </div>
     </div>
-    <div id="AddFermentationForm"></div>
 </div>

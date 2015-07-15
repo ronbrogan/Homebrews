@@ -349,6 +349,7 @@
                 title: 'Add Fermentable',
                 modal: true,
                 open: function () {
+                    $(this).parent().position({my:"center", at:"center", of:window});
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowFermentableDialog', function(){$('#loadingAnimation').hide();});
                 },
@@ -380,6 +381,7 @@
                 title: 'Add Hop',
                 modal: true,
                 open: function () {
+                    $(this).parent().position({my:"center", at:"center", of:window});
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowHopDialog', function(){$('#loadingAnimation').hide();});
                 },
@@ -413,6 +415,7 @@
                 title: 'Edit Recipe Details',
                 modal: true,
                 open: function () {
+                    $(this).parent().position({my:"center", at:"center", of:window});
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowRecipeDialog/' + $recipeId, function(){$('#loadingAnimation').hide();});
                 },
@@ -452,6 +455,7 @@
                 title: 'Edit Equipment',
                 modal: true,
                 open: function () {
+                    $(this).parent().position({my:"center", at:"center", of:window});
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowEquipmentDialog/' + $globalRecipeId, function(){$('#loadingAnimation').hide();});
                 },
@@ -493,6 +497,7 @@
                 title: 'Edit Fermentation',
                 modal: true,
                 open: function () {
+                    $(this).parent().position({my:"center", at:"center", of:window});
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowFermentationDialog/' + $globalRecipeId, function(){$('#loadingAnimation').hide();});
                 },
@@ -530,6 +535,7 @@
                 title: 'Add Yeast',
                 modal: true,
                 open: function () {
+                    $(this).parent().position({my:"center", at:"center", of:window});
                     $('#loadingAnimation').show();
                     $(this).load('/Recipes/ShowYeastDialog', function(){$('#loadingAnimation').hide();});
                 },

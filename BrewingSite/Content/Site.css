@@ -39,6 +39,8 @@
 }
 
 .recipeReadoutRow{
+    padding-left: 15px;
+    padding-right: 15px;
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: justify;
@@ -81,6 +83,8 @@
 
 }
 
+
+/*Override styling for JQuery Dialog Boxes*/
 .ui-widget {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
@@ -100,7 +104,19 @@
 
 .ui-dialog-titlebar-close{
     color: #C07938 !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    vertical-align: central;
 }
+
+.ui-dialog-titlebar-close:after {
+    font-weight: 500;
+    font-size: 16px;
+    content: "x" !important;
+}
+
+
 
 
 .h7 {
@@ -153,19 +169,6 @@
     height: 40px;
     background-color: #bebebe;
     display: none;
-}
-
-.loading {
-    position: absolute;
-    width: 182px;
-    height: 486px;
-    background-image: url("/Images/grain-load-animation.gif");
-    background-repeat: no-repeat;
-    left: 50%;
-    top: 50%;
-    margin-left: -91px;
-    margin-top: -243px;
-    display:none;
 }
 
 .backdrop{
@@ -223,6 +226,10 @@
       visibility: hidden;
     }
 
+    .btn-link{
+        visibility: hidden;
+    }
+
 }
 
 .accent-color {
@@ -278,7 +285,7 @@ input {
 
 
 
-
+/*Animation definitions*/
 
 @keyframes loading
 {
