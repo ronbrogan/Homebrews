@@ -50,7 +50,7 @@
 	content: "";
 	width: 100%;
 	display: inline-block;
-    }
+}
 
 .recipeReadout {
     width: 144px;
@@ -79,8 +79,11 @@
     background-color: rgb(255, 255, 255);
 }
 
-@media (min-width: 992px) {
-
+.ms-account{
+    background-image: url(/Images/ms-account.png);
+    width: 232px;
+    height: 68px;
+    border: none;
 }
 
 
@@ -111,13 +114,15 @@
 }
 
 .ui-dialog-titlebar-close:after {
-    font-weight: 500;
-    font-size: 16px;
+    font-weight: 500 !important;
+    font-size: 16px !important;
     content: "x" !important;
 }
 
 
-
+.remove {
+    display: none;
+}
 
 .h7 {
     
@@ -249,7 +254,8 @@
 
 
 input {
-    border: 1px solid #bababa;
+    border: 1px solid #bababa !important;
+    border-radius: 0 !important;
 }
 
 

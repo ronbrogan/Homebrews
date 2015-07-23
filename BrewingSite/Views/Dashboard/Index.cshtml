@@ -15,16 +15,21 @@
         }
     }
 
+    function deleteBrewday(id)
+    {
+        $.ajax({ type: "POST", url: "/Brewday/Delete/" +  id });
+        setTimeout(function () { window.location = "/Dashboard" }, 350);
+    }
 
     $(document).ready(function () {
 
         $('#newRecipe').on('click', function (event) {
             event.preventDefault();
 
-            $("#NewRecipeForm").dialog({
+            $('#NewRecipeForm').dialog({
                 autoOpen: true,
                 width: 550,
-                height: 400,
+                height: 450,
                 resizable: false,
                 title: 'New Recipe Details',
                 modal: true,
@@ -33,6 +38,37 @@
                 }
             });
             return false;
+        });
+
+        $('.removeBrewday').on('click', function () {
+            var brewdayId = $(this).attr('data-BrewdayId');
+
+            $('#BrewdayDeleteConfirm').dialog({
+                autoOpen: true,
+                width: 300,
+                height: 200,
+                resizable: false,
+                title: 'Really Delete?',
+                modal: true,
+                buttons: [
+                    {
+                        text: "Close",
+                        type: "button",
+                        "class": "btn-link",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: 'Delete',
+                        type: 'button',
+                        "class": "btn btn-danger",
+                        click: function () {
+                            deleteBrewday(brewdayId);
+                        }
+                    }
+                ]
+            })
         });
 
         var errorMessage = "@Model.errorMessage";
@@ -101,7 +137,7 @@
                     <tr>
                         <td>@item.recipeName</td>
                         <td>@item.timestamp.Value.ToShortDateString()</td>
-                        <td><a href="/Brewday/@item.id">View</a></td>
+                        <td><a href="/Brewday/@item.id">View</a> | <button type="button" class="btn-link removeBrewday" data-brewdayId="@item.id">Delete</button></td>
                     </tr>
                 }
             </table>
@@ -119,3 +155,4 @@
         </div>
     </div>
 </div>
+<div id="BrewdayDeleteConfirm" hidden="hidden">Do you really want to delete? You will lose data.</div>

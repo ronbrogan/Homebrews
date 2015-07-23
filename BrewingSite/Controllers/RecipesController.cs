@@ -48,6 +48,8 @@ namespace BrewingSite.Controllers
         }
 
 
+
+
         public ActionResult LoadingAnimation()
         {
             int totalLoadingAnimations = 2;
@@ -312,6 +314,7 @@ namespace BrewingSite.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public ActionResult NewRecipe(Recipe recipe)
         {
             try
@@ -332,6 +335,15 @@ namespace BrewingSite.Controllers
             
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult Fork(string id="-1")
+        {
+            
+            return View();
+
+
+        }
         
 
         public ActionResult FermentablePane(string id = "-1")

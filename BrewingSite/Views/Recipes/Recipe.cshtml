@@ -27,6 +27,11 @@
 
     }
 
+    function deleteRecipe(event){
+        $.ajax({type: "POST", url: "/Recipes/Delete/" + $globalRecipeId}).done(setTimeout(function(){window.location = "/Dashboard/"}, 350));
+
+    }
+
     function PostFormAsyncNonCritical(btnClicked, event) {
         var $form = $(btnClicked).parents('form');
 
@@ -42,18 +47,6 @@
             $($form).effect('shake', {distance: 10, times: 1}, 150);
             return true;
         }
-    }
-
-    function RemoveIngredientAsync(itemId, event)
-    {
-        $.ajax({type: "POST", url: "/Recipes/Delete/" + itemId}).done(setTimeout(function() {UpdatePanes()}, 250));
-        return false;
-    }
-
-    function RemoveIngredientAsyncNonCritical(itemId, event)
-    {
-        $.ajax({type: "POST", url: "/Recipes/Delete/" + itemId}).done(setTimeout(function() {UpdatePanesNonCritical()}, 250));
-        return false;
     }
 
     function RemoveMashEntry(itemId, event)

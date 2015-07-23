@@ -42,6 +42,8 @@ namespace BrewingSite.Controllers
                         case 7: dashboard.errorMessage = "Recipe contains no hop entity. Please add a hop.";
                             break;
 
+                        case 8: dashboard.errorMessage = "No parameter specified in request.";
+                            break;
 
                         case -2147467261: dashboard.errorMessage = "Unknown error occured, please correct any errors and try again";
                             break;

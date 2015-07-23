@@ -16,7 +16,7 @@ namespace BrewingSite.Controllers
         public ActionResult Index(string id="-1")
         {
             if (id == "-1")
-                return HttpNotFound("Unable to lookup brewday. A brewday was not specified.");
+                return Redirect("/Dashboard/Index/8");
 
             BrewdayViewmodel brewday = new BrewdayViewmodel(dbConn.Brewdays.Find(Convert.ToInt32(id)));
             return View(brewday);
@@ -27,7 +27,8 @@ namespace BrewingSite.Controllers
         public ActionResult Create(string id = "-1")
         {
             if (id == "-1")
-                return HttpNotFound("Unable to create brewday. Recipe ID was not specified.");
+                return Redirect("/Dashboard/Index/8");
+
             BrewdayViewmodel newBrewday;
 
             try
@@ -39,13 +40,21 @@ namespace BrewingSite.Controllers
             {
                 return Redirect("/Dashboard/Index/" + ex.Message);
             }
-            
-
-            
-
             return Redirect("/Brewday/" + newBrewday.brewday.id);
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult Delete(string id = "-1")
+        {
+            if (id == "-1")
+                return Redirect("/Dashboard/Index/8");
+
+            dbConn.Brewdays.Remove(dbConn.Brewdays.Find(Convert.ToInt32(id)));
+            dbConn.SaveChanges();
+            return Redirect("/Dashboard/Index/");
+            
+        }
 
         public ActionResult ShowLogFermenterGravityDialog(string id = "-1")
         {

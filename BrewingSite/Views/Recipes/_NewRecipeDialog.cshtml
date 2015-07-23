@@ -36,6 +36,12 @@
             <td>@Html.Label("Style")</td>
             <td><select id="recipeStyle" required="required"><option data-styleid="-1">Loading styles...</option></select><input id="styleId" type="text" name="styleId" style="display: none;" /></td>
         </tr>
+        <tr>
+            <td colspan="2">
+                @Html.Label("Recipe Summary") <br />
+                @Html.TextArea("recipeSummary", new { cols = 50, rows = 2 })
+            </td>
+        </tr>
     </table>
     <button value="submit" name="submit" class="btn-link">Create Recipe</button>
 </form>

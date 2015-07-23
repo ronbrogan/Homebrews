@@ -13,7 +13,19 @@
             $('#styleId').val($(this)[0].selectedIndex + 1);
         });
 
+        $('#deleteRecipe').on("click", function () {
+            var parentDiv = $(this).closest('div');
 
+            $("button:contains('Save')").addClass("remove");
+
+            parentDiv.addClass("text-center");
+            parentDiv.html('<p>If you delete, you will lose data. Delete anyway?</p><button id="confirmDelete" class="btn btn-danger">Yes, Delete</button>');
+
+            $('#confirmDelete').on("click", function () {
+                deleteRecipe();
+            });
+
+        });
 
         
 
@@ -53,7 +65,16 @@
         <tr>
             <td colspan="2">
                 @Html.Label("Recipe Summary") <br />
-                @Html.TextAreaFor(m => m.recipeSummary, new { cols = 50, rows = 10})
+                @Html.TextAreaFor(m => m.recipeSummary, new { cols = 50, rows = 2})
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Unlist Recipe") @Html.CheckBox("private")</td>
+            <td>@Html.TextBox("sharelink", null, new {disabled = "disabled", placeholder = "Unlist to Generate Link"})</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="btn btn-danger" type="button" id="deleteRecipe">Delete Recipe</button>
             </td>
         </tr>
     </table>

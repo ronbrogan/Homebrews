@@ -10,7 +10,7 @@
         <span>Boil Time: <span id="boilTime">@Model.boilTime.ToString()</span> minutes</span>
     </div>
     <div class="col-md-9">
-        @{if(@Model.sourceRecipe.recipeSummary.Length > 0){<p>Summary: @Model.sourceRecipe.recipeSummary</p>}}
+        @{if(Model.sourceRecipe.recipeSummary != null && Model.sourceRecipe.recipeSummary.Length > 0){<p>Summary: @Model.sourceRecipe.recipeSummary</p>}}
     </div>
 </div>
 
