@@ -1,6 +1,6 @@
 # Homebrews
 
-Homebrews is a personal project of mine that aims to satiate the need for a simple to use brewing web app with no gimicks or limitations. 
+Homebrews is a personal project of mine that aims to satiate the need for a simple to use brewing web app with no gimmicks or limitations. 
 
 Currently, you are able to construct a recipe and optionally create a "Brewday" session from the recipe.
 
